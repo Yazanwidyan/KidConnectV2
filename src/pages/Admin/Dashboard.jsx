@@ -29,7 +29,7 @@ const revenueData = [
   { month: "Jun", revenue: 2000, pending: 250, overdue: 120 },
 ];
 
-const Home = () => {
+const Dashboard = () => {
   const [selectedMonth, setSelectedMonth] = useState("Jan");
 
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
@@ -115,4 +115,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Dashboard;

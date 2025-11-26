@@ -4,7 +4,7 @@ import Footer from "./Footer";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 
-const AppLayout = ({ children }) => {
+const Layout = ({ children }) => {
   return (
     <div className="flex min-h-screen bg-gray-50">
       {/* Fixed Sidebar */}
@@ -23,4 +23,4 @@ const AppLayout = ({ children }) => {
   );
 };
 
-export default AppLayout;
+export default Layout;
