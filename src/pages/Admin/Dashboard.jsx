@@ -36,7 +36,7 @@ const Dashboard = () => {
 
   return (
     <div className="p-6">
-      <h2 className="mb-6 text-2xl font-semibold text-primary">Dashboard</h2>
+      <h2 className="mb-6 text-2xl font-semibold text-primary">Admin Dashboard</h2>
 
       {/* Filters */}
       <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-center md:gap-6">

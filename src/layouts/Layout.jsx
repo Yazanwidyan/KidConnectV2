@@ -1,5 +1,6 @@
 import React from "react";
 
+import { ROLES } from "../constants/roles";
 import Footer from "./Footer";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
@@ -8,7 +9,7 @@ const Layout = ({ children }) => {
   return (
     <div className="flex min-h-screen bg-gray-50">
       {/* Fixed Sidebar */}
-      <Sidebar />
+      <Sidebar userRole={ROLES.ADMIN} />
 
       {/* Main content area (with left margin for sidebar space) */}
       <div className="ml-64 flex min-h-screen flex-1 flex-col">
