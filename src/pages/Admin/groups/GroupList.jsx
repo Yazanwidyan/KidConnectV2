@@ -1,8 +1,10 @@
 import React from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const GroupList = () => {
+  const navigate = useNavigate();
+
   // Sample data
   const groups = [
     { id: 1, name: "Math Club", type: "Academic", status: "Active" },
@@ -14,6 +16,10 @@ const GroupList = () => {
     if (window.confirm("Are you sure you want to delete this group?")) {
       console.log("Deleted group", id);
     }
+  };
+
+  const goToDetails = (id) => {
+    navigate(`/admin/groups/group-details/${id}`);
   };
 
   return (
@@ -43,7 +49,12 @@ const GroupList = () => {
             {groups.map((group, index) => (
               <tr key={group.id} className="transition hover:bg-gray-50">
                 <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-700">{index + 1}</td>
-                <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-700">{group.name}</td>
+                <td
+                  className="cursor-pointer whitespace-nowrap px-6 py-4 text-sm text-blue-600 hover:underline"
+                  onClick={() => goToDetails(group.id)}
+                >
+                  {group.name}
+                </td>
                 <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-700">{group.type}</td>
                 <td className="whitespace-nowrap px-6 py-4 text-sm">
                   <span

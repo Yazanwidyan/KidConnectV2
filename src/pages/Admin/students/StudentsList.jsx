@@ -1,8 +1,10 @@
 import React from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const StudentsList = () => {
+  const navigate = useNavigate();
+
   // Sample student data
   const students = [
     {
@@ -70,7 +72,10 @@ const StudentsList = () => {
             {students.map((student, index) => (
               <tr key={student.id} className="transition hover:bg-gray-50">
                 <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-700">{index + 1}</td>
-                <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-700">
+                <td
+                  onClick={() => navigate(`/admin/students/student-profile/${student.id}`)}
+                  className="whitespace-nowrap px-6 py-4 text-sm text-gray-700"
+                >
                   {student.firstName} {student.lastName}
                 </td>
                 <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-700">{student.class}</td>

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FaCheck, FaGlobe } from "react-icons/fa";
+import { FaCheck } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export default function LanguageSwitcher() {
