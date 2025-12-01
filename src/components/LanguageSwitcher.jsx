@@ -41,7 +41,7 @@ export default function LanguageSwitcher() {
       </button>
 
       {open && (
-        <div className="absolute z-50 mt-0 w-32 rounded-lg border border-blue-200 bg-white shadow-xl backdrop-blur-md ltr:right-0 rtl:left-0">
+        <div className="absolute z-50 mt-0 w-32 rounded-lg border border-blue-200 bg-white shadow-lg backdrop-blur-md ltr:right-0 rtl:left-0">
           <button
             onClick={() => changeLanguage("en")}
             className={`flex w-full items-center justify-between px-4 py-2 text-left font-medium transition-colors duration-200 ${

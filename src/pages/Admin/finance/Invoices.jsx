@@ -3,10 +3,14 @@ import { FaEllipsisV } from "react-icons/fa";
 import { FiPlus } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
+import RecordPaymentModal from "./modals/RecordPaymentModal";
+import ViewInvoiceModal from "./modals/ViewInvoiceModal";
+
 const Invoices = () => {
   const [activeMenu, setActiveMenu] = useState(null);
+  const [viewInvoice, setViewInvoice] = useState(null);
+  const [recordPaymentInvoice, setRecordPaymentInvoice] = useState(null);
   const navigate = useNavigate();
-
   const invoices = [
     {
       id: 1,
@@ -43,6 +47,11 @@ const Invoices = () => {
     },
   ];
 
+  const handleSavePayment = (invoiceId, amountPaid) => {
+    console.log(`Payment recorded for Invoice ${invoiceId}: ${amountPaid}`);
+    // update invoice balance logic here
+  };
+
   return (
     <div className="space-y-6 p-6">
       {/* Top Bar */}
@@ -50,14 +59,14 @@ const Invoices = () => {
         <h1 className="text-xl font-semibold text-gray-800">Invoices</h1>
         <button
           onClick={() => navigate("/admin/finance/add-invoice")}
-          className="flex items-center gap-2 rounded-lg bg-teal-600 px-4 py-2 text-white shadow-sm transition hover:bg-teal-700"
+          className="flex items-center gap-2 rounded-lg bg-teal-600 px-4 py-2 text-white shadow-lg transition hover:bg-teal-700"
         >
           <FiPlus /> ADD INVOICE
         </button>
       </div>
 
       {/* Filter Box */}
-      <div className="space-y-4 rounded-xl border bg-white p-5 shadow-sm">
+      <div className="space-y-4 rounded-lg border bg-white p-5 shadow-lg">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
           <input
             type="text"
@@ -97,8 +106,7 @@ const Invoices = () => {
         <button className="rounded-lg bg-teal-600 px-4 py-2 text-white hover:bg-teal-700">SUBMIT</button>
       </div>
 
-      {/* Table */}
-      <div className="overflow-x-auto rounded-xl border bg-white shadow-sm">
+      <div className="overflow-x-auto rounded-lg border bg-white shadow-lg">
         <table className="w-full min-w-[900px]">
           <thead className="border-b bg-gray-50">
             <tr>
@@ -123,16 +131,13 @@ const Invoices = () => {
                 <td className="px-6 py-3">
                   <input type="checkbox" />
                 </td>
-
                 <td className="px-6 py-3 font-medium text-teal-700">{item.invoiceNo}</td>
-
                 <td className="px-6 py-3">{item.billTo}</td>
                 <td className="px-6 py-3">{item.student}</td>
                 <td className="px-6 py-3">{item.invoiceDate}</td>
                 <td className="px-6 py-3">{item.dueDate}</td>
                 <td className="px-6 py-3">{item.amount}</td>
                 <td className="px-6 py-3">{item.balanceDue}</td>
-
                 <td className="px-6 py-3">
                   <span
                     className={`rounded-full px-3 py-1 text-sm ${
@@ -141,7 +146,7 @@ const Invoices = () => {
                         : item.status === "Paid"
                           ? "bg-green-100 text-green-700"
                           : "bg-red-100 text-red-700"
-                    } `}
+                    }`}
                   >
                     {item.status}
                   </span>
@@ -155,11 +160,26 @@ const Invoices = () => {
                     <FaEllipsisV />
                   </button>
 
-                  {/* Dropdown */}
                   {activeMenu === item.id && (
-                    <div className="absolute right-0 z-20 mt-2 w-32 rounded-lg border bg-white shadow-lg">
-                      <button className="block w-full px-4 py-2 text-left hover:bg-gray-100">View</button>
-                      <button className="block w-full px-4 py-2 text-left hover:bg-gray-100">Edit</button>
+                    <div className="absolute right-0 z-20 mt-2 w-40 rounded-lg border bg-white shadow-lg">
+                      <button
+                        onClick={() => {
+                          setViewInvoice(item);
+                          setActiveMenu(null);
+                        }}
+                        className="block w-full px-4 py-2 text-left hover:bg-gray-100"
+                      >
+                        View
+                      </button>
+                      <button
+                        onClick={() => {
+                          setRecordPaymentInvoice(item);
+                          setActiveMenu(null);
+                        }}
+                        className="block w-full px-4 py-2 text-left hover:bg-gray-100"
+                      >
+                        Record Payment
+                      </button>
                       <button className="block w-full px-4 py-2 text-left text-red-600 hover:bg-red-50">
                         Delete
                       </button>
@@ -171,6 +191,15 @@ const Invoices = () => {
           </tbody>
         </table>
       </div>
+
+      {/* Modals */}
+      <ViewInvoiceModal isOpen={!!viewInvoice} onClose={() => setViewInvoice(null)} invoice={viewInvoice} />
+      <RecordPaymentModal
+        isOpen={!!recordPaymentInvoice}
+        onClose={() => setRecordPaymentInvoice(null)}
+        invoice={recordPaymentInvoice}
+        onSave={handleSavePayment}
+      />
     </div>
   );
 };

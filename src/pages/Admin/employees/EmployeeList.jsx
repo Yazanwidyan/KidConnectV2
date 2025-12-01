@@ -84,7 +84,7 @@ const EmployeeList = () => {
 
         <Link
           to="/admin/employees/add-employee"
-          className="rounded-md bg-[#3A49F9] px-4 py-2 font-semibold text-white shadow-md transition hover:bg-[#2e3abf]"
+          className="rounded-md bg-[#3A49F9] px-4 py-2 font-semibold text-white shadow-lg transition hover:bg-[#2e3abf]"
         >
           Add Employee
         </Link>

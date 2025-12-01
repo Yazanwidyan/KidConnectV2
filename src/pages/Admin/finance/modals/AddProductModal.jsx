@@ -18,7 +18,7 @@ const AddProductModal = ({ open, onClose, onSubmit, initialValues }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
-      <div className="w-full max-w-2xl rounded-xl bg-white p-6 shadow-lg">
+      <div className="w-full max-w-2xl rounded-lg bg-white p-6 shadow-lg">
         {/* Header */}
         <div className="mb-5 flex items-center justify-between">
           <h2 className="text-xl font-semibold text-gray-800">

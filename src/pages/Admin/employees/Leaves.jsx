@@ -243,7 +243,7 @@ const Leaves = () => {
       {/* Add Leave Modal */}
       {addModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-lg">
             <h2 className="mb-4 text-xl font-bold">Add Leave</h2>
             <input
               type="text"
@@ -297,7 +297,7 @@ const Leaves = () => {
       {/* Approve/Reject and View Modals remain unchanged */}
       {approveRejectModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-lg">
             <h2 className="mb-4 text-xl font-bold">
               {approveRejectModal.action === "approve" ? "Approve" : "Reject"} Leave
             </h2>
@@ -328,7 +328,7 @@ const Leaves = () => {
 
       {viewModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-lg">
             <h2 className="mb-4 text-xl font-bold">Leave Details</h2>
             <p className="mb-2">
               <strong>Employee:</strong> {viewModal.employee}

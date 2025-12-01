@@ -6,7 +6,7 @@ const ViewProductModal = ({ open, onClose, product }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
-      <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-lg">
+      <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
         <div className="mb-5 flex items-center justify-between">
           <h2 className="text-xl font-semibold text-gray-800">View Product / Service</h2>
           <button onClick={onClose} className="text-gray-600 hover:text-black">

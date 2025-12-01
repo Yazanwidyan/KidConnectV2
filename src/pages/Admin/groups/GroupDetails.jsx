@@ -72,7 +72,7 @@ const GroupDetailsPage = () => {
           <img
             src={group.groupImage}
             alt={group.groupName}
-            className="h-32 w-32 rounded object-cover shadow-sm"
+            className="h-32 w-32 rounded object-cover shadow-lg"
           />
         ) : (
           <div

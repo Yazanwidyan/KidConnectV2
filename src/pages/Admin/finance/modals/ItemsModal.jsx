@@ -38,7 +38,7 @@ const ItemsModal = ({ isOpen, onClose, onAddItem }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-      <div className="w-full max-w-xl overflow-hidden rounded-xl bg-white shadow-lg">
+      <div className="w-full max-w-xl overflow-hidden rounded-lg bg-white shadow-lg">
         {/* Header */}
         <div className="flex items-center justify-between border-b px-5 py-3">
           <h2 className="text-lg font-semibold text-gray-800">{step === 1 ? "Add Item" : "Confirm Items"}</h2>

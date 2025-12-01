@@ -1,16 +1,13 @@
+import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
-import { FaBars, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { ADMIN_MENU } from "../../utils/menus/AdminMenu";
 
-const AdminSidebar = () => {
-  const [collapsed, setCollapsed] = useState(false);
+const AdminSidebar = ({ collapsed }) => {
   const [openMenu, setOpenMenu] = useState(null); // only one open at a time
   const location = useLocation();
   const navigate = useNavigate();
-
-  const toggleSidebar = () => setCollapsed(!collapsed);
 
   const handleNavigate = (path) => {
     navigate(path);
@@ -34,15 +31,12 @@ const AdminSidebar = () => {
       }`}
     >
       {/* Top bar */}
-      <div className="flex flex-shrink-0 items-center justify-between border-b px-4 py-3">
-        <span className={`text-lg font-bold ${collapsed ? "hidden" : "block"}`}>Admin Panel</span>
-        <button onClick={toggleSidebar}>
-          <FaBars />
-        </button>
+      <div className="flex flex-shrink-0 items-center justify-between border-b px-4 py-[20.9px]">
+        <span className={`text-lg font-bold ${collapsed ? "hidden" : "block"}`}>Kid-Connect</span>
       </div>
 
       {/* Scrollable menu */}
-      <nav className="mt-4 flex-1 overflow-y-auto">
+      <nav className="mx-2 mt-2 flex-1 space-y-2 overflow-y-auto">
         {ADMIN_MENU.map((item) => {
           const active = isActive(item);
           const isSubmenuOpen = openMenu === item.title; // only one open
@@ -58,16 +52,22 @@ const AdminSidebar = () => {
                     handleNavigate(item.path);
                   }
                 }}
-                className={`flex cursor-pointer items-center justify-between px-4 py-2 transition hover:bg-gray-200 ${
-                  active ? "bg-gray-200 font-semibold" : ""
+                className={`flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 transition hover:bg-primary hover:text-white ${
+                  active ? "bg-primary font-semibold text-white" : ""
                 }`}
               >
                 <div className="flex items-center">
-                  <item.icon className="mr-3" />
+                  <item.icon className="mr-3 h-5 w-5" />
                   {!collapsed && <span>{item.title}</span>}
                 </div>
                 {!collapsed && item.subMenu && (
-                  <span>{isSubmenuOpen ? <FaChevronUp /> : <FaChevronDown />}</span>
+                  <span>
+                    {isSubmenuOpen ? (
+                      <ChevronUpIcon className="h-3 w-3" />
+                    ) : (
+                      <ChevronDownIcon className="h-3 w-3" />
+                    )}
+                  </span>
                 )}
               </div>
 
@@ -78,8 +78,10 @@ const AdminSidebar = () => {
                     <div
                       key={sub.title}
                       onClick={() => handleNavigate(sub.path)}
-                      className={`block cursor-pointer px-2 py-1 text-gray-600 transition hover:text-gray-900 ${
-                        location.pathname === sub.path ? "font-semibold text-gray-900" : ""
+                      className={`block cursor-pointer px-4 py-2 text-gray-600 transition ${
+                        location.pathname === sub.path
+                          ? "border-l-4 border-l-primary font-semibold text-gray-900"
+                          : ""
                       }`}
                     >
                       {sub.title}

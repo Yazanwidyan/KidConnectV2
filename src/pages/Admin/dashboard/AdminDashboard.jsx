@@ -1,5 +1,12 @@
 import React, { useState } from "react";
 import {
+  FaExclamationTriangle,
+  FaFileInvoiceDollar,
+  FaUserFriends,
+  FaUserTie,
+  FaUsers,
+} from "react-icons/fa";
+import {
   Bar,
   BarChart,
   CartesianGrid,
@@ -11,6 +18,7 @@ import {
   YAxis,
 } from "recharts";
 
+// Sample data
 const studentData = [
   { month: "Jan", students: 120 },
   { month: "Feb", students: 135 },
@@ -29,61 +37,110 @@ const revenueData = [
   { month: "Jun", revenue: 2000, pending: 250, overdue: 120 },
 ];
 
+// New dashboard data
+const dailyAttendance = [
+  { day: "Mon", attendance: 115 },
+  { day: "Tue", attendance: 120 },
+  { day: "Wed", attendance: 118 },
+  { day: "Thu", attendance: 122 },
+  { day: "Fri", attendance: 117 },
+];
+
+const averageTimeSpent = [
+  { day: "Mon", hours: 3.5 },
+  { day: "Tue", hours: 4 },
+  { day: "Wed", hours: 3.8 },
+  { day: "Thu", hours: 4.2 },
+  { day: "Fri", hours: 3.9 },
+];
+
 const AdminDashboard = () => {
-  const [selectedMonth, setSelectedMonth] = useState("Jan");
-
-  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
-
   return (
     <div className="p-6">
-      <h2 className="mb-6 text-2xl font-semibold text-primary">Admin Dashboard</h2>
-
-      {/* Filters */}
-      <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-center md:gap-6">
-        <div>
-          <label className="mr-2 font-medium text-gray-700">Month:</label>
-          <select
-            className="rounded border px-3 py-1"
-            value={selectedMonth}
-            onChange={(e) => setSelectedMonth(e.target.value)}
-          >
-            {months.map((m) => (
-              <option key={m} value={m}>
-                {m}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-
       {/* Stat Cards */}
       <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-5">
-        <div className="rounded-2xl bg-white p-6 shadow-md">
-          <p className="text-gray-500">Total Students</p>
-          <h3 className="text-3xl font-bold text-secondary">120</h3>
+        {/* Total Students */}
+        <div className="relative flex flex-col overflow-hidden rounded-lg bg-[#0F626A] p-6 shadow-lg">
+          <FaUsers className="pointer-events-none absolute -right-10 top-4 text-9xl text-white opacity-10" />
+          <div className="z-10 mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-inner">
+            <FaUsers className="text-2xl text-[#0F626A]" />
+          </div>
+          <h3 className="relative z-10 mb-1 text-4xl font-extrabold text-white">160</h3>
+          <p className="relative z-10 text-lg text-white">Total Students</p>
         </div>
-        <div className="rounded-2xl bg-white p-6 shadow-md">
-          <p className="text-gray-500">Active Teachers</p>
-          <h3 className="text-3xl font-bold text-secondary">15</h3>
+
+        {/* Total Parents */}
+        <div className="relative flex flex-col overflow-hidden rounded-lg bg-[#1E90A0] p-6 shadow-lg">
+          <FaUserFriends className="pointer-events-none absolute -right-10 top-4 text-9xl text-white opacity-10" />
+          <div className="z-10 mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-inner">
+            <FaUserFriends className="text-2xl text-[#1E90A0]" />
+          </div>
+          <h3 className="relative z-10 mb-1 text-4xl font-extrabold text-white">145</h3>
+          <p className="relative z-10 text-lg text-white">عدد الطلاب</p>
         </div>
-        <div className="rounded-2xl bg-white p-6 shadow-md">
-          <p className="text-gray-500">Messages Sent</p>
-          <h3 className="text-3xl font-bold text-secondary">340</h3>
+
+        {/* Total Employees */}
+        <div className="relative flex flex-col overflow-hidden rounded-lg bg-[#0F9D58] p-6 shadow-lg">
+          <FaUserTie className="pointer-events-none absolute -right-10 top-4 text-9xl text-white opacity-10" />
+          <div className="z-10 mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-inner">
+            <FaUserTie className="text-2xl text-[#0F9D58]" />
+          </div>
+          <h3 className="relative z-10 mb-1 text-4xl font-extrabold text-white">25</h3>
+          <p className="relative z-10 text-lg text-white">Total Employees</p>
         </div>
-        <div className="rounded-2xl bg-white p-6 shadow-md">
-          <p className="text-gray-500">Pending Invoices</p>
-          <h3 className="text-3xl font-bold text-yellow-500">$250</h3>
+
+        {/* Pending Invoices */}
+        <div className="relative flex flex-col overflow-hidden rounded-lg bg-[#F4B400] p-6 shadow-lg">
+          <FaFileInvoiceDollar className="pointer-events-none absolute -right-10 top-4 text-9xl text-white opacity-10" />
+          <div className="z-10 mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-inner">
+            <FaFileInvoiceDollar className="text-2xl text-[#F4B400]" />
+          </div>
+          <h3 className="relative z-10 mb-1 text-4xl font-extrabold text-white">$250</h3>
+          <p className="relative z-10 text-lg text-white">Pending Invoices</p>
         </div>
-        <div className="rounded-2xl bg-white p-6 shadow-md">
-          <p className="text-gray-500">Overdue Invoices</p>
-          <h3 className="text-3xl font-bold text-red-500">$120</h3>
+
+        {/* Overdue Invoices */}
+        <div className="relative flex flex-col overflow-hidden rounded-lg bg-[#D32F2F] p-6 shadow-lg">
+          <FaExclamationTriangle className="pointer-events-none absolute -right-10 top-4 text-9xl text-white opacity-10" />
+          <div className="z-10 mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-inner">
+            <FaExclamationTriangle className="text-2xl text-[#D32F2F]" />
+          </div>
+          <h3 className="relative z-10 mb-1 text-4xl font-extrabold text-white">$120</h3>
+          <p className="relative z-10 text-lg text-white">Overdue Invoices</p>
         </div>
       </div>
 
       {/* Charts */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        {/* Students Daily Attendance */}
+        <div className="rounded-lg bg-white p-6 shadow-lg">
+          <h3 className="mb-4 text-lg font-semibold text-gray-700">Daily Attendance</h3>
+          <ResponsiveContainer width="100%" height={250}>
+            <BarChart data={dailyAttendance}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="day" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="attendance" fill="#25A0DD" barSize={30} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Average Time Spent */}
+        <div className="rounded-lg bg-white p-6 shadow-lg">
+          <h3 className="mb-4 text-lg font-semibold text-gray-700">Average Time Spent per Student (hrs)</h3>
+          <ResponsiveContainer width="100%" height={250}>
+            <LineChart data={averageTimeSpent}>
+              <XAxis dataKey="day" />
+              <YAxis />
+              <Tooltip />
+              <Line type="monotone" dataKey="hours" stroke="#FACC15" strokeWidth={3} />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+
         {/* Students Growth */}
-        <div className="rounded-2xl bg-white p-6 shadow-md">
+        <div className="rounded-lg bg-white p-6 shadow-lg">
           <h3 className="mb-4 text-lg font-semibold text-gray-700">Students Growth</h3>
           <ResponsiveContainer width="100%" height={250}>
             <LineChart data={studentData}>
@@ -95,8 +152,8 @@ const AdminDashboard = () => {
           </ResponsiveContainer>
         </div>
 
-        {/* Revenue & Invoices Chart */}
-        <div className="rounded-2xl bg-white p-6 shadow-md">
+        {/* Revenue & Invoices */}
+        <div className="rounded-lg bg-white p-6 shadow-lg">
           <h3 className="mb-4 text-lg font-semibold text-gray-700">Revenue & Invoices</h3>
           <ResponsiveContainer width="100%" height={250}>
             <BarChart data={revenueData}>

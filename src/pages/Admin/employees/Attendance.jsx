@@ -91,17 +91,17 @@ const Attendance = () => {
     <div className="w-full p-6">
       {/* Top Stats Row */}
       <div className="mb-6 grid grid-cols-3 gap-4">
-        <div className="flex flex-col items-center rounded-xl bg-blue-600 p-4 text-white shadow">
+        <div className="flex flex-col items-center rounded-lg bg-blue-600 p-4 text-white shadow">
           <p className="text-3xl font-bold">{employees.length}</p>
           <p>Total number of employees</p>
         </div>
 
-        <div className="flex flex-col items-center rounded-xl bg-green-600 p-4 text-white shadow">
+        <div className="flex flex-col items-center rounded-lg bg-green-600 p-4 text-white shadow">
           <p className="text-3xl font-bold">{countForTab("Present")}</p>
           <p>Checked in Employee</p>
         </div>
 
-        <div className="flex flex-col items-center rounded-xl bg-orange-500 p-4 text-white shadow">
+        <div className="flex flex-col items-center rounded-lg bg-orange-500 p-4 text-white shadow">
           <p className="text-3xl font-bold">{countForTab("OnLeave")}</p>
           <p>On Leave</p>
         </div>
@@ -113,21 +113,21 @@ const Attendance = () => {
       </div>
 
       <div className="mb-6 flex items-center gap-4">
-        <input type="month" className="rounded-xl border px-4 py-2" />
-        <input placeholder="Enter Employee Name" className="rounded-xl border px-4 py-2" />
-        <select className="rounded-xl border px-4 py-2">
+        <input type="month" className="rounded-lg border px-4 py-2" />
+        <input placeholder="Enter Employee Name" className="rounded-lg border px-4 py-2" />
+        <select className="rounded-lg border px-4 py-2">
           <option>Select Status</option>
         </select>
-        <button className="rounded-xl bg-blue-500 px-4 py-2 text-white">Filter</button>
-        <button className="rounded-xl bg-gray-200 px-4 py-2">Reset</button>
+        <button className="rounded-lg bg-blue-500 px-4 py-2 text-white">Filter</button>
+        <button className="rounded-lg bg-gray-200 px-4 py-2">Reset</button>
       </div>
 
       <div className="mb-4 flex justify-between">
-        <button onClick={openAttendanceModal} className="rounded-xl bg-green-500 px-5 py-2 text-white shadow">
+        <button onClick={openAttendanceModal} className="rounded-lg bg-green-500 px-5 py-2 text-white shadow">
           Mark Attendance
         </button>
         <button
-          className="rounded-xl bg-orange-500 px-5 py-2 text-white shadow"
+          className="rounded-lg bg-orange-500 px-5 py-2 text-white shadow"
           onClick={() => {
             /* optional global leave action - left empty */
           }}
@@ -137,7 +137,7 @@ const Attendance = () => {
       </div>
 
       {/* Calendar Table */}
-      <div className="mt-6 overflow-hidden rounded-xl border">
+      <div className="mt-6 overflow-hidden rounded-lg border">
         <table className="w-full text-sm">
           <thead className="bg-gray-100">
             <tr>
@@ -165,7 +165,7 @@ const Attendance = () => {
       {/* Attendance Modal */}
       {isAttendanceModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="w-full max-w-3xl rounded-2xl bg-white p-6 shadow-xl">
+          <div className="w-full max-w-3xl rounded-2xl bg-white p-6 shadow-lg">
             <div className="mb-4 flex justify-between">
               <h2 className="text-xl font-bold">Attendance</h2>
               <button onClick={closeAttendanceModal}>✕</button>
@@ -173,7 +173,7 @@ const Attendance = () => {
 
             <input
               type="date"
-              className="mb-4 w-full rounded-xl border px-4 py-2"
+              className="mb-4 w-full rounded-lg border px-4 py-2"
               value={selectedDate}
               onChange={(e) => setSelectedDate(e.target.value)}
             />
@@ -196,7 +196,7 @@ const Attendance = () => {
             </div>
 
             {/* Employees List */}
-            <div className="max-h-64 overflow-auto rounded-xl border p-3">
+            <div className="max-h-64 overflow-auto rounded-lg border p-3">
               {filteredEmployees.length === 0 && (
                 <div className="p-4 text-sm text-gray-500">No employees in this category.</div>
               )}
@@ -229,10 +229,10 @@ const Attendance = () => {
             </div>
 
             <div className="mt-4 flex justify-end gap-2">
-              <button className="rounded-xl bg-gray-200 px-4 py-2" onClick={closeAttendanceModal}>
+              <button className="rounded-lg bg-gray-200 px-4 py-2" onClick={closeAttendanceModal}>
                 Close
               </button>
-              <button className="rounded-xl bg-green-500 px-4 py-2 text-white">Save All</button>
+              <button className="rounded-lg bg-green-500 px-4 py-2 text-white">Save All</button>
             </div>
           </div>
         </div>
@@ -241,7 +241,7 @@ const Attendance = () => {
       {/* Manual Check Modal */}
       {selectedEmployee && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-lg">
             <div className="mb-4 flex justify-between">
               <h2 className="text-xl font-bold">Attendance Details</h2>
               <button onClick={() => setSelectedEmployee(null)}>✕</button>
@@ -254,7 +254,7 @@ const Attendance = () => {
               type="time"
               value={checkIn}
               onChange={(e) => setCheckIn(e.target.value)}
-              className="mb-3 w-full rounded-xl border px-4 py-2"
+              className="mb-3 w-full rounded-lg border px-4 py-2"
             />
 
             <div className="mb-3 flex items-center gap-2">
@@ -267,15 +267,15 @@ const Attendance = () => {
               type="time"
               value={checkOut}
               onChange={(e) => setCheckOut(e.target.value)}
-              className="w-full rounded-xl border px-4 py-2"
+              className="w-full rounded-lg border px-4 py-2"
             />
 
             <div className="mt-4 flex justify-end gap-2">
-              <button className="rounded-xl bg-gray-200 px-4 py-2" onClick={() => setSelectedEmployee(null)}>
+              <button className="rounded-lg bg-gray-200 px-4 py-2" onClick={() => setSelectedEmployee(null)}>
                 Cancel
               </button>
               <button
-                className="rounded-xl bg-green-500 px-4 py-2 text-white"
+                className="rounded-lg bg-green-500 px-4 py-2 text-white"
                 onClick={saveEmployeeAttendance}
               >
                 Save

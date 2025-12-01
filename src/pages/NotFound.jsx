@@ -15,7 +15,7 @@ const NotFound = () => {
       <p className="mt-4 text-lg text-gray-700">Oops! The page you are looking for does not exist.</p>
       <p className="mt-2 text-gray-500">It might have been removed, renamed, or never existed.</p>
       <button
-        className="mt-6 rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white shadow transition hover:bg-blue-700"
+        className="mt-6 rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white shadow transition hover:bg-blue-700"
         onClick={() => navigate("/")}
       >
         Go Back Home

@@ -126,7 +126,7 @@ const ProductsServices = () => {
       </div>
 
       {/* Filter Card */}
-      <div className="mb-4 rounded-xl border bg-white p-6 shadow-sm">
+      <div className="mb-4 rounded-lg border bg-white p-6 shadow-lg">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {/* Search */}
           <div>
@@ -188,7 +188,7 @@ const ProductsServices = () => {
       </div>
 
       {/* Products Table */}
-      <div ref={menuRef} className="overflow-x-auto rounded-xl border bg-white shadow-sm">
+      <div ref={menuRef} className="overflow-x-auto rounded-lg border bg-white shadow-lg">
         <div className="mb-4 flex justify-end">
           <button
             onClick={exportToExcel}

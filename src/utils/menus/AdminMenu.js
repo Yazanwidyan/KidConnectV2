@@ -1,23 +1,23 @@
 import {
-  FaChartLine,
-  FaClipboardList,
-  FaHome,
-  FaLayerGroup,
-  FaMoneyBillWave,
-  FaUserPlus,
-  FaUserTie,
-  FaUsers,
-} from "react-icons/fa";
+  BanknotesIcon,
+  ChartBarIcon,
+  ClipboardDocumentListIcon,
+  HomeIcon,
+  UserCircleIcon,
+  UserGroupIcon,
+  UserPlusIcon,
+  UsersIcon,
+} from "@heroicons/react/24/outline";
 
 export const ADMIN_MENU = [
   {
     title: "Dashboard",
-    icon: FaHome,
+    icon: HomeIcon,
     path: "/admin/dashboard",
   },
   {
     title: "Groups",
-    icon: FaLayerGroup,
+    icon: UserGroupIcon,
     path: "/admin/groups",
     subMenu: [
       { title: "Create Group", path: "/admin/groups/create-group" },
@@ -26,7 +26,7 @@ export const ADMIN_MENU = [
   },
   {
     title: "Students",
-    icon: FaUserPlus,
+    icon: UserPlusIcon,
     path: "/admin/students",
     subMenu: [
       { title: "Add Student", path: "/admin/students/add-student" },
@@ -37,23 +37,17 @@ export const ADMIN_MENU = [
   },
   {
     title: "Communication",
-    icon: FaUsers,
+    icon: UsersIcon,
     path: "/admin/communication",
     subMenu: [
-      {
-        title: "Messages",
-        path: "/admin/communication/messages",
-      },
+      { title: "Messages", path: "/admin/communication/messages" },
       { title: "Notifications", path: "/admin/communication/notifications" },
-      {
-        title: "Announcements",
-        path: "/admin/communication/announcements",
-      },
+      { title: "Announcements", path: "/admin/communication/announcements" },
     ],
   },
   {
     title: "Employees",
-    icon: FaUserTie,
+    icon: UserCircleIcon,
     path: "/admin/employees",
     subMenu: [
       { title: "Add Employee", path: "/admin/employees/add-employee" },
@@ -62,10 +56,9 @@ export const ADMIN_MENU = [
       { title: "Leaves", path: "/admin/employees/employee-leaves" },
     ],
   },
-
   {
     title: "Finance",
-    icon: FaMoneyBillWave,
+    icon: BanknotesIcon,
     path: "/admin/finance",
     subMenu: [
       { title: "Invoices", path: "/admin/finance/invoices" },
@@ -76,12 +69,12 @@ export const ADMIN_MENU = [
   },
   {
     title: "Reports",
-    icon: FaChartLine,
+    icon: ChartBarIcon,
     path: "/admin/reports",
   },
   {
     title: "Configurations",
-    icon: FaClipboardList,
+    icon: ClipboardDocumentListIcon,
     path: "/admin/configurations",
     subMenu: [
       { title: "General Configurations", path: "/admin/configurations/general-configurations" },

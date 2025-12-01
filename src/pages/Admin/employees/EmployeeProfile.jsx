@@ -141,7 +141,7 @@ const EmployeeProfile = () => {
         <ProfileSection title="Documents" fullwidth>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {employee.documents.map((doc, i) => (
-              <div key={i} className="rounded-md border p-3 shadow-sm">
+              <div key={i} className="rounded-md border p-3 shadow-lg">
                 <h4 className="font-medium text-gray-800">{doc.type}</h4>
                 {doc.file ? (
                   <img
@@ -168,7 +168,7 @@ export default EmployeeProfile;
 /* 🔹 Reusable Components */
 
 const ProfileSection = ({ title, children, fullwidth }) => (
-  <div className={`rounded-lg border bg-white p-5 shadow-sm ${fullwidth ? "md:col-span-2" : ""}`}>
+  <div className={`rounded-lg border bg-white p-5 shadow-lg ${fullwidth ? "md:col-span-2" : ""}`}>
     <h3 className="mb-4 text-xl font-semibold text-gray-700">{title}</h3>
     <div className="space-y-2">{children}</div>
   </div>

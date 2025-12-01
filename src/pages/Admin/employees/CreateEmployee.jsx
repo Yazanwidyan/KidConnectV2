@@ -500,7 +500,7 @@ const CreateEmployee = () => {
                 <img
                   src={photoPreview}
                   alt="Preview"
-                  className="mt-3 h-32 w-32 rounded-md object-cover shadow-sm"
+                  className="mt-3 h-32 w-32 rounded-md object-cover shadow-lg"
                 />
               )}
             </div>

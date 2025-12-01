@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const Unauthorized = () => {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 p-6">
-      <div className="max-w-md rounded-xl bg-white p-10 text-center shadow-lg">
+      <div className="max-w-md rounded-lg bg-white p-10 text-center shadow-lg">
         <h1 className="mb-4 text-4xl font-bold text-red-600">403</h1>
 
         <h2 className="mb-2 text-xl font-semibold">Unauthorized Access</h2>
