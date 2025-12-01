@@ -38,6 +38,7 @@ import StudentActivityReport from "../pages/admin/reports/StudentActivityReport"
 import AddStudent from "../pages/admin/students/AddStudent";
 import Admissions from "../pages/admin/students/Admissions";
 import EditStudent from "../pages/admin/students/EditStudent";
+import StudentAdmissionDetails from "../pages/admin/students/StudentAdmissionDetails";
 import StudentProfile from "../pages/admin/students/StudentProfile";
 import StudentsAttendance from "../pages/admin/students/StudentsAttendance";
 import StudentsList from "../pages/admin/students/StudentsList";
@@ -69,6 +70,7 @@ const AdminRoutes = () => {
             <Route path="students-list" element={<StudentsList />} />
             <Route path="attendance" element={<StudentsAttendance />} />
             <Route path="admissions" element={<Admissions />} />
+            <Route path="student-admission-profile/:id" element={<StudentAdmissionDetails />} />
           </Route>
 
           {/* ---------- EMPLOYEES ---------- */}

@@ -1,191 +1,196 @@
 import React from "react";
-import { FaArrowLeft, FaEdit, FaEnvelope, FaPhoneAlt, FaUserTie } from "react-icons/fa";
-import { Link, useParams } from "react-router-dom";
-
-// Sample employee data (replace with API call)
-const employeesData = [
-  {
-    id: 1,
-    firstName: "John",
-    lastName: "Williams",
-    role: "Mathematics Teacher",
-    department: "Academics",
-    status: "Active",
-    dateOfBirth: "1985-09-15",
-    gender: "Male",
-
-    // Contact
-    phone: "+123456789",
-    email: "john.williams@example.com",
-
-    // Employment
-    employeeId: "EMP-2024-001",
-    joiningDate: "2020-08-15",
-    contractType: "Full-Time",
-    salary: 3200,
-
-    // Emergency
-    emergencyContact: {
-      name: "Linda Williams",
-      relation: "Wife",
-      phone: "+123987654",
-    },
-
-    // Documents
-    documents: [
-      { name: "National ID", file: "#" },
-      { name: "Contract", file: "#" },
-      { name: "Resume", file: "#" },
-    ],
-  },
-];
 
 const EmployeeProfile = () => {
-  const { id } = useParams();
-  const employee = employeesData.find((emp) => emp.id === parseInt(id));
+  // LOCAL EMPLOYEE DATA — NO PROPS USED
+  const employee = {
+    photo: null,
+    firstName: "John",
+    middleName: "A.",
+    lastName: "Doe",
+    employeeId: "EMP-001",
+    nativeName: "ジョン",
+    invitationCode: "VB5293n",
+    linkedCode: "212124",
+    nationality: "Filipino",
+    email: "john@example.com",
+    phone: "+63 987 654 3210",
+    governmentId: "1234-5678-9000",
+    dateOfBirth: "1990-05-20",
+    passportNumber: "PA1234567",
+    maritalStatus: "Single",
+    gender: "Male",
+    address: "123 Makati, Philippines",
+    notes: "Strong performer",
+    employeeTitle: "Software Developer",
+    department: "Engineering",
+    role: "Employee",
+    roles: ["Developer", "Front-end"],
+    groups: ["Team Alpha", "Sprint Group"],
+    status: "Active",
 
-  if (!employee) {
-    return (
-      <div className="p-6 text-center text-gray-500">
-        <p>Employee not found.</p>
-        <Link to="/admin/employees/employees-list" className="text-blue-500 hover:underline">
-          Back to Employees
-        </Link>
-      </div>
-    );
-  }
+    contractType: "Full-Time",
+    monthlySalary: "180000",
+    currency: "JPY",
+    residentStartDate: "2024-01-01",
+    probationEndDate: "2024-04-01",
+    contractEndDate: "2025-01-01",
+    lastDayOfWork: "",
+    contractNotes: "Renew expected",
+
+    allergies: "None",
+    medications: "None",
+
+    emergencyContactName: "Jane Doe",
+    emergencyContactRelation: "Sister",
+    emergencyContactPhone: "+63 912 345 6789",
+
+    documents: [
+      { type: "ID Picture", file: null },
+      { type: "Passport", file: null },
+    ],
+  };
 
   return (
     <div className="w-full p-6">
       {/* Header */}
-      <div className="mb-6 flex items-center justify-between">
-        <Link
-          to="/admin/employees/employees-list"
-          className="flex items-center gap-2 text-blue-500 hover:underline"
-        >
-          <FaArrowLeft /> Back to Employees
-        </Link>
-
-        <Link
-          to={`/admin/employees/edit/${employee.id}`}
-          className="flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-        >
-          <FaEdit /> Edit Employee
-        </Link>
-      </div>
-
-      {/* Top Card */}
-      <div className="mb-6 flex flex-col items-start gap-6 rounded-lg border bg-white p-6 shadow md:flex-row md:items-center">
-        <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gray-200 text-4xl text-gray-600">
-          <FaUserTie />
-        </div>
+      <div className="mb-8 flex items-center gap-6">
+        <img
+          src={employee.photo ? URL.createObjectURL(employee.photo) : "/placeholder.png"}
+          alt="Employee"
+          className="h-32 w-32 rounded-lg object-cover shadow"
+        />
 
         <div>
-          <h2 className="text-2xl font-bold text-gray-800">
-            {employee.firstName} {employee.lastName}
+          <h2 className="text-3xl font-bold text-gray-800">
+            {employee.firstName} {employee.middleName} {employee.lastName}
           </h2>
-          <p className="text-gray-600">{employee.role}</p>
 
-          <span
-            className={`mt-2 inline-block rounded-full px-3 py-1 text-sm font-semibold ${
-              employee.status === "Active" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
-            }`}
-          >
+          <p className="text-gray-600">{employee.employeeTitle}</p>
+          {employee.linkedCode ? (
+            <p className="text-gray-600">Code {employee.linkedCode}</p>
+          ) : (
+            <p className="text-gray-600">Code {employee.invitationCode}</p>
+          )}
+
+          <p className="mt-1 inline-block rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-700">
             {employee.status}
-          </span>
+          </p>
         </div>
       </div>
 
-      {/* Info Section */}
-      <div className="grid gap-6 md:grid-cols-2">
+      {/* Sections */}
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         {/* Personal Info */}
-        <div className="rounded-lg border bg-white p-6 shadow">
-          <h3 className="mb-4 text-lg font-bold">Personal Information</h3>
+        <ProfileSection title="Personal Information">
+          <InfoRow label="Employee ID" value={employee.employeeId} />
+          <InfoRow label="Native Name" value={employee.nativeName} />
+          <InfoRow label="Nationality" value={employee.nationality} />
+          <InfoRow label="Email" value={employee.email} />
+          <InfoRow label="Phone" value={employee.phone} />
+          <InfoRow label="Government ID" value={employee.governmentId} />
+          <InfoRow label="Date of Birth" value={employee.dateOfBirth} />
+          <InfoRow label="Passport Number" value={employee.passportNumber} />
+          <InfoRow label="Marital Status" value={employee.maritalStatus} />
+          <InfoRow label="Gender" value={employee.gender} />
+          <InfoRow label="Address" value={employee.address} />
+          <InfoRow label="Notes" value={employee.notes} />
+        </ProfileSection>
 
-          <div className="space-y-2">
-            <p>
-              <strong>Gender:</strong> {employee.gender}
-            </p>
-            <p>
-              <strong>Date of Birth:</strong> {employee.dateOfBirth}
-            </p>
-            <p className="flex items-center gap-2">
-              <FaPhoneAlt /> {employee.phone}
-            </p>
-            <p className="flex items-center gap-2">
-              <FaEnvelope /> {employee.email}
-            </p>
+        {/* Employment */}
+        <ProfileSection title="Employment Information">
+          <InfoRow label="Title" value={employee.employeeTitle} />
+          <InfoRow label="Role" value={employee.role} />
+          <InfoRow label="Department" value={employee.department} />
+
+          <div className="mt-3">
+            <h4 className="font-semibold">Additional Roles:</h4>
+            <ListPills list={employee.roles} />
           </div>
-        </div>
 
-        {/* Employment Info */}
-        <div className="rounded-lg border bg-white p-6 shadow">
-          <h3 className="mb-4 text-lg font-bold">Employment Details</h3>
-
-          <div className="space-y-2">
-            <p>
-              <strong>Employee ID:</strong> {employee.employeeId}
-            </p>
-            <p>
-              <strong>Department:</strong> {employee.department}
-            </p>
-            <p>
-              <strong>Contract Type:</strong> {employee.contractType}
-            </p>
-            <p>
-              <strong>Joining Date:</strong> {employee.joiningDate}
-            </p>
-            <p>
-              <strong>Salary:</strong> ${employee.salary}
-            </p>
+          <div className="mt-3">
+            <h4 className="font-semibold">Groups:</h4>
+            <ListPills list={employee.groups} />
           </div>
-        </div>
+        </ProfileSection>
+
+        {/* Contract */}
+        <ProfileSection title="Contract Information">
+          <InfoRow label="Contract Type" value={employee.contractType} />
+          <InfoRow label="Monthly Salary" value={`${employee.monthlySalary} ${employee.currency}`} />
+          <InfoRow label="Resident Start Date" value={employee.residentStartDate} />
+          <InfoRow label="Probation End Date" value={employee.probationEndDate} />
+          <InfoRow label="Contract End Date" value={employee.contractEndDate} />
+          <InfoRow label="Last Day of Work" value={employee.lastDayOfWork} />
+          <InfoRow label="Contract Notes" value={employee.contractNotes} />
+        </ProfileSection>
+
+        {/* Medical */}
+        <ProfileSection title="Medical Information">
+          <InfoRow label="Allergies" value={employee.allergies} />
+          <InfoRow label="Medications" value={employee.medications} />
+        </ProfileSection>
 
         {/* Emergency Contact */}
-        <div className="rounded-lg border bg-white p-6 shadow">
-          <h3 className="mb-4 text-lg font-bold">Emergency Contact</h3>
-          <p>
-            <strong>Name:</strong> {employee.emergencyContact.name}
-          </p>
-          <p>
-            <strong>Relation:</strong> {employee.emergencyContact.relation}
-          </p>
-          <p>
-            <strong>Phone:</strong> {employee.emergencyContact.phone}
-          </p>
-        </div>
+        <ProfileSection title="Emergency Contact">
+          <InfoRow label="Name" value={employee.emergencyContactName} />
+          <InfoRow label="Relation" value={employee.emergencyContactRelation} />
+          <InfoRow label="Phone" value={employee.emergencyContactPhone} />
+        </ProfileSection>
 
         {/* Documents */}
-        <div className="rounded-lg border bg-white p-6 shadow">
-          <h3 className="mb-4 text-lg font-bold">Documents</h3>
-
-          <ul className="list-disc pl-5">
-            {employee.documents.map((doc, index) => (
-              <li key={index}>
-                <a href={doc.file} className="text-blue-600 hover:underline">
-                  {doc.name}
-                </a>
-              </li>
+        <ProfileSection title="Documents" fullwidth>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {employee.documents.map((doc, i) => (
+              <div key={i} className="rounded-md border p-3 shadow-sm">
+                <h4 className="font-medium text-gray-800">{doc.type}</h4>
+                {doc.file ? (
+                  <img
+                    src={URL.createObjectURL(doc.file)}
+                    alt={doc.type}
+                    className="mt-2 h-28 w-full rounded-md object-cover"
+                  />
+                ) : (
+                  <div className="mt-2 flex h-28 items-center justify-center rounded-md bg-gray-100 text-gray-400">
+                    No File
+                  </div>
+                )}
+              </div>
             ))}
-          </ul>
-        </div>
-      </div>
-
-      {/* Actions */}
-      <div className="mt-8 flex flex-wrap gap-4">
-        <button className="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700">Send Message</button>
-        <button className="rounded bg-purple-600 px-4 py-2 text-white hover:bg-purple-700">
-          Assign to Group
-        </button>
-        <button className="rounded bg-yellow-600 px-4 py-2 text-white hover:bg-yellow-700">
-          View Attendance
-        </button>
-        <button className="rounded bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700">
-          View Payroll
-        </button>
+          </div>
+        </ProfileSection>
       </div>
     </div>
   );
 };
 
 export default EmployeeProfile;
+
+/* 🔹 Reusable Components */
+
+const ProfileSection = ({ title, children, fullwidth }) => (
+  <div className={`rounded-lg border bg-white p-5 shadow-sm ${fullwidth ? "md:col-span-2" : ""}`}>
+    <h3 className="mb-4 text-xl font-semibold text-gray-700">{title}</h3>
+    <div className="space-y-2">{children}</div>
+  </div>
+);
+
+const InfoRow = ({ label, value }) => (
+  <div className="flex justify-between">
+    <span className="font-medium text-gray-600">{label}</span>
+    <span className="text-gray-800">{value || "-"}</span>
+  </div>
+);
+
+const ListPills = ({ list }) => (
+  <div className="mt-1 flex flex-wrap gap-2">
+    {list?.length ? (
+      list.map((item, i) => (
+        <span key={i} className="rounded-full bg-purple-100 px-3 py-1 text-sm text-purple-700">
+          {item}
+        </span>
+      ))
+    ) : (
+      <span className="text-sm text-gray-500">None</span>
+    )}
+  </div>
+);

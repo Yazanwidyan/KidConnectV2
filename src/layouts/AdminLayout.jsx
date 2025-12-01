@@ -1,31 +1,58 @@
-import { FaSignOutAlt } from "react-icons/fa";
+import { useState } from "react";
+import { FaChevronDown, FaSignOutAlt, FaUserCircle } from "react-icons/fa";
 import { Outlet } from "react-router-dom";
 
 import AdminSidebar from "../components/sidebar/AdminSidebar";
 import { useAuth } from "../context/AuthContext";
 
 const AdminLayout = ({ children }) => {
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <div className="flex h-screen flex-col bg-gray-100">
-      {/* Layout wrapper */}
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
         <AdminSidebar />
 
         {/* Main Content Area */}
         <div className="flex flex-1 flex-col overflow-auto">
-          {/* Header / Navbar */}
+          {/* Header */}
           <header className="flex items-center justify-between bg-white px-6 py-4 shadow">
+            {/* Left side */}
             <h1 className="text-xl font-semibold">Admin Dashboard</h1>
-            <div className="flex items-center space-x-4">
+
+            {/* Right side: Account */}
+            <div className="relative">
               <button
-                onClick={logout}
-                className="flex items-center rounded bg-red-500 px-3 py-1 text-white transition hover:bg-red-600"
+                onClick={() => setMenuOpen(!menuOpen)}
+                className="flex items-center space-x-2 rounded px-3 py-2 transition hover:bg-gray-100"
               >
-                <FaSignOutAlt className="mr-2" /> Logout
+                <FaUserCircle className="text-2xl text-gray-600" />
+                <div className="text-left">
+                  <p className="text-sm font-semibold">{user?.name || "Admin User"}</p>
+                  <p className="text-xs text-gray-500">Administrator</p>
+                </div>
+                <FaChevronDown className="text-gray-600" />
               </button>
+
+              {/* Dropdown Menu */}
+              {menuOpen && (
+                <div className="absolute right-0 mt-2 w-48 rounded-md border bg-white shadow-lg">
+                  <button className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100">
+                    Profile
+                  </button>
+                  <button className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100">
+                    Settings
+                  </button>
+                  <button
+                    onClick={logout}
+                    className="flex w-full items-center px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50"
+                  >
+                    <FaSignOutAlt className="mr-2" /> Logout
+                  </button>
+                </div>
+              )}
             </div>
           </header>
 

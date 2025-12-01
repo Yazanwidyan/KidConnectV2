@@ -1,80 +1,181 @@
 import React, { useState } from "react";
 
 const Attendance = () => {
-  const [records] = useState([
-    {
-      id: 1,
-      name: "John Doe",
-      role: "Teacher",
-      date: "2025-01-05",
-      status: "Present",
-      checkIn: "08:01 AM",
-      checkOut: "04:15 PM",
-    },
-    {
-      id: 2,
-      name: "Sarah Ahmed",
-      role: "Admin",
-      date: "2025-01-05",
-      status: "Absent",
-      checkIn: "-",
-      checkOut: "-",
-    },
-  ]);
+  const days = Array.from({ length: 31 }, (_, i) => i + 1);
+
+  const initialEmployees = [
+    { id: 1, name: "John Doe", role: "Teacher", status: "Unmarked", checkIn: "", checkOut: "" },
+    { id: 2, name: "Sarah Ahmed", role: "Admin", status: "Unmarked", checkIn: "", checkOut: "" },
+    { id: 3, name: "Emily Rosa", role: "Secretary", status: "Unmarked", checkIn: "", checkOut: "" },
+  ];
+
+  const [employees, setEmployees] = useState(initialEmployees);
+
+  const [isAttendanceModalOpen, setIsAttendanceModalOpen] = useState(false);
+  const [selectedTab, setSelectedTab] = useState("Unmarked");
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [checkIn, setCheckIn] = useState("");
+  const [checkOut, setCheckOut] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
+
+  const tabs = ["Unmarked", "Present", "On Leave"];
+
+  const openAttendanceModal = () => setIsAttendanceModalOpen(true);
+  const closeAttendanceModal = () => setIsAttendanceModalOpen(false);
+
+  const openEmployeeModal = (emp) => {
+    setSelectedEmployee(emp);
+    setCheckIn(emp.checkIn || "");
+    setCheckOut(emp.checkOut || "");
+  };
+
+  const saveEmployeeAttendance = () => {
+    setEmployees((prev) =>
+      prev.map((emp) =>
+        emp.id === selectedEmployee.id
+          ? { ...emp, checkIn, checkOut, status: checkIn || checkOut ? "Present" : emp.status }
+          : emp
+      )
+    );
+    setSelectedEmployee(null);
+    setCheckIn("");
+    setCheckOut("");
+  };
+
+  const filteredEmployees = employees.filter((emp) => emp.status === selectedTab);
 
   return (
-    <div className="p-6">
-      <h2 className="mb-6 text-3xl font-bold">Employee Attendance</h2>
+    <div className="w-full p-6">
+      <button
+        onClick={openAttendanceModal}
+        className="mb-6 rounded-xl bg-green-500 px-5 py-2 text-white shadow"
+      >
+        Mark Attendance
+      </button>
 
-      <div className="mb-4 flex gap-4">
-        <input type="date" className="rounded border px-3 py-2" />
-        <select className="rounded border px-3 py-2">
-          <option value="">All Status</option>
-          <option value="Present">Present</option>
-          <option value="Absent">Absent</option>
-          <option value="Late">Late</option>
-        </select>
-      </div>
+      {/* Mark Attendance Modal */}
+      {isAttendanceModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="w-full max-w-3xl rounded-2xl bg-white p-6 shadow-lg">
+            <div className="mb-4 flex justify-between">
+              <h2 className="text-xl font-bold">Mark Attendance</h2>
+              <button onClick={closeAttendanceModal} className="text-gray-500 hover:text-gray-700">
+                ✕
+              </button>
+            </div>
 
-      <div className="overflow-hidden rounded-lg border bg-white shadow">
-        <table className="min-w-full divide-y">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-sm font-semibold">Name</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold">Role</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold">Date</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold">Status</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold">Check In</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold">Check Out</th>
-            </tr>
-          </thead>
+            {/* Date Picker */}
+            <div className="mb-4">
+              <label className="mb-1 block text-sm font-medium">Select Date</label>
+              <input
+                type="date"
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+                className="w-full rounded-xl border px-4 py-2"
+              />
+            </div>
 
-          <tbody className="divide-y">
-            {records.map((rec) => (
-              <tr key={rec.id}>
-                <td className="px-6 py-3">{rec.name}</td>
-                <td className="px-6 py-3">{rec.role}</td>
-                <td className="px-6 py-3">{rec.date}</td>
-                <td className="px-6 py-3">
-                  <span
-                    className={`rounded px-3 py-1 text-sm text-white ${
-                      rec.status === "Present"
-                        ? "bg-green-600"
-                        : rec.status === "Late"
-                          ? "bg-yellow-600"
-                          : "bg-red-600"
-                    }`}
-                  >
-                    {rec.status}
+            {/* Tabs */}
+            <div className="mb-4 flex border-b">
+              {tabs.map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setSelectedTab(tab)}
+                  className={`px-4 py-2 font-medium ${
+                    selectedTab === tab ? "border-b-2 border-blue-500 text-blue-500" : "text-gray-500"
+                  }`}
+                >
+                  {tab} ({employees.filter((emp) => emp.status === tab).length})
+                </button>
+              ))}
+            </div>
+
+            {/* Tab Content */}
+            <div className="max-h-64 overflow-auto rounded-xl border p-2">
+              {filteredEmployees.length === 0 && (
+                <p className="py-4 text-center text-gray-500">No employees in this tab</p>
+              )}
+              {filteredEmployees.map((emp) => (
+                <div
+                  key={emp.id}
+                  onClick={() => openEmployeeModal(emp)}
+                  className="flex cursor-pointer justify-between rounded-lg p-3 hover:bg-gray-100"
+                >
+                  <span>
+                    {emp.name} ({emp.role})
                   </span>
-                </td>
-                <td className="px-6 py-3">{rec.checkIn}</td>
-                <td className="px-6 py-3">{rec.checkOut}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                  {emp.checkIn && emp.checkOut && (
+                    <span className="text-sm text-gray-500">
+                      {emp.checkIn} - {emp.checkOut}
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-4 flex justify-end gap-2">
+              <button
+                onClick={closeAttendanceModal}
+                className="rounded-xl bg-gray-200 px-4 py-2 font-semibold text-gray-800 shadow"
+              >
+                Close
+              </button>
+              <button className="rounded-xl bg-green-500 px-4 py-2 font-semibold text-white shadow">
+                Save All
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Manual Check-In/Check-Out Modal */}
+      {selectedEmployee && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-lg">
+            <div className="mb-4 flex justify-between">
+              <h2 className="text-xl font-bold">Manual Attendance</h2>
+              <button onClick={() => setSelectedEmployee(null)} className="text-gray-500 hover:text-gray-700">
+                ✕
+              </button>
+            </div>
+
+            <p className="mb-2 font-medium">
+              {selectedEmployee.name} ({selectedEmployee.role})
+            </p>
+
+            <label className="mb-1 block text-sm font-medium">Check-In Time</label>
+            <input
+              type="time"
+              value={checkIn}
+              onChange={(e) => setCheckIn(e.target.value)}
+              className="mb-3 w-full rounded-xl border px-4 py-2"
+            />
+
+            <label className="mb-1 block text-sm font-medium">Check-Out Time</label>
+            <input
+              type="time"
+              value={checkOut}
+              onChange={(e) => setCheckOut(e.target.value)}
+              className="w-full rounded-xl border px-4 py-2"
+            />
+
+            <div className="mt-4 flex justify-end gap-2">
+              <button
+                onClick={() => setSelectedEmployee(null)}
+                className="rounded-xl bg-gray-200 px-4 py-2 font-semibold text-gray-800 shadow"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={saveEmployeeAttendance}
+                className="rounded-xl bg-green-500 px-4 py-2 font-semibold text-white shadow"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
