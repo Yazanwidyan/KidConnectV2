@@ -23,7 +23,6 @@ import EditEmployee from "../pages/admin/employees/EditEmployee";
 import EmployeeList from "../pages/admin/employees/EmployeeList";
 import EmployeeProfile from "../pages/admin/employees/EmployeeProfile";
 import EmployeeLeaves from "../pages/admin/employees/Leaves";
-import EmployeePayroll from "../pages/admin/employees/Payroll";
 import AddInvoice from "../pages/admin/finance/AddInvoice";
 import Invoices from "../pages/admin/finance/Invoices";
 import PaymentRequests from "../pages/admin/finance/PaymentRequests";
@@ -79,9 +78,8 @@ const AdminRoutes = () => {
             <Route path="employee-profile/:id" element={<EmployeeProfile />} />
             <Route path="edit-employee/:id" element={<EditEmployee />} />
             <Route path="employee-list" element={<EmployeeList />} />
-            <Route path="employee-attendance" element={<EmployeeAttendance />} />
-            <Route path="employee-payroll" element={<EmployeePayroll />} />
             <Route path="employee-leaves" element={<EmployeeLeaves />} />
+            <Route path="employee-attendance" element={<EmployeeAttendance />} />
           </Route>
 
           {/* ---------- FINANCE ---------- */}

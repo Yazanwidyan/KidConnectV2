@@ -59,7 +59,6 @@ export const ADMIN_MENU = [
       { title: "Add Employee", path: "/admin/employees/add-employee" },
       { title: "Employee List", path: "/admin/employees/employee-list" },
       { title: "Attendance", path: "/admin/employees/employee-attendance" },
-      { title: "Payroll", path: "/admin/employees/employee-payroll" },
       { title: "Leaves", path: "/admin/employees/employee-leaves" },
     ],
   },
