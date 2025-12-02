@@ -27,16 +27,16 @@ const AdminSidebar = ({ collapsed }) => {
   return (
     <div
       className={`flex h-screen flex-col bg-white shadow-lg transition-all duration-300 ${
-        collapsed ? "w-16" : "w-64"
+        collapsed ? "w-16" : "w-72"
       }`}
     >
       {/* Top bar */}
-      <div className="flex flex-shrink-0 items-center justify-between border-b px-4 py-[20.9px]">
+      <div className="flex flex-shrink-0 items-center justify-between border-b-2 border-r-2 px-5 py-[20.9px]">
         <span className={`text-lg font-bold ${collapsed ? "hidden" : "block"}`}>Kid-Connect</span>
       </div>
 
       {/* Scrollable menu */}
-      <nav className="mx-2 mt-2 flex-1 space-y-2 overflow-y-auto">
+      <nav className="mx-3 mt-2 flex-1 space-y-1 overflow-y-auto">
         {ADMIN_MENU.map((item) => {
           const active = isActive(item);
           const isSubmenuOpen = openMenu === item.title; // only one open
@@ -52,20 +52,18 @@ const AdminSidebar = ({ collapsed }) => {
                     handleNavigate(item.path);
                   }
                 }}
-                className={`flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 transition hover:bg-primary hover:text-white ${
-                  active ? "bg-primary font-semibold text-white" : ""
-                }`}
+                className={`flex cursor-pointer items-center justify-between rounded-lg px-4 py-3 transition ${active || isSubmenuOpen ? "bg-primary font-bold text-white" : "font-semibold"} `}
               >
                 <div className="flex items-center">
-                  <item.icon className="mr-3 h-5 w-5" />
+                  <item.icon className="mr-2 h-[21px] w-[21px] stroke-[2]" />
                   {!collapsed && <span>{item.title}</span>}
                 </div>
                 {!collapsed && item.subMenu && (
                   <span>
                     {isSubmenuOpen ? (
-                      <ChevronUpIcon className="h-3 w-3" />
+                      <ChevronUpIcon className="h-3 w-3 stroke-[3]" />
                     ) : (
-                      <ChevronDownIcon className="h-3 w-3" />
+                      <ChevronDownIcon className="h-3 w-3 stroke-[3]" />
                     )}
                   </span>
                 )}
@@ -78,13 +76,20 @@ const AdminSidebar = ({ collapsed }) => {
                     <div
                       key={sub.title}
                       onClick={() => handleNavigate(sub.path)}
-                      className={`block cursor-pointer px-4 py-2 text-gray-600 transition ${
-                        location.pathname === sub.path
-                          ? "border-l-4 border-l-primary font-semibold text-gray-900"
-                          : ""
-                      }`}
+                      className="relative flex cursor-pointer items-center px-4 py-2 text-gray-600 transition"
                     >
-                      {sub.title}
+                      {/* Vertical line on active */}
+                      {location.pathname === sub.path && (
+                        <span className="absolute left-0 h-7 w-1 rounded bg-primary"></span>
+                      )}
+
+                      <span
+                        className={` ${
+                          location.pathname === sub.path ? "font-semibold text-primary" : "text-gray-600"
+                        }`}
+                      >
+                        {sub.title}
+                      </span>
                     </div>
                   ))}
                 </div>

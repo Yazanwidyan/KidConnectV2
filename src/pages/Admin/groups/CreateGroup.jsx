@@ -42,11 +42,11 @@ const GroupSchema = Yup.object().shape({
   Section Component
 ------------------------- */
 const Section = ({ title, open, toggle, children, hint }) => (
-  <div className="mb-4 rounded-lg border bg-white shadow">
+  <div className="mb-4 rounded-lg bg-white shadow-lg">
     <button
       type="button"
       onClick={toggle}
-      className="flex w-full items-center justify-between px-4 py-3 text-left"
+      className="flex w-full items-center justify-between px-6 py-4 text-left"
     >
       <div className="flex items-center gap-2">
         <h3 className="text-lg font-semibold">{title}</h3>
@@ -54,7 +54,7 @@ const Section = ({ title, open, toggle, children, hint }) => (
       </div>
       {open ? <FaChevronUp /> : <FaChevronDown />}
     </button>
-    {open && <div className="px-4 pb-4">{children}</div>}
+    {open && <div className="px-6 pb-4">{children}</div>}
   </div>
 );
 
@@ -100,7 +100,7 @@ const CreateGroup = () => {
 
   return (
     <div className="p-6">
-      <h1 className="mb-6 text-3xl font-bold">Create New Group</h1>
+      <h1 className="text-primaryFont mb-6 text-3xl font-bold">Create New Group</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* BASIC */}
@@ -125,7 +125,7 @@ const CreateGroup = () => {
             </div>
 
             <div>
-              <label className="mb-1 block">Group Type</label>
+              <label className="mb-1 block text-base">Group Type</label>
               <select
                 name="groupType"
                 value={values.groupType}
@@ -268,7 +268,7 @@ const CreateGroup = () => {
 
         {/* Submit */}
         <div className="flex justify-end gap-3">
-          <button type="submit" className="rounded bg-green-600 px-5 py-2 text-white">
+          <button type="submit" className="rounded border border-primary bg-primary px-5 py-2 text-white">
             Create Group
           </button>
         </div>

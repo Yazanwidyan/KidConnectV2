@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       colors: {
         primary: "#0F626A", // Main green
+        primaryFont: "#082f32",
         secondary: "#FE6602", // Accent orange
         background: "#F5F5F5", // Page background
         header: "#F4EFD5", // Header background
@@ -13,6 +14,9 @@ module.exports = {
         danger: "#D32F2F", // Red for errors/alerts
         info: "#1E90A0", // Teal/Info color
         cardBlue: "#0F626A", // Darker blue for student card
+      },
+      fontSize: {
+        base: "15px",
       },
       borderRadius: {
         sm: "0.25rem", // default small
@@ -23,7 +27,7 @@ module.exports = {
         full: "9999px", // fully round
       },
       boxShadow: {
-        lg: "0 0.1rem 0.5rem 0 rgba(40, 35, 45, 0.1)",
+        lg: "0 0.1rem 0.5rem 0 rgba(40, 35, 45, 0.08)",
       },
     },
   },

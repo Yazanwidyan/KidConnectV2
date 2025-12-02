@@ -90,11 +90,11 @@ const GroupList = () => {
   return (
     <div className="w-full p-6">
       <div className="mb-6 flex flex-wrap items-center justify-between">
-        <h2 className="text-3xl font-bold text-gray-800">Groups</h2>
+        <h2 className="text-primaryFont text-3xl font-bold">Groups</h2>
         <div className="flex flex-wrap gap-4">
           <Link
             to="/admin/groups/create-group"
-            className="rounded-md bg-[#3A49F9] px-4 py-2 font-medium text-white shadow hover:bg-[#2e3abf]"
+            className="rounded border border-primary bg-primary px-5 py-2 text-white"
           >
             + Create Group
           </Link>
@@ -139,10 +139,16 @@ const GroupList = () => {
           ))}
         </select>
 
-        <button onClick={applyFilters} className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
+        <button
+          onClick={applyFilters}
+          className="rounded border-primary/10 bg-primary/10 px-4 py-2 text-primary transition hover:bg-primary/20 hover:ring-1 hover:ring-primary"
+        >
           Filter
         </button>
-        <button onClick={resetFilters} className="rounded bg-gray-400 px-4 py-2 text-white hover:bg-gray-500">
+        <button
+          onClick={resetFilters}
+          className="rounded border-gray-200 bg-gray-200 px-4 py-2 text-gray-600 ring-gray-600 transition hover:bg-gray-300 hover:ring-1"
+        >
           Reset
         </button>
       </div>
