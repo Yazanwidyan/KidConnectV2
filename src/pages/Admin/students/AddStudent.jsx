@@ -62,12 +62,12 @@ const AddStudent = () => {
   return (
     <div className="w-full p-6">
       <div className="mb-6" aria-label="Breadcrumb">
-        <h1 className="text-primaryFont mb-1 text-3xl font-bold">Add Student</h1>
+        <h1 className="text-primaryFont mb-1 text-2xl font-bold">Add Student</h1>
         <nav className="flex" aria-label="Breadcrumb">
           <ol className="inline-flex items-center space-x-2">
             <li className="inline-flex items-center">
               <div className="flex items-center gap-1 font-semibold text-black">
-                <UserPlusIcon className="h-4 w-4" /> <h5>Students</h5>
+                <UserPlusIcon className="h-4 w-4 stroke-[2]" /> <h5>Students</h5>
               </div>
             </li>
             <span>/</span>
@@ -77,182 +77,207 @@ const AddStudent = () => {
           </ol>
         </nav>
       </div>
-      <Formik
-        initialValues={{
-          studentPhoto: null,
-          firstDayAtSchool: "",
-          firstName: "",
-          secondName: "",
-          thirdName: "",
-          lastName: "",
-          governmentId: "",
-          nationality: "",
-          placeOfBirth: "",
-          gender: genders[0],
-          dob: "",
-          bloodGroup: bloodGroups[0],
-          religion: religions[0],
-          address: "",
-          allergies: "",
-          medications: "",
-          nurseryNotes: "",
-          parentNotes: "",
-          groupName: "",
-          attachments: [],
-          parents: [{ parentName: "", parentPhone: "", parentEmail: "", parentRelation: "" }],
-          emergencyContacts: [{ name: "", phone: "", relation: "" }],
-          authorizedPickups: [{ name: "", phone: "", id: "", relation: "" }],
-        }}
-        validationSchema={StudentSchema}
-        onSubmit={(values) => {
-          console.log(values);
-          alert("Student Added Successfully!");
-        }}
-      >
-        {({ values, setFieldValue }) => (
-          <Form className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            {/* ------------------- STUDENT PHOTO ------------------- */}
-            <div className="md:col-span-2">
-              <label className="mb-2 font-medium text-gray-700">Student Photo</label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files[0];
-                  setFieldValue("studentPhoto", file);
-                  if (file) setPreview(URL.createObjectURL(file));
-                }}
-                className="w-full rounded-lg border px-4 py-2"
-              />
-              {preview && (
-                <img src={preview} alt="preview" className="mt-3 h-32 w-32 rounded-lg object-cover" />
-              )}
-              <ErrorMessage name="studentPhoto" component="div" className="text-sm text-red-500" />
-            </div>
-
-            {/* ------------------- STUDENT INFO ------------------- */}
-            {[
-              { name: "firstName", label: "First Name" },
-              { name: "secondName", label: "Second Name" },
-              { name: "thirdName", label: "Third Name" },
-              { name: "lastName", label: "Last Name" },
-              { name: "governmentId", label: "Government ID" },
-              { name: "nationality", label: "Nationality" },
-              { name: "placeOfBirth", label: "Place of Birth" },
-              { name: "address", label: "Address" },
-              { name: "allergies", label: "Allergies" },
-              { name: "medications", label: "Medications" },
-              { name: "nurseryNotes", label: "Nursery Notes" },
-              { name: "parentNotes", label: "Parent Notes" },
-              { name: "groupName", label: "Group Name" },
-            ].map((field) => (
-              <div key={field.name} className="flex flex-col">
-                <label className="mb-2 font-medium text-gray-700">{field.label}</label>
-                <Field name={field.name} className="rounded-lg border px-4 py-2" />
-                <ErrorMessage name={field.name} component="div" className="text-sm text-red-500" />
+      <div className="mb-4 rounded-lg bg-white px-6 py-4 shadow-lg">
+        <Formik
+          initialValues={{
+            studentPhoto: null,
+            firstDayAtSchool: "",
+            firstName: "",
+            secondName: "",
+            thirdName: "",
+            lastName: "",
+            governmentId: "",
+            nationality: "",
+            placeOfBirth: "",
+            gender: genders[0],
+            dob: "",
+            bloodGroup: bloodGroups[0],
+            religion: religions[0],
+            address: "",
+            allergies: "",
+            medications: "",
+            nurseryNotes: "",
+            parentNotes: "",
+            groupName: "",
+            attachments: [],
+            parents: [{ parentName: "", parentPhone: "", parentEmail: "", parentRelation: "" }],
+            emergencyContacts: [{ name: "", phone: "", relation: "" }],
+            authorizedPickups: [{ name: "", phone: "", id: "", relation: "" }],
+          }}
+          validationSchema={StudentSchema}
+          onSubmit={(values) => {
+            console.log(values);
+            alert("Student Added Successfully!");
+          }}
+        >
+          {({ values, setFieldValue }) => (
+            <Form className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              {/* ------------------- STUDENT PHOTO ------------------- */}
+              <div className="md:col-span-2">
+                <label className="mb-2 font-medium text-gray-700">Student Photo</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    setFieldValue("studentPhoto", file);
+                    if (file) setPreview(URL.createObjectURL(file));
+                  }}
+                  className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
+                />
+                {preview && (
+                  <img src={preview} alt="preview" className="mt-3 h-32 w-32 rounded-lg object-cover" />
+                )}
+                <ErrorMessage name="studentPhoto" component="div" className="text-sm text-red-500" />
               </div>
-            ))}
 
-            {/* First Day at School */}
-            <div className="flex flex-col">
-              <label className="mb-2 font-medium text-gray-700">First Day at School</label>
-              <Field type="date" name="firstDayAtSchool" className="rounded-lg border px-4 py-2" />
-              <ErrorMessage name="firstDayAtSchool" component="div" className="text-sm text-red-500" />
-            </div>
-
-            {/* Date of Birth */}
-            <div className="flex flex-col">
-              <label className="mb-2 font-medium text-gray-700">Date of Birth</label>
-              <Field type="date" name="dob" className="rounded-lg border px-4 py-2" />
-              <ErrorMessage name="dob" component="div" className="text-sm text-red-500" />
-            </div>
-
-            {/* Gender */}
-            <div className="flex flex-col">
-              <label className="mb-2 font-medium text-gray-700">Gender</label>
-              <Field as="select" name="gender" className="rounded-lg border px-4 py-2">
-                {genders.map((g) => (
-                  <option key={g}>{g}</option>
-                ))}
-              </Field>
-              <ErrorMessage name="gender" component="div" className="text-sm text-red-500" />
-            </div>
-
-            {/* Blood Group */}
-            <div className="flex flex-col">
-              <label className="mb-2 font-medium text-gray-700">Blood Group</label>
-              <Field as="select" name="bloodGroup" className="rounded-lg border px-4 py-2">
-                {bloodGroups.map((b) => (
-                  <option key={b}>{b}</option>
-                ))}
-              </Field>
-              <ErrorMessage name="bloodGroup" component="div" className="text-sm text-red-500" />
-            </div>
-
-            {/* Religion */}
-            <div className="flex flex-col">
-              <label className="mb-2 font-medium text-gray-700">Religion</label>
-              <Field as="select" name="religion" className="rounded-lg border px-4 py-2">
-                {religions.map((r) => (
-                  <option key={r}>{r}</option>
-                ))}
-              </Field>
-              <ErrorMessage name="religion" component="div" className="text-sm text-red-500" />
-            </div>
-
-            {/* Attachments */}
-            <div className="md:col-span-2">
-              <label className="mb-2 font-medium text-gray-700">Attachments</label>
-              <input
-                type="file"
-                multiple
-                onChange={(e) => {
-                  const files = Array.from(e.target.files);
-                  setFieldValue("attachments", files);
-                  setAttachmentsPreview(files.map((f) => URL.createObjectURL(f)));
-                }}
-                className="w-full rounded-lg border px-4 py-2"
-              />
-              {attachmentsPreview.length > 0 && (
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {attachmentsPreview.map((file, i) => (
-                    <span key={i} className="rounded border bg-gray-100 px-2 py-1 text-sm">
-                      File {i + 1}
-                    </span>
-                  ))}
+              {/* ------------------- STUDENT INFO ------------------- */}
+              {[
+                { name: "firstName", label: "First Name" },
+                { name: "secondName", label: "Second Name" },
+                { name: "thirdName", label: "Third Name" },
+                { name: "lastName", label: "Last Name" },
+                { name: "governmentId", label: "Government ID" },
+                { name: "nationality", label: "Nationality" },
+                { name: "placeOfBirth", label: "Place of Birth" },
+                { name: "address", label: "Address" },
+                { name: "allergies", label: "Allergies" },
+                { name: "medications", label: "Medications" },
+                { name: "nurseryNotes", label: "Nursery Notes" },
+                { name: "parentNotes", label: "Parent Notes" },
+                { name: "groupName", label: "Group Name" },
+              ].map((field) => (
+                <div key={field.name} className="flex flex-col">
+                  <label className="mb-2 font-medium text-gray-700">{field.label}</label>
+                  <Field
+                    name={field.name}
+                    className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
+                  />
+                  <ErrorMessage name={field.name} component="div" className="text-sm text-red-500" />
                 </div>
-              )}
-            </div>
+              ))}
 
-            {/* ------------------- Parents, Emergency, Authorized Pickups ------------------- */}
-            <DynamicSection
-              name="parents"
-              title="Parents"
-              fields={["parentName", "parentPhone", "parentEmail", "parentRelation"]}
-            />
-            <DynamicSection
-              name="emergencyContacts"
-              title="Emergency Contacts"
-              fields={["name", "phone", "relation"]}
-            />
-            <DynamicSection
-              name="authorizedPickups"
-              title="Authorized Pickups"
-              fields={["name", "phone", "id", "relation"]}
-            />
+              {/* First Day at School */}
+              <div className="flex flex-col">
+                <label className="mb-2 font-medium text-gray-700">First Day at School</label>
+                <Field
+                  type="date"
+                  name="firstDayAtSchool"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
+                />
+                <ErrorMessage name="firstDayAtSchool" component="div" className="text-sm text-red-500" />
+              </div>
 
-            {/* Submit Button */}
-            <div className="md:col-span-2">
-              <button
-                type="submit"
-                className="w-full rounded-lg bg-blue-600 py-3 font-semibold text-white hover:bg-blue-700"
-              >
-                Add Student
-              </button>
-            </div>
-          </Form>
-        )}
-      </Formik>
+              {/* Date of Birth */}
+              <div className="flex flex-col">
+                <label className="mb-2 font-medium text-gray-700">Date of Birth</label>
+                <Field
+                  type="date"
+                  name="dob"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
+                />
+                <ErrorMessage name="dob" component="div" className="text-sm text-red-500" />
+              </div>
+
+              {/* Gender */}
+              <div className="flex flex-col">
+                <label className="mb-2 font-medium text-gray-700">Gender</label>
+                <Field
+                  as="select"
+                  name="gender"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
+                >
+                  {genders.map((g) => (
+                    <option key={g}>{g}</option>
+                  ))}
+                </Field>
+                <ErrorMessage name="gender" component="div" className="text-sm text-red-500" />
+              </div>
+
+              {/* Blood Group */}
+              <div className="flex flex-col">
+                <label className="mb-2 font-medium text-gray-700">Blood Group</label>
+                <Field
+                  as="select"
+                  name="bloodGroup"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
+                >
+                  {bloodGroups.map((b) => (
+                    <option key={b}>{b}</option>
+                  ))}
+                </Field>
+                <ErrorMessage name="bloodGroup" component="div" className="text-sm text-red-500" />
+              </div>
+
+              {/* Religion */}
+              <div className="flex flex-col">
+                <label className="mb-2 font-medium text-gray-700">Religion</label>
+                <Field
+                  as="select"
+                  name="religion"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
+                >
+                  {religions.map((r) => (
+                    <option key={r}>{r}</option>
+                  ))}
+                </Field>
+                <ErrorMessage name="religion" component="div" className="text-sm text-red-500" />
+              </div>
+
+              {/* Attachments */}
+              <div className="md:col-span-2">
+                <label className="mb-2 font-medium text-gray-700">Attachments</label>
+                <input
+                  type="file"
+                  multiple
+                  onChange={(e) => {
+                    const files = Array.from(e.target.files);
+                    setFieldValue("attachments", files);
+                    setAttachmentsPreview(files.map((f) => URL.createObjectURL(f)));
+                  }}
+                  className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
+                />
+                {attachmentsPreview.length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {attachmentsPreview.map((file, i) => (
+                      <span key={i} className="rounded border bg-gray-100 px-2 py-1 text-sm">
+                        File {i + 1}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* ------------------- Parents, Emergency, Authorized Pickups ------------------- */}
+              <DynamicSection
+                name="parents"
+                title="Parents"
+                fields={["parentName", "parentPhone", "parentEmail", "parentRelation"]}
+              />
+              <DynamicSection
+                name="emergencyContacts"
+                title="Emergency Contacts"
+                fields={["name", "phone", "relation"]}
+              />
+              <DynamicSection
+                name="authorizedPickups"
+                title="Authorized Pickups"
+                fields={["name", "phone", "id", "relation"]}
+              />
+
+              {/* Submit Button */}
+              <div className="md:col-span-2">
+                <button
+                  type="submit"
+                  className="w-full rounded-lg bg-blue-600 py-3 font-semibold text-white hover:bg-blue-700"
+                >
+                  Add Student
+                </button>
+              </div>
+            </Form>
+          )}
+        </Formik>
+      </div>
     </div>
   );
 };
@@ -277,7 +302,10 @@ const DynamicSection = ({ name, title, fields }) => (
             {fields.map((field) => (
               <div key={field} className="mb-2 flex flex-col">
                 <label className="font-medium text-gray-700">{field}</label>
-                <Field name={`${name}[${index}].${field}`} className="rounded-lg border px-4 py-2" />
+                <Field
+                  name={`${name}[${index}].${field}`}
+                  className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
+                />
                 <ErrorMessage
                   name={`${name}[${index}].${field}`}
                   component="div"

@@ -1,4 +1,6 @@
+import { ClipboardDocumentIcon, UserCircleIcon, UserPlusIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Attendance = () => {
   const days = Array.from({ length: 31 }, (_, i) => i + 1);
@@ -89,6 +91,39 @@ const Attendance = () => {
 
   return (
     <div className="w-full p-6">
+      <div className="mb-6 flex flex-wrap items-end justify-between">
+        <div aria-label="Breadcrumb">
+          <h1 className="text-primaryFont mb-1 text-2xl font-bold">Attendance</h1>
+          <nav className="flex" aria-label="Breadcrumb">
+            <ol className="inline-flex items-center space-x-2">
+              <li className="inline-flex items-center">
+                <div className="flex items-center gap-1 font-semibold text-black">
+                  <UserCircleIcon className="h-4 w-4 stroke-[2]" /> <h5>Employees</h5>
+                </div>
+              </li>
+              <span>/</span>
+              <li aria-current="page">
+                <span className="font-semibold text-primary">Attendance</span>
+              </li>
+            </ol>
+          </nav>
+        </div>
+        {/* Buttons */}
+        <div className="flex gap-2">
+          <button
+            onClick={openAttendanceModal}
+            className="flex items-center gap-2 rounded border border-primary bg-primary px-5 py-2 font-semibold text-white"
+          >
+            <ClipboardDocumentIcon className="h-5 w-5 stroke-[2]" /> Mark Attendance
+          </button>
+          <Link
+            to="/admin/students/add-student"
+            className="flex items-center gap-2 rounded border border-primary bg-primary px-5 py-2 font-semibold text-white"
+          >
+            <UserPlusIcon className="h-5 w-5 stroke-[2]" /> Submit Leave
+          </Link>
+        </div>
+      </div>
       {/* Top Stats Row */}
       <div className="mb-6 grid grid-cols-3 gap-4">
         <div className="flex flex-col items-center rounded-lg bg-blue-600 p-4 text-white shadow">
@@ -120,20 +155,6 @@ const Attendance = () => {
         </select>
         <button className="rounded-lg bg-blue-500 px-4 py-2 text-white">Filter</button>
         <button className="rounded-lg bg-gray-200 px-4 py-2">Reset</button>
-      </div>
-
-      <div className="mb-4 flex justify-between">
-        <button onClick={openAttendanceModal} className="rounded-lg bg-green-500 px-5 py-2 text-white shadow">
-          Mark Attendance
-        </button>
-        <button
-          className="rounded-lg bg-orange-500 px-5 py-2 text-white shadow"
-          onClick={() => {
-            /* optional global leave action - left empty */
-          }}
-        >
-          Submit Leave
-        </button>
       </div>
 
       {/* Calendar Table */}

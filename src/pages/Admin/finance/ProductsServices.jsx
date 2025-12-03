@@ -1,3 +1,10 @@
+import {
+  ArrowDownTrayIcon,
+  BanknotesIcon,
+  EyeIcon,
+  PencilSquareIcon,
+  TrashIcon,
+} from "@heroicons/react/24/outline";
 import { saveAs } from "file-saver";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { FaEllipsisV, FaPlus } from "react-icons/fa";
@@ -96,7 +103,22 @@ const ProductsServices = () => {
     <div className="w-full p-6">
       {/* Header */}
       <div className="mb-6 flex flex-wrap items-center justify-between">
-        <h1 className="text-primaryFont text-3xl font-bold">Products & Services</h1>
+        <div aria-label="Breadcrumb">
+          <h1 className="text-primaryFont mb-1 text-2xl font-bold">Products & Services</h1>
+          <nav className="flex" aria-label="Breadcrumb">
+            <ol className="inline-flex items-center space-x-2">
+              <li className="inline-flex items-center">
+                <div className="flex items-center gap-1 font-semibold text-black">
+                  <BanknotesIcon className="h-4 w-4 stroke-[2]" /> <h5>Finance</h5>
+                </div>
+              </li>
+              <span>/</span>
+              <li aria-current="page">
+                <span className="font-semibold text-primary">Products & Services</span>
+              </li>
+            </ol>
+          </nav>
+        </div>
         <button
           onClick={() => {
             setOpenModal(true);
@@ -116,13 +138,13 @@ const ProductsServices = () => {
           placeholder="Product name or SKU"
           value={filters.search}
           onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-          className="rounded border px-3 py-2"
+          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
         />
         <select
           name="category"
           value={filters.category}
           onChange={(e) => setFilters({ ...filters, category: e.target.value })}
-          className="rounded border px-3 py-2"
+          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
         >
           <option value="">All Categories</option>
           <option value="Apparel">Apparel</option>
@@ -133,7 +155,7 @@ const ProductsServices = () => {
           name="status"
           value={filters.status}
           onChange={(e) => setFilters({ ...filters, status: e.target.value })}
-          className="rounded border px-3 py-2"
+          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
         >
           <option value="">All Status</option>
           <option value="Active">Active</option>
@@ -153,32 +175,35 @@ const ProductsServices = () => {
         </button>
       </div>
 
-      {/* Table */}
-      <div ref={menuRef} className="overflow-x-auto rounded-lg bg-white shadow-lg">
-        <div className="mb-4 flex justify-end p-4">
-          <button onClick={exportToExcel} className="rounded bg-gray-200 px-4 py-2 hover:bg-gray-300">
-            Export Excel
-          </button>
-        </div>
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+      {/* Export */}
+      <div className="mb-4 flex justify-end">
+        <button
+          onClick={exportToExcel}
+          className="flex items-center gap-2 rounded border border-primary bg-primary px-5 py-2 font-semibold text-white"
+        >
+          <ArrowDownTrayIcon className="h-5 w-5 stroke-[2]" /> Export as Excel
+        </button>
+      </div>
+      <div className="overflow-x-auto rounded-lg bg-white shadow-lg">
+        <table className="min-w-full divide-y divide-dashed divide-gray-400/60">
+          <thead>
             <tr>
               {["SKU", "Name", "Category", "Price", "Status", "Actions"].map((col) => (
-                <th key={col} className="px-6 py-3 text-left text-sm font-bold text-gray-700">
+                <th key={col} className="cursor-pointer px-6 py-3 text-left text-sm font-bold text-gray-700">
                   {col}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y divide-dashed divide-gray-400/60">
             {filteredProducts.length > 0 ? (
               filteredProducts.map((item) => (
                 <tr key={item.id} className="transition odd:bg-slate-100 even:bg-white hover:bg-gray-50">
-                  <td className="px-6 py-3">{item.sku}</td>
-                  <td className="px-6 py-3 font-medium text-blue-700">{item.name}</td>
-                  <td className="px-6 py-3">{item.category}</td>
-                  <td className="px-6 py-3">{item.price}</td>
-                  <td className="px-6 py-3">
+                  <td className="px-6 py-3 font-normal text-gray-700">{item.sku}</td>
+                  <td className="px-6 py-3 font-normal text-gray-700">{item.name}</td>
+                  <td className="px-6 py-3 font-normal text-gray-700">{item.category}</td>
+                  <td className="px-6 py-3 font-normal text-gray-700">{item.price}</td>
+                  <td className="px-6 py-3 font-normal text-gray-700">
                     <span
                       className={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${
                         item.status === "Active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
@@ -187,45 +212,33 @@ const ProductsServices = () => {
                       {item.status}
                     </span>
                   </td>
-                  <td className="relative px-6 py-3">
+                  <td className="flex justify-end gap-2 px-6 py-3">
+                    {/* View Product */}
                     <button
-                      onClick={() => setActiveMenu(activeMenu === item.id ? null : item.id)}
-                      className="text-gray-600 hover:text-gray-900"
+                      onClick={() => setViewProduct(item)}
+                      className="rounded bg-blue-100 p-[5px] text-blue-500 ring-blue-700 transition duration-300 hover:ring-1"
                     >
-                      <FaEllipsisV />
+                      <EyeIcon className="h-5 w-5 stroke-[2]" />
                     </button>
-                    {activeMenu === item.id && (
-                      <div className="absolute right-0 z-20 mt-2 w-36 rounded border bg-white shadow-lg">
-                        <button
-                          onClick={() => {
-                            setViewProduct(item);
-                            setActiveMenu(null);
-                          }}
-                          className="block w-full px-4 py-2 text-left hover:bg-gray-100"
-                        >
-                          View
-                        </button>
-                        <button
-                          onClick={() => {
-                            setEditProduct(item);
-                            setOpenModal(true);
-                            setActiveMenu(null);
-                          }}
-                          className="block w-full px-4 py-2 text-left hover:bg-gray-100"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => {
-                            handleDeleteProduct(item.id);
-                            setActiveMenu(null);
-                          }}
-                          className="block w-full px-4 py-2 text-left text-red-600 hover:bg-red-50"
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    )}
+
+                    {/* Edit Product */}
+                    <button
+                      onClick={() => {
+                        setEditProduct(item);
+                        setOpenModal(true);
+                      }}
+                      className="rounded bg-green-100 p-[5px] text-green-500 ring-green-700 transition duration-300 hover:ring-1"
+                    >
+                      <PencilSquareIcon className="h-5 w-5 stroke-[2]" />
+                    </button>
+
+                    {/* Delete Product */}
+                    <button
+                      onClick={() => handleDeleteProduct(item.id)}
+                      className="rounded bg-red-100 p-[5px] text-red-500 ring-red-700 transition duration-300 hover:ring-1"
+                    >
+                      <TrashIcon className="h-5 w-5 stroke-[2]" />
+                    </button>
                   </td>
                 </tr>
               ))

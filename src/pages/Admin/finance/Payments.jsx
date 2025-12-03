@@ -1,3 +1,4 @@
+import { BanknotesIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 import { FiCalendar } from "react-icons/fi";
 
@@ -46,8 +47,25 @@ const Payments = () => {
   };
 
   return (
-    <div className="space-y-6 p-6">
-      <h1 className="text-xl font-semibold">Payments</h1>
+    <div className="w-full p-6">
+      <div className="mb-6 flex flex-wrap items-end justify-between">
+        <div aria-label="Breadcrumb">
+          <h1 className="text-primaryFont mb-1 text-2xl font-bold">Payments</h1>
+          <nav className="flex" aria-label="Breadcrumb">
+            <ol className="inline-flex items-center space-x-2">
+              <li className="inline-flex items-center">
+                <div className="flex items-center gap-1 font-semibold text-black">
+                  <BanknotesIcon className="h-4 w-4 stroke-[2]" /> <h5>Finance</h5>
+                </div>
+              </li>
+              <span>/</span>
+              <li aria-current="page">
+                <span className="font-semibold text-primary">Payments</span>
+              </li>
+            </ol>
+          </nav>
+        </div>
+      </div>
 
       {/* Filters */}
       <div className="grid gap-4 rounded bg-white p-4 shadow md:grid-cols-4">

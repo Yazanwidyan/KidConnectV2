@@ -100,14 +100,14 @@ const CreateGroup = () => {
   const { values, handleChange, handleSubmit, setFieldValue, errors, touched } = formik;
 
   return (
-    <div className="p-6">
+    <div className="w-full p-6">
       <div className="mb-6" aria-label="Breadcrumb">
-        <h1 className="text-primaryFont mb-1 text-3xl font-bold">Create New Group</h1>
+        <h1 className="text-primaryFont mb-1 text-2xl font-bold">Create New Group</h1>
         <nav className="flex" aria-label="Breadcrumb">
           <ol className="inline-flex items-center space-x-2">
             <li className="inline-flex items-center">
               <div className="flex items-center gap-1 font-semibold text-black">
-                <UserGroupIcon className="h-4 w-4" /> <h5>Groups</h5>
+                <UserGroupIcon className="h-4 w-4 stroke-[2]" /> <h5>Groups</h5>
               </div>
             </li>
             <span>/</span>
@@ -127,63 +127,77 @@ const CreateGroup = () => {
           hint="Required"
         >
           <div className="grid gap-4 md:grid-cols-2">
-            <div>
-              <label className="mb-1 block">Group Name</label>
-              <input
-                name="groupName"
-                value={values.groupName}
-                onChange={handleChange}
-                className="w-full rounded border px-3 py-2"
-              />
-              {touched.groupName && errors.groupName && (
-                <div className="text-sm text-red-500">{errors.groupName}</div>
-              )}
+            <div className="space-y-2">
+              <div>
+                <label className="mb-1 block">Group Name</label>
+                <input
+                  name="groupName"
+                  value={values.groupName}
+                  onChange={handleChange}
+                  className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
+                />
+                {touched.groupName && errors.groupName && (
+                  <div className="text-sm text-red-500">{errors.groupName}</div>
+                )}
+              </div>
+
+              <div>
+                <label className="mb-1 block text-base">Group Type</label>
+                <select
+                  name="groupType"
+                  value={values.groupType}
+                  onChange={handleChange}
+                  className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
+                >
+                  {GROUP_TYPES.map((t) => (
+                    <option key={t}>{t}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="mb-1 block">Group Color</label>
+                <input
+                  type="color"
+                  name="groupColor"
+                  value={values.groupColor}
+                  onChange={handleChange}
+                  className="h-14 w-full rounded-lg border border-gray-300 px-3 py-2 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
+                />
+              </div>
             </div>
 
             <div>
-              <label className="mb-1 block text-base">Group Type</label>
-              <select
-                name="groupType"
-                value={values.groupType}
-                onChange={handleChange}
-                className="w-full rounded border px-3 py-2"
+              <label className="mb-1 block font-medium text-gray-700">Group Image</label>
+
+              {/* Upload Box */}
+              <label
+                className={`flex cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 px-4 ${previewImage ? "py-8" : "py-16"} text-center transition hover:border-primary hover:bg-primary/5`}
               >
-                {GROUP_TYPES.map((t) => (
-                  <option key={t}>{t}</option>
-                ))}
-              </select>
-            </div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const f = e.currentTarget.files[0];
+                    setFieldValue("image", f);
+                    if (f) setPreviewImage(URL.createObjectURL(f));
+                  }}
+                  className="hidden"
+                />
 
-            <div>
-              <label className="mb-1 block">Group Color</label>
-              <input
-                type="color"
-                name="groupColor"
-                value={values.groupColor}
-                onChange={handleChange}
-                className="h-10 w-20 rounded border"
-              />
-            </div>
-
-            <div>
-              <label className="mb-1 block">Group Image</label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const f = e.currentTarget.files[0];
-                  setFieldValue("image", f);
-                  if (f) setPreviewImage(URL.createObjectURL(f));
-                }}
-                className="w-full rounded border px-3 py-2"
-              />
-              {previewImage ? (
-                <img src={previewImage} className="mt-3 h-28 w-28 rounded object-cover shadow" />
-              ) : (
-                <div className="mt-3 flex items-center gap-2 text-gray-500">
-                  <FaImage /> No image selected
-                </div>
-              )}
+                {!previewImage ? (
+                  <div className="flex flex-col items-center text-gray-500">
+                    <FaImage className="mb-2 text-4xl opacity-60" />
+                    <p className="text-sm">Click to upload image</p>
+                    <p className="text-xs opacity-70">(JPG, PNG, SVG…)</p>
+                  </div>
+                ) : (
+                  <img
+                    src={previewImage}
+                    className="h-40 w-40 rounded-lg object-cover shadow-md transition duration-300"
+                  />
+                )}
+              </label>
             </div>
           </div>
         </Section>
@@ -203,7 +217,7 @@ const CreateGroup = () => {
                 type="number"
                 value={values.maxStudents}
                 onChange={handleChange}
-                className="w-full rounded border px-3 py-2"
+                className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
               />
             </div>
 
@@ -214,7 +228,7 @@ const CreateGroup = () => {
                 type="number"
                 value={values.minAge}
                 onChange={handleChange}
-                className="w-full rounded border px-3 py-2"
+                className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
               />
             </div>
 
@@ -225,7 +239,7 @@ const CreateGroup = () => {
                 type="number"
                 value={values.maxAge}
                 onChange={handleChange}
-                className="w-full rounded border px-3 py-2"
+                className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
               />
             </div>
           </div>
@@ -245,7 +259,7 @@ const CreateGroup = () => {
                 name="leader"
                 value={values.leader}
                 onChange={handleChange}
-                className="w-full rounded border px-3 py-2"
+                className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
               >
                 <option value="">— Select —</option>
                 {mockStaff.map((s) => (

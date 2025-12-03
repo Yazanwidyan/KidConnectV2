@@ -126,7 +126,7 @@ const EditGroup = () => {
                 name="groupName"
                 value={values.groupName}
                 onChange={handleChange}
-                className="w-full rounded border px-3 py-2"
+                className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
               />
               {touched.groupName && errors.groupName && (
                 <div className="text-sm text-red-500">{errors.groupName}</div>
@@ -139,7 +139,7 @@ const EditGroup = () => {
                 name="groupType"
                 value={values.groupType}
                 onChange={handleChange}
-                className="w-full rounded border px-3 py-2"
+                className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
               >
                 {GROUP_TYPES.map((t) => (
                   <option key={t}>{t}</option>
@@ -168,7 +168,7 @@ const EditGroup = () => {
                   setFieldValue("image", f);
                   if (f) setPreviewImage(URL.createObjectURL(f));
                 }}
-                className="w-full rounded border px-3 py-2"
+                className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
               />
               {previewImage ? (
                 <img
@@ -200,7 +200,7 @@ const EditGroup = () => {
                 type="number"
                 value={values.maxStudents}
                 onChange={handleChange}
-                className="w-full rounded border px-3 py-2"
+                className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
               />
             </div>
 
@@ -211,7 +211,7 @@ const EditGroup = () => {
                 type="number"
                 value={values.minAge}
                 onChange={handleChange}
-                className="w-full rounded border px-3 py-2"
+                className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
               />
             </div>
 
@@ -222,7 +222,7 @@ const EditGroup = () => {
                 type="number"
                 value={values.maxAge}
                 onChange={handleChange}
-                className="w-full rounded border px-3 py-2"
+                className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
               />
             </div>
           </div>
@@ -242,7 +242,7 @@ const EditGroup = () => {
                 name="leader"
                 value={values.leader}
                 onChange={handleChange}
-                className="w-full rounded border px-3 py-2"
+                className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
               >
                 <option value="">— Select —</option>
                 {mockStaff.map((s) => (

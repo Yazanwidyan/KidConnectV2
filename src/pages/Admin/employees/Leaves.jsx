@@ -156,7 +156,7 @@ const Leaves = () => {
       {/* Header */}
       <div className="mb-6 flex flex-wrap items-end justify-between">
         <div aria-label="Breadcrumb">
-          <h1 className="text-primaryFont mb-1 text-3xl font-bold">Employee Leave Requests</h1>
+          <h1 className="text-primaryFont mb-1 text-2xl font-bold">Employee Leave Requests</h1>
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="inline-flex items-center space-x-2">
               <li className="inline-flex items-center">
@@ -187,7 +187,7 @@ const Leaves = () => {
           placeholder="Employee"
           value={filters.employee}
           onChange={handleFilterChange}
-          className="rounded border px-3 py-2"
+          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
         />
         <input
           type="text"
@@ -195,13 +195,13 @@ const Leaves = () => {
           placeholder="Leave Type"
           value={filters.type}
           onChange={handleFilterChange}
-          className="rounded border px-3 py-2"
+          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
         />
         <select
           name="status"
           value={filters.status}
           onChange={handleFilterChange}
-          className="rounded border px-3 py-2"
+          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
         >
           <option value="">All Status</option>
           <option value="Pending">Pending</option>
@@ -213,14 +213,14 @@ const Leaves = () => {
           name="startDate"
           value={filters.startDate}
           onChange={handleFilterChange}
-          className="rounded border px-3 py-2"
+          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
         />
         <input
           type="date"
           name="endDate"
           value={filters.endDate}
           onChange={handleFilterChange}
-          className="rounded border px-3 py-2"
+          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
         />
         <button
           onClick={resetFilters}
@@ -232,7 +232,7 @@ const Leaves = () => {
 
       {/* Table */}
       <div className="overflow-x-auto rounded-lg bg-white shadow-lg">
-        <table className="min-w-full divide-y divide-gray-200">
+        <table className="min-w-full divide-y divide-dashed divide-gray-400/60">
           <thead className="bg-gray-50">
             <tr>
               {["Employee", "Type", "Start Date", "End Date", "Status", "Actions"].map((col) => (
@@ -252,7 +252,7 @@ const Leaves = () => {
             </tr>
           </thead>
 
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y divide-dashed divide-gray-400/60">
             {paginatedRequests.length > 0 ? (
               paginatedRequests.map((req, idx) => (
                 <tr key={req.id} className="transition odd:bg-slate-100 even:bg-white hover:bg-gray-50">

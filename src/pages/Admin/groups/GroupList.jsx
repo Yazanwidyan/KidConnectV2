@@ -166,12 +166,12 @@ const GroupList = () => {
     <div className="w-full p-6">
       <div className="mb-6 flex flex-wrap items-end justify-between">
         <div aria-label="Breadcrumb">
-          <h1 className="text-primaryFont mb-1 text-3xl font-bold">Groups List</h1>
+          <h1 className="text-primaryFont mb-1 text-2xl font-bold">Groups List</h1>
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="inline-flex items-center space-x-2">
               <li className="inline-flex items-center">
                 <div className="flex items-center gap-1 font-semibold text-black">
-                  <UserGroupIcon className="h-4 w-4" /> <h5>Groups</h5>
+                  <UserGroupIcon className="h-4 w-4 stroke-[2]" /> <h5>Groups</h5>
                 </div>
               </li>
               <span>/</span>
@@ -197,19 +197,19 @@ const GroupList = () => {
           placeholder="Group Name"
           value={filterGroupName}
           onChange={(e) => setFilterGroupName(e.target.value)}
-          className="rounded border px-3 py-2"
+          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
         />
         <input
           type="text"
           placeholder="Staff Name"
           value={filterStaffName}
           onChange={(e) => setFilterStaffName(e.target.value)}
-          className="rounded border px-3 py-2"
+          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
         />
         <select
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value)}
-          className="rounded border px-3 py-2"
+          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
         >
           <option value="">All Status</option>
           <option value="Active">Active</option>
@@ -218,7 +218,7 @@ const GroupList = () => {
         <select
           value={filterType}
           onChange={(e) => setFilterType(e.target.value)}
-          className="rounded border px-3 py-2"
+          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
         >
           <option value="">All Types</option>
           {uniqueTypes.map((t) => (

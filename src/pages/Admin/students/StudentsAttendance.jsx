@@ -1,3 +1,4 @@
+import { UserPlusIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 import { FaSave } from "react-icons/fa";
 
@@ -21,13 +22,29 @@ const StudentsAttendance = () => {
 
   return (
     <div className="w-full p-6">
-      <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-3xl font-bold text-gray-800">Students Attendance</h2>
+      <div className="mb-6 flex flex-wrap items-end justify-between">
+        <div aria-label="Breadcrumb">
+          <h1 className="text-primaryFont mb-1 text-2xl font-bold">Students List</h1>
+          <nav className="flex" aria-label="Breadcrumb">
+            <ol className="inline-flex items-center space-x-2">
+              <li className="inline-flex items-center">
+                <div className="flex items-center gap-1 font-semibold text-black">
+                  <UserPlusIcon className="h-4 w-4 stroke-[2]" /> <h5>Students</h5>
+                </div>
+              </li>
+              <span>/</span>
+              <li aria-current="page">
+                <span className="font-semibold text-primary">Students List</span>
+              </li>
+            </ol>
+          </nav>
+        </div>
         <button
-          onClick={handleSave}
-          className="flex items-center gap-2 rounded-md bg-[#3A49F9] px-4 py-2 font-semibold text-white shadow-lg transition hover:bg-[#2e3abf]"
+          to="/admin/students/add-student"
+          className="flex items-center gap-2 rounded border border-primary bg-primary px-5 py-2 font-semibold text-white"
         >
-          <FaSave /> Save Attendance
+          <UserPlusIcon className="h-5 w-5 stroke-[2]" />
+          Save Attendance
         </button>
       </div>
 

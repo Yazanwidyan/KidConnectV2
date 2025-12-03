@@ -1,3 +1,4 @@
+import { BanknotesIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
@@ -8,8 +9,12 @@ export default function Reports() {
   const [openFinance, setOpenFinance] = useState(true);
 
   return (
-    <div className="space-y-6 p-6">
-      <h2 className="mb-4 text-2xl font-semibold">Reports</h2>
+    <div className="w-full space-y-6 p-6">
+      <div className="mb-6 flex flex-wrap items-end justify-between">
+        <div aria-label="Breadcrumb">
+          <h1 className="text-primaryFont mb-1 text-2xl font-bold">Reports</h1>
+        </div>
+      </div>
 
       {/* STUDENT REPORTS */}
       <div className="rounded-lg bg-white shadow">

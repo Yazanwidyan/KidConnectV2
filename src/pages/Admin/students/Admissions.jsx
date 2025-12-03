@@ -209,12 +209,12 @@ const Admissions = () => {
     <div className="w-full p-6">
       <div className="mb-6 flex flex-wrap items-end justify-between">
         <div aria-label="Breadcrumb">
-          <h1 className="text-primaryFont mb-1 text-3xl font-bold">Admissions</h1>
+          <h1 className="text-primaryFont mb-1 text-2xl font-bold">Admissions</h1>
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="inline-flex items-center space-x-2">
               <li className="inline-flex items-center">
                 <div className="flex items-center gap-1 font-semibold text-black">
-                  <UserPlusIcon className="h-4 w-4" /> <h5>Students</h5>
+                  <UserPlusIcon className="h-4 w-4 stroke-[2]" /> <h5>Students</h5>
                 </div>
               </li>
               <span>/</span>
@@ -272,33 +272,33 @@ const Admissions = () => {
           placeholder="Student Name"
           value={filters.studentName}
           onChange={(e) => setFilters({ ...filters, studentName: e.target.value })}
-          className="rounded border px-3 py-2"
+          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
         />
         <input
           type="text"
           placeholder="Parent Name"
           value={filters.parentName}
           onChange={(e) => setFilters({ ...filters, parentName: e.target.value })}
-          className="rounded border px-3 py-2"
+          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
         />
         <input
           type="text"
           placeholder="Parent Phone"
           value={filters.parentPhone}
           onChange={(e) => setFilters({ ...filters, parentPhone: e.target.value })}
-          className="rounded border px-3 py-2"
+          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
         />
         <input
           type="text"
           placeholder="Registration ID"
           value={filters.registerId}
           onChange={(e) => setFilters({ ...filters, registerId: e.target.value })}
-          className="rounded border px-3 py-2"
+          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
         />
         <select
           value={filters.status}
           onChange={(e) => setFilters({ ...filters, status: e.target.value })}
-          className="rounded border px-3 py-2"
+          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
         >
           <option value="all">All Status</option>
           <option value="Review">Review</option>
@@ -311,14 +311,14 @@ const Admissions = () => {
           placeholder="Age From"
           value={filters.ageFrom}
           onChange={(e) => setFilters({ ...filters, ageFrom: e.target.value })}
-          className="rounded border px-3 py-2"
+          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
         />
         <input
           type="number"
           placeholder="Age To"
           value={filters.ageTo}
           onChange={(e) => setFilters({ ...filters, ageTo: e.target.value })}
-          className="rounded border px-3 py-2"
+          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
         />
         <button
           onClick={applyFilters}

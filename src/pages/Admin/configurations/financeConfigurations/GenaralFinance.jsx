@@ -1,3 +1,4 @@
+import { BanknotesIcon, ClipboardDocumentListIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 import { FiEdit, FiPlus, FiTrash2 } from "react-icons/fi";
 
@@ -18,6 +19,7 @@ const GeneralFinance = () => {
   const toggleActive = (id) => {
     setCategories((prev) => prev.map((cat) => (cat.id === id ? { ...cat, active: !cat.active } : cat)));
   };
+
   const handleAddCategory = (newCategory) => {
     setCategories((prev) => [...prev, newCategory]);
   };
@@ -27,64 +29,85 @@ const GeneralFinance = () => {
   };
 
   return (
-    <div className="space-y-8 p-6">
-      <h1 className="mb-4 text-xl font-semibold text-gray-800">Product Configurations</h1>
-
-      <div className="rounded-lg border bg-white p-4 shadow-sm">
-        {/* Header */}
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="font-semibold text-gray-700">Product Category</h2>
-          <button
-            className="flex items-center gap-2 rounded-lg bg-teal-600 px-4 py-2 text-white hover:bg-teal-700"
-            onClick={() => setIsModalOpen(true)}
-          >
-            <FiPlus /> Add Category
-          </button>
+    <div className="w-full p-6">
+      {/* Header */}
+      <div className="mb-6 flex flex-wrap items-end justify-between">
+        <div aria-label="Breadcrumb">
+          <h1 className="text-primaryFont mb-1 text-2xl font-bold">Product Configurations</h1>
+          <nav className="flex" aria-label="Breadcrumb">
+            <ol className="inline-flex items-center space-x-2">
+              <li className="inline-flex items-center">
+                <div className="flex items-center gap-1 font-semibold text-black">
+                  <ClipboardDocumentListIcon className="h-4 w-4 stroke-[2]" /> <h5>Configurations</h5>
+                </div>
+              </li>
+              <span>/</span>
+              <li aria-current="page">
+                <span className="font-semibold text-primary">Product Configurations</span>
+              </li>
+            </ol>
+          </nav>
         </div>
 
-        {/* Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full border text-left">
-            <thead className="bg-teal-600 text-white">
-              <tr>
-                <th className="px-4 py-3">Active</th>
-                <th className="px-4 py-3">Category Code</th>
-                <th className="px-4 py-3">Category Name in English</th>
-                <th className="px-4 py-3">Category Name in Arabic</th>
-                <th className="px-4 py-3">Actions</th>
+        <button
+          className="flex items-center gap-2 rounded border border-primary bg-primary px-5 py-2 font-semibold text-white"
+          onClick={() => setIsModalOpen(true)}
+        >
+          <FiPlus /> Add Category
+        </button>
+      </div>
+
+      {/* Table */}
+      <div className="overflow-x-auto rounded-lg bg-white shadow-lg">
+        <table className="min-w-full divide-y divide-dashed divide-gray-400/60">
+          <thead>
+            <tr>
+              {["#", "Active", "Category Code", "Category Name (EN)", "Category Name (AR)", "Actions"].map(
+                (col) => (
+                  <th
+                    key={col}
+                    className="cursor-pointer px-6 py-3 text-left text-sm font-bold text-gray-700"
+                  >
+                    {col}
+                  </th>
+                )
+              )}
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-dashed divide-gray-400/60">
+            {categories.map((cat, index) => (
+              <tr key={cat.id} className="transition odd:bg-slate-100 even:bg-white hover:bg-gray-50">
+                <td className="px-6 py-3 font-normal text-gray-700">{index + 1}</td>
+                <td className="px-6 py-3 font-normal text-gray-700">
+                  <input
+                    type="checkbox"
+                    checked={cat.active}
+                    onChange={() => toggleActive(cat.id)}
+                    className="h-5 w-5 text-teal-600"
+                  />
+                </td>
+                <td className="px-6 py-3 font-normal text-gray-700">{cat.code}</td>
+                <td className="px-6 py-3 font-normal text-gray-700">{cat.nameEn}</td>
+                <td className="px-6 py-3 font-normal text-gray-700">{cat.nameAr}</td>
+                <td className="flex gap-2 px-6 py-3">
+                  <button className="rounded bg-blue-100 p-[5px] text-blue-500 ring-blue-700 transition duration-300 hover:ring-1">
+                    <FiEdit />
+                  </button>
+                  <button
+                    onClick={() => handleDelete(cat.id)}
+                    className="rounded bg-red-100 p-[5px] text-red-500 ring-red-700 transition duration-300 hover:ring-1"
+                  >
+                    <FiTrash2 />
+                  </button>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {categories.map((cat) => (
-                <tr key={cat.id} className="border-b">
-                  <td className="px-4 py-3">
-                    <input
-                      type="checkbox"
-                      checked={cat.active}
-                      onChange={() => toggleActive(cat.id)}
-                      className="h-5 w-5 text-teal-600"
-                    />
-                  </td>
-                  <td className="px-4 py-3">{cat.code}</td>
-                  <td className="px-4 py-3">{cat.nameEn}</td>
-                  <td className="px-4 py-3">{cat.nameAr}</td>
-                  <td className="flex gap-2 px-4 py-3">
-                    <button className="text-blue-600 hover:text-blue-800">
-                      <FiEdit />
-                    </button>
-                    <button onClick={() => handleDelete(cat.id)} className="text-red-600 hover:text-red-800">
-                      <FiTrash2 />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
 
         {/* Pagination */}
-        <div className="mt-4 flex items-center justify-between">
-          <div>5 Total Records</div>
+        <div className="mt-4 flex items-center justify-between px-6 py-3">
+          <div>{categories.length} Total Records</div>
           <div className="flex gap-2">
             <button className="rounded border px-3 py-1">{"<"}</button>
             <button className="rounded border bg-teal-600 px-3 py-1 text-white">1</button>
@@ -92,6 +115,7 @@ const GeneralFinance = () => {
           </div>
         </div>
       </div>
+
       <AddCategoryModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
