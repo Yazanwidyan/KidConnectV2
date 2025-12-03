@@ -1,5 +1,12 @@
-import React, { useState } from "react";
-import { FaCheck, FaEye, FaPlus, FaTimes } from "react-icons/fa";
+import {
+  CheckCircleIcon,
+  EyeIcon,
+  PlusIcon,
+  UserCircleIcon,
+  UserPlusIcon,
+  XCircleIcon,
+} from "@heroicons/react/24/outline";
+import React, { useMemo, useState } from "react";
 
 const Leaves = () => {
   const [requests, setRequests] = useState([
@@ -35,26 +42,76 @@ const Leaves = () => {
     },
   ]);
 
+  // Filter states
+  const [filters, setFilters] = useState({
+    employee: "",
+    type: "",
+    status: "",
+    startDate: "",
+    endDate: "",
+  });
+
+  // Modals
   const [approveRejectModal, setApproveRejectModal] = useState(null);
   const [viewModal, setViewModal] = useState(null);
-  const [addModal, setAddModal] = useState(false); // New Add Leave Modal
+  const [addModal, setAddModal] = useState(false);
+
   const [comment, setComment] = useState("");
   const [attachment, setAttachment] = useState(null);
 
-  // Filter states
-  const [filterEmployee, setFilterEmployee] = useState("");
-  const [filterType, setFilterType] = useState("");
-  const [filterStatus, setFilterStatus] = useState("");
-  const [filterStartDate, setFilterStartDate] = useState("");
-  const [filterEndDate, setFilterEndDate] = useState("");
+  // Pagination & sorting
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [sortField, setSortField] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc");
 
   // New leave fields
-  const [newEmployee, setNewEmployee] = useState("");
-  const [newType, setNewType] = useState("");
-  const [newStartDate, setNewStartDate] = useState("");
-  const [newEndDate, setNewEndDate] = useState("");
-  const [newComment, setNewComment] = useState("");
-  const [newAttachment, setNewAttachment] = useState(null);
+  const [newLeave, setNewLeave] = useState({
+    employee: "",
+    type: "",
+    startDate: "",
+    endDate: "",
+    comment: "",
+    attachment: null,
+  });
+
+  // Filtering logic
+  const filteredRequests = useMemo(() => {
+    let data = requests.filter((r) => {
+      return (
+        (filters.employee === "" || r.employee.toLowerCase().includes(filters.employee.toLowerCase())) &&
+        (filters.type === "" || r.type.toLowerCase().includes(filters.type.toLowerCase())) &&
+        (filters.status === "" || r.status === filters.status) &&
+        (filters.startDate === "" || r.startDate >= filters.startDate) &&
+        (filters.endDate === "" || r.endDate <= filters.endDate)
+      );
+    });
+
+    if (sortField) {
+      data.sort((a, b) => {
+        if (a[sortField] < b[sortField]) return sortOrder === "asc" ? -1 : 1;
+        if (a[sortField] > b[sortField]) return sortOrder === "asc" ? 1 : -1;
+        return 0;
+      });
+    }
+
+    return data;
+  }, [requests, filters, sortField, sortOrder]);
+
+  const totalPages = Math.ceil(filteredRequests.length / rowsPerPage);
+  const startIndex = (currentPage - 1) * rowsPerPage;
+  const endIndex = Math.min(startIndex + rowsPerPage, filteredRequests.length);
+  const paginatedRequests = filteredRequests.slice(startIndex, endIndex);
+
+  // Handlers
+  const handleSort = (field) => {
+    const order = sortField === field && sortOrder === "asc" ? "desc" : "asc";
+    setSortField(field);
+    setSortOrder(order);
+  };
+
+  const handleFilterChange = (e) => setFilters({ ...filters, [e.target.name]: e.target.value });
+  const resetFilters = () => setFilters({ employee: "", type: "", status: "", startDate: "", endDate: "" });
 
   const openApproveReject = (req, action) => {
     setApproveRejectModal({ ...req, action });
@@ -78,81 +135,72 @@ const Leaves = () => {
     setApproveRejectModal(null);
   };
 
-  const handleFilter = () => {
-    return requests.filter((req) => {
-      return (
-        (filterEmployee === "" || req.employee.toLowerCase().includes(filterEmployee.toLowerCase())) &&
-        (filterType === "" || req.type.toLowerCase().includes(filterType.toLowerCase())) &&
-        (filterStatus === "" || req.status === filterStatus) &&
-        (filterStartDate === "" || req.startDate >= filterStartDate) &&
-        (filterEndDate === "" || req.endDate <= filterEndDate)
-      );
-    });
-  };
-
-  const handleReset = () => {
-    setFilterEmployee("");
-    setFilterType("");
-    setFilterStatus("");
-    setFilterStartDate("");
-    setFilterEndDate("");
-  };
-
-  const filteredRequests = handleFilter();
-
   const saveNewLeave = () => {
-    const newLeave = {
+    const newEntry = {
       id: requests.length + 1,
-      employee: newEmployee,
-      type: newType,
-      startDate: newStartDate,
-      endDate: newEndDate,
+      employee: newLeave.employee,
+      type: newLeave.type,
+      startDate: newLeave.startDate,
+      endDate: newLeave.endDate,
       status: "Pending",
-      comment: newComment,
-      attachments: newAttachment ? [newAttachment.name] : [],
+      comment: newLeave.comment,
+      attachments: newLeave.attachment ? [newLeave.attachment.name] : [],
     };
-    setRequests([...requests, newLeave]);
-    // Reset fields
-    setNewEmployee("");
-    setNewType("");
-    setNewStartDate("");
-    setNewEndDate("");
-    setNewComment("");
-    setNewAttachment(null);
+    setRequests([...requests, newEntry]);
+    setNewLeave({ employee: "", type: "", startDate: "", endDate: "", comment: "", attachment: null });
     setAddModal(false);
   };
 
   return (
-    <div className="p-6">
-      <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-2xl font-bold">Employee Leave Requests</h2>
+    <div className="w-full p-6">
+      {/* Header */}
+      <div className="mb-6 flex flex-wrap items-end justify-between">
+        <div aria-label="Breadcrumb">
+          <h1 className="text-primaryFont mb-1 text-3xl font-bold">Employee Leave Requests</h1>
+          <nav className="flex" aria-label="Breadcrumb">
+            <ol className="inline-flex items-center space-x-2">
+              <li className="inline-flex items-center">
+                <div className="flex items-center gap-1 font-semibold text-black">
+                  <UserCircleIcon className="h-4 w-4 stroke-[2]" /> <h5>Employees</h5>
+                </div>
+              </li>
+              <span>/</span>
+              <li aria-current="page">
+                <span className="font-semibold text-primary">Employee Leave Requests</span>
+              </li>
+            </ol>
+          </nav>
+        </div>
         <button
           onClick={() => setAddModal(true)}
-          className="flex items-center gap-2 rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+          className="flex items-center gap-2 rounded border border-primary bg-primary px-5 py-2 font-semibold text-white"
         >
-          <FaPlus /> Add Leave
+          <PlusIcon className="h-5 w-5" /> Add Leave
         </button>
       </div>
 
-      {/* Filter Section */}
-      <div className="mb-4 flex flex-wrap gap-2 rounded border bg-white p-4 shadow">
+      {/* Filters */}
+      <div className="mb-6 flex flex-wrap items-center gap-2 rounded-lg bg-white p-6 shadow-lg">
         <input
           type="text"
-          placeholder="Employee Name"
-          value={filterEmployee}
-          onChange={(e) => setFilterEmployee(e.target.value)}
+          name="employee"
+          placeholder="Employee"
+          value={filters.employee}
+          onChange={handleFilterChange}
           className="rounded border px-3 py-2"
         />
         <input
           type="text"
+          name="type"
           placeholder="Leave Type"
-          value={filterType}
-          onChange={(e) => setFilterType(e.target.value)}
+          value={filters.type}
+          onChange={handleFilterChange}
           className="rounded border px-3 py-2"
         />
         <select
-          value={filterStatus}
-          onChange={(e) => setFilterStatus(e.target.value)}
+          name="status"
+          value={filters.status}
+          onChange={handleFilterChange}
           className="rounded border px-3 py-2"
         >
           <option value="">All Status</option>
@@ -162,82 +210,148 @@ const Leaves = () => {
         </select>
         <input
           type="date"
-          value={filterStartDate}
-          onChange={(e) => setFilterStartDate(e.target.value)}
+          name="startDate"
+          value={filters.startDate}
+          onChange={handleFilterChange}
           className="rounded border px-3 py-2"
         />
         <input
           type="date"
-          value={filterEndDate}
-          onChange={(e) => setFilterEndDate(e.target.value)}
+          name="endDate"
+          value={filters.endDate}
+          onChange={handleFilterChange}
           className="rounded border px-3 py-2"
         />
-        <button onClick={handleReset} className="rounded bg-gray-200 px-4 py-2">
+        <button
+          onClick={resetFilters}
+          className="rounded bg-gray-200 px-4 py-2 text-gray-700 hover:bg-gray-300"
+        >
           Reset
         </button>
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto rounded border bg-white shadow">
-        <table className="min-w-full divide-y">
+      <div className="overflow-x-auto rounded-lg bg-white shadow-lg">
+        <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-sm font-semibold">Sl. No</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold">Employee Name</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold">Leave Type</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold">Start Date</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold">End Date</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold">Status</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold">Actions</th>
+              {["Employee", "Type", "Start Date", "End Date", "Status", "Actions"].map((col) => (
+                <th
+                  key={col}
+                  className="cursor-pointer px-6 py-3 text-left text-sm font-bold text-gray-700"
+                  onClick={() => col !== "Actions" && handleSort(col.toLowerCase().replace(" ", ""))}
+                >
+                  {col}{" "}
+                  {sortField === col.toLowerCase().replace(" ", "")
+                    ? sortOrder === "asc"
+                      ? " 🔼"
+                      : " 🔽"
+                    : ""}
+                </th>
+              ))}
             </tr>
           </thead>
 
-          <tbody className="divide-y">
-            {filteredRequests.map((req, index) => (
-              <tr key={req.id}>
-                <td className="px-6 py-3">{index + 1}</td>
-                <td className="px-6 py-3">{req.employee}</td>
-                <td className="px-6 py-3">{req.type}</td>
-                <td className="px-6 py-3">{req.startDate}</td>
-                <td className="px-6 py-3">{req.endDate}</td>
-                <td className="px-6 py-3">
-                  <span
-                    className={`rounded px-3 py-1 text-sm text-white ${
-                      req.status === "Approved"
-                        ? "bg-green-600"
-                        : req.status === "Rejected"
-                          ? "bg-red-600"
-                          : "bg-yellow-600"
-                    }`}
-                  >
-                    {req.status}
-                  </span>
-                </td>
-                <td className="flex gap-2 px-6 py-3">
-                  <button onClick={() => setViewModal(req)} className="text-gray-500 hover:text-gray-900">
-                    <FaEye />
-                  </button>
-                  {req.status === "Pending" && (
-                    <>
-                      <button
-                        onClick={() => openApproveReject(req, "approve")}
-                        className="text-green-600 hover:text-green-800"
-                      >
-                        <FaCheck />
-                      </button>
-                      <button
-                        onClick={() => openApproveReject(req, "reject")}
-                        className="text-red-600 hover:text-red-800"
-                      >
-                        <FaTimes />
-                      </button>
-                    </>
-                  )}
+          <tbody className="divide-y divide-gray-200">
+            {paginatedRequests.length > 0 ? (
+              paginatedRequests.map((req, idx) => (
+                <tr key={req.id} className="transition odd:bg-slate-100 even:bg-white hover:bg-gray-50">
+                  <td className="px-6 py-3">{req.employee}</td>
+                  <td className="px-6 py-3">{req.type}</td>
+                  <td className="px-6 py-3">{req.startDate}</td>
+                  <td className="px-6 py-3">{req.endDate}</td>
+                  <td className="px-6 py-3">
+                    <span
+                      className={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${
+                        req.status === "Approved"
+                          ? "bg-green-100 text-green-800"
+                          : req.status === "Rejected"
+                            ? "bg-red-100 text-red-800"
+                            : "bg-yellow-100 text-yellow-800"
+                      }`}
+                    >
+                      {req.status}
+                    </span>
+                  </td>
+                  <td className="flex justify-end gap-2 px-6 py-3">
+                    <button
+                      onClick={() => setViewModal(req)}
+                      className="rounded bg-blue-100 p-[5px] text-blue-500 hover:ring-1 hover:ring-blue-700"
+                    >
+                      <EyeIcon className="h-5 w-5 stroke-[2]" />
+                    </button>
+                    {req.status === "Pending" && (
+                      <>
+                        <button
+                          onClick={() => openApproveReject(req, "approve")}
+                          className="rounded bg-green-100 p-[5px] text-green-500 hover:ring-1 hover:ring-green-700"
+                        >
+                          <CheckCircleIcon className="h-5 w-5 stroke-[2]" />
+                        </button>
+                        <button
+                          onClick={() => openApproveReject(req, "reject")}
+                          className="rounded bg-red-100 p-[5px] text-red-500 hover:ring-1 hover:ring-red-700"
+                        >
+                          <XCircleIcon className="h-5 w-5 stroke-[2]" />
+                        </button>
+                      </>
+                    )}
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={6} className="px-6 py-3 text-center text-gray-500">
+                  No leave requests found.
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
+
+        {/* Pagination */}
+        <div className="mt-4 flex flex-col items-center justify-between gap-3 p-6 sm:flex-row">
+          <div className="text-sm text-gray-700">
+            Showing {paginatedRequests.length === 0 ? 0 : startIndex + 1} to {endIndex} of{" "}
+            {filteredRequests.length} entries
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 text-sm">
+              Rows per page:
+              <select
+                value={rowsPerPage}
+                onChange={(e) => {
+                  setRowsPerPage(Number(e.target.value));
+                  setCurrentPage(1);
+                }}
+                className="rounded border px-2 py-1"
+              >
+                {[5, 10, 15].map((num) => (
+                  <option key={num} value={num}>
+                    {num}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((p) => p - 1)}
+              className="rounded border px-3 py-1 hover:bg-gray-100 disabled:opacity-50"
+            >
+              Prev
+            </button>
+            <span className="text-sm">
+              Page {currentPage} of {totalPages || 1}
+            </span>
+            <button
+              disabled={currentPage === totalPages || totalPages === 0}
+              onClick={() => setCurrentPage((p) => p + 1)}
+              className="rounded border px-3 py-1 hover:bg-gray-100 disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Add Leave Modal */}
@@ -245,48 +359,32 @@ const Leaves = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-lg">
             <h2 className="mb-4 text-xl font-bold">Add Leave</h2>
-            <input
-              type="text"
-              placeholder="Employee Name"
-              value={newEmployee}
-              onChange={(e) => setNewEmployee(e.target.value)}
-              className="mb-2 w-full rounded border px-3 py-2"
-            />
-            <input
-              type="text"
-              placeholder="Leave Type"
-              value={newType}
-              onChange={(e) => setNewType(e.target.value)}
-              className="mb-2 w-full rounded border px-3 py-2"
-            />
-            <input
-              type="date"
-              value={newStartDate}
-              onChange={(e) => setNewStartDate(e.target.value)}
-              className="mb-2 w-full rounded border px-3 py-2"
-            />
-            <input
-              type="date"
-              value={newEndDate}
-              onChange={(e) => setNewEndDate(e.target.value)}
-              className="mb-2 w-full rounded border px-3 py-2"
-            />
+            {["employee", "type", "startDate", "endDate"].map((field) => (
+              <input
+                key={field}
+                type={field.includes("Date") ? "date" : "text"}
+                placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
+                value={newLeave[field]}
+                onChange={(e) => setNewLeave({ ...newLeave, [field]: e.target.value })}
+                className="mb-2 w-full rounded border px-3 py-2"
+              />
+            ))}
             <textarea
               placeholder="Comment"
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
+              value={newLeave.comment}
+              onChange={(e) => setNewLeave({ ...newLeave, comment: e.target.value })}
               className="mb-2 w-full rounded border px-3 py-2"
             />
             <input
               type="file"
-              onChange={(e) => setNewAttachment(e.target.files[0])}
+              onChange={(e) => setNewLeave({ ...newLeave, attachment: e.target.files[0] })}
               className="mb-4 w-full"
             />
             <div className="flex justify-end gap-2">
               <button onClick={() => setAddModal(false)} className="rounded bg-gray-200 px-4 py-2">
                 Cancel
               </button>
-              <button onClick={saveNewLeave} className="rounded bg-blue-600 px-4 py-2 text-white">
+              <button onClick={saveNewLeave} className="rounded bg-primary px-4 py-2 text-white">
                 Save
               </button>
             </div>
@@ -294,31 +392,25 @@ const Leaves = () => {
         </div>
       )}
 
-      {/* Approve/Reject and View Modals remain unchanged */}
+      {/* Approve/Reject Modal */}
       {approveRejectModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-lg">
             <h2 className="mb-4 text-xl font-bold">
               {approveRejectModal.action === "approve" ? "Approve" : "Reject"} Leave
             </h2>
-            <p className="mb-2">
-              Employee: <span className="font-medium">{approveRejectModal.employee}</span>
-            </p>
-            <p className="mb-2">
-              Leave Type: <span className="font-medium">{approveRejectModal.type}</span>
-            </p>
             <textarea
               placeholder="Add comments"
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               className="mb-3 w-full rounded border px-3 py-2"
-            ></textarea>
+            />
             <input type="file" onChange={(e) => setAttachment(e.target.files[0])} className="mb-4" />
             <div className="flex justify-end gap-2">
-              <button className="rounded bg-gray-200 px-4 py-2" onClick={() => setApproveRejectModal(null)}>
+              <button onClick={() => setApproveRejectModal(null)} className="rounded bg-gray-200 px-4 py-2">
                 Cancel
               </button>
-              <button className="rounded bg-green-500 px-4 py-2 text-white" onClick={saveApproveReject}>
+              <button onClick={saveApproveReject} className="rounded bg-green-500 px-4 py-2 text-white">
                 Save
               </button>
             </div>
@@ -326,53 +418,41 @@ const Leaves = () => {
         </div>
       )}
 
+      {/* View Modal */}
       {viewModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-lg">
             <h2 className="mb-4 text-xl font-bold">Leave Details</h2>
-            <p className="mb-2">
-              <strong>Employee:</strong> {viewModal.employee}
-            </p>
-            <p className="mb-2">
-              <strong>Leave Type:</strong> {viewModal.type}
-            </p>
-            <p className="mb-2">
-              <strong>Start Date:</strong> {viewModal.startDate}
-            </p>
-            <p className="mb-2">
-              <strong>End Date:</strong> {viewModal.endDate}
-            </p>
+            {["employee", "type", "startDate", "endDate"].map((f) => (
+              <p key={f} className="mb-2">
+                <strong>{f.charAt(0).toUpperCase() + f.slice(1)}:</strong> {viewModal[f]}
+              </p>
+            ))}
             <p className="mb-2">
               <strong>Status:</strong>{" "}
               <span
-                className={`rounded px-3 py-1 text-sm text-white ${
-                  viewModal.status === "Approved"
-                    ? "bg-green-600"
-                    : viewModal.status === "Rejected"
-                      ? "bg-red-600"
-                      : "bg-yellow-600"
-                }`}
+                className={`rounded px-3 py-1 text-sm text-white ${viewModal.status === "Approved" ? "bg-green-600" : viewModal.status === "Rejected" ? "bg-red-600" : "bg-yellow-600"}`}
               >
                 {viewModal.status}
               </span>
             </p>
             {viewModal.comment && (
               <p className="mb-2">
-                <strong>Employee Comment:</strong> {viewModal.comment}
+                <strong>Comment:</strong> {viewModal.comment}
               </p>
             )}
             {viewModal.attachments.length > 0 && (
               <div className="mb-2">
                 <strong>Attachments:</strong>
                 <ul className="ml-5 list-disc">
-                  {viewModal.attachments.map((file, idx) => (
-                    <li key={idx}>{file}</li>
+                  {viewModal.attachments.map((f, idx) => (
+                    <li key={idx}>{f}</li>
                   ))}
                 </ul>
               </div>
             )}
             <div className="flex justify-end">
-              <button className="rounded bg-gray-200 px-4 py-2" onClick={() => setViewModal(null)}>
+              <button onClick={() => setViewModal(null)} className="rounded bg-gray-200 px-4 py-2">
                 Close
               </button>
             </div>

@@ -8,3 +8,25 @@ body {
   font-size: 15px;
   font-weight: 500;
 }
+
+/* Custom Scrollbar */
+@layer utilities {
+  .custom-1::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  .custom-1::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 4px;
+  }
+
+  .custom-1::-webkit-scrollbar-thumb {
+    background-color: #d6d6d6;
+    border-radius: 4px;
+  }
+
+  .custom-1::-webkit-scrollbar-thumb:hover {
+    background-color: #d6d6d6;
+  }
+}

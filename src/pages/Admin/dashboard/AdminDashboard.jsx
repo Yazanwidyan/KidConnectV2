@@ -121,7 +121,7 @@ const AdminDashboard = () => {
               <XAxis dataKey="day" />
               <YAxis />
               <Tooltip />
-              <Bar dataKey="attendance" fill="#25A0DD" barSize={30} />
+              <Bar dataKey="attendance" fill="#0F626A" barSize={30} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -161,9 +161,9 @@ const AdminDashboard = () => {
               <XAxis dataKey="month" />
               <YAxis />
               <Tooltip />
-              <Bar dataKey="revenue" fill="#25A0DD" barSize={30} />
-              <Bar dataKey="pending" fill="#FACC15" barSize={30} />
-              <Bar dataKey="overdue" fill="#EF4444" barSize={30} />
+              <Bar dataKey="revenue" fill="#0F626A" barSize={30} />
+              <Bar dataKey="pending" fill="#F9C123" barSize={30} />
+              <Bar dataKey="overdue" fill="#FD8896" barSize={30} />
             </BarChart>
           </ResponsiveContainer>
         </div>

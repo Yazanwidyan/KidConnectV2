@@ -14,6 +14,7 @@ module.exports = {
         danger: "#D32F2F", // Red for errors/alerts
         info: "#1E90A0", // Teal/Info color
         cardBlue: "#0F626A", // Darker blue for student card
+        "slate-100": "#F4F4F4",
       },
       fontSize: {
         base: "15px",

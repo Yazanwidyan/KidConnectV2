@@ -1,7 +1,41 @@
+import {
+  ArrowDownTrayIcon,
+  CheckCircleIcon,
+  ClipboardDocumentIcon,
+  ClockIcon,
+  EyeIcon,
+  PencilSquareIcon,
+  ShieldCheckIcon,
+  UserPlusIcon,
+  XCircleIcon,
+} from "@heroicons/react/24/outline";
 import React, { useState } from "react";
-import { FaCopy, FaEdit, FaFileExcel, FaTrash } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { FaCopy, FaFileExcel } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
 import * as XLSX from "xlsx";
+
+const statusConfig = {
+  Review: {
+    bg: "bg-blue-500",
+    text: "text-blue-700",
+    Icon: EyeIcon,
+  },
+  Waitlist: {
+    bg: "bg-yellow-500",
+    text: "text-yellow-700",
+    Icon: ClockIcon,
+  },
+  Enrolled: {
+    bg: "bg-green-500",
+    text: "text-green-700",
+    Icon: CheckCircleIcon,
+  },
+  Rejected: {
+    bg: "bg-red-500",
+    text: "text-red-700",
+    Icon: XCircleIcon,
+  },
+};
 
 const Admissions = () => {
   const navigate = useNavigate();
@@ -18,6 +52,11 @@ const Admissions = () => {
     ageFrom: "",
     ageTo: "",
   });
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [sortField, setSortField] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc");
 
   const [students, setStudents] = useState([
     {
@@ -82,6 +121,18 @@ const Admissions = () => {
     } else {
       setSelectedIds([]);
     }
+  };
+
+  // Pagination
+  const totalPages = Math.ceil(filteredStudents.length / rowsPerPage);
+  const startIndex = (currentPage - 1) * rowsPerPage;
+  const endIndex = Math.min(startIndex + rowsPerPage, filteredStudents.length);
+  const paginatedStudents = filteredStudents.slice(startIndex, endIndex);
+
+  const handleSort = (field) => {
+    const order = sortField === field && sortOrder === "asc" ? "desc" : "asc";
+    setSortField(field);
+    setSortOrder(order);
   };
 
   const handleDelete = (id) => {
@@ -155,57 +206,67 @@ const Admissions = () => {
   };
 
   return (
-    <div className="space-y-6 p-6">
-      {/* Buttons */}
-      <div className="flex gap-4">
-        <button
-          onClick={() => setShowLinkModal(true)}
-          className="flex items-center gap-2 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-        >
-          <FaCopy /> Get Link
-        </button>
-        <button
-          onClick={() => navigate("/admin/students/add-student")}
-          className="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600"
-        >
-          Register Student
-        </button>
-      </div>
-      {/* Cards */}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-        {["Review", "Waitlist", "Enrolled", "Rejected"].map((status) => (
-          <div
-            key={status}
-            className={`rounded-lg p-4 shadow ${
-              status === "Review"
-                ? "bg-blue-100"
-                : status === "Waitlist"
-                  ? "bg-yellow-100"
-                  : status === "Rejected"
-                    ? "bg-red-100"
-                    : "bg-green-100"
-            }`}
+    <div className="w-full p-6">
+      <div className="mb-6 flex flex-wrap items-end justify-between">
+        <div aria-label="Breadcrumb">
+          <h1 className="text-primaryFont mb-1 text-3xl font-bold">Admissions</h1>
+          <nav className="flex" aria-label="Breadcrumb">
+            <ol className="inline-flex items-center space-x-2">
+              <li className="inline-flex items-center">
+                <div className="flex items-center gap-1 font-semibold text-black">
+                  <UserPlusIcon className="h-4 w-4" /> <h5>Students</h5>
+                </div>
+              </li>
+              <span>/</span>
+              <li aria-current="page">
+                <span className="font-semibold text-primary">Admissions</span>
+              </li>
+            </ol>
+          </nav>
+        </div>
+        {/* Buttons */}
+        <div className="flex gap-2">
+          <button
+            onClick={() => setShowLinkModal(true)}
+            className="flex items-center gap-2 rounded border border-primary bg-primary px-5 py-2 font-semibold text-white"
           >
-            <h3
-              className={`text-lg font-semibold ${
-                status === "Review"
-                  ? "text-blue-700"
-                  : status === "Waitlist"
-                    ? "text-yellow-700"
-                    : status === "Rejected"
-                      ? "text-red-700"
-                      : "text-green-700"
-              }`}
+            <ClipboardDocumentIcon className="h-5 w-5 stroke-[2]" /> Get Link
+          </button>
+          <Link
+            to="/admin/students/add-student"
+            className="flex items-center gap-2 rounded border border-primary bg-primary px-5 py-2 font-semibold text-white"
+          >
+            <UserPlusIcon className="h-5 w-5 stroke-[2]" /> Register Student
+          </Link>
+        </div>
+      </div>
+
+      {/* Cards */}
+      <div className="mb-6 grid grid-cols-1 gap-6 sm:grid-cols-4">
+        {["Review", "Waitlist", "Enrolled", "Rejected"].map((status) => {
+          const { bg, text, Icon } = statusConfig[status];
+          const count = students.filter((s) => s.status === status).length;
+
+          return (
+            <div
+              key={status}
+              className={`relative flex flex-col overflow-hidden rounded-lg p-6 shadow-lg ${bg}`}
             >
-              {status}
-            </h3>
-            <p className="mt-2 text-2xl font-bold">{students.filter((s) => s.status === status).length}</p>
-          </div>
-        ))}
+              {/* Faint background icon */}
+              <Icon className="pointer-events-none absolute -right-10 -top-3 text-9xl text-white opacity-10" />
+
+              {/* Count */}
+              <h3 className="relative z-10 mb-1 text-4xl font-extrabold text-white">{count}</h3>
+
+              {/* Status label */}
+              <p className="relative z-10 text-lg text-white">{status}</p>
+            </div>
+          );
+        })}
       </div>
 
       {/* Filter Section */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="mb-6 flex flex-wrap items-center gap-2 rounded-lg bg-white p-6 shadow-lg">
         <input
           type="text"
           placeholder="Student Name"
@@ -259,166 +320,235 @@ const Admissions = () => {
           onChange={(e) => setFilters({ ...filters, ageTo: e.target.value })}
           className="rounded border px-3 py-2"
         />
-      </div>
-      <div className="mt-2 flex gap-2">
-        <button onClick={applyFilters} className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
+        <button
+          onClick={applyFilters}
+          className="rounded bg-primary/10 px-4 py-2 text-primary hover:bg-primary/20"
+        >
           Filter
         </button>
-        <button onClick={resetFilters} className="rounded bg-gray-300 px-4 py-2 text-black hover:bg-gray-400">
+        <button
+          onClick={resetFilters}
+          className="rounded bg-gray-200 px-4 py-2 text-gray-700 hover:bg-gray-300"
+        >
           Reset
         </button>
       </div>
 
       {/* Export */}
-      <button
-        onClick={exportToExcel}
-        className="mt-2 flex items-center gap-2 rounded bg-green-700 px-4 py-2 text-white hover:bg-green-800"
-      >
-        <FaFileExcel /> Export as Excel
-      </button>
+      <div className="mb-4 flex justify-end">
+        <button
+          onClick={exportToExcel}
+          className="flex items-center gap-2 rounded border border-primary bg-primary px-5 py-2 font-semibold text-white"
+        >
+          <ArrowDownTrayIcon className="h-5 w-5 stroke-[2]" /> Export as Excel
+        </button>
+      </div>
 
       {/* Students Table */}
-      <div className="mt-4 overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200 rounded-lg border border-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3">
-                <input
-                  type="checkbox"
-                  checked={selectedIds.length === filteredStudents.length}
-                  onChange={handleSelectAll}
-                />
-              </th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">#</th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Register ID</th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Student Name</th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Parent 1</th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Parent 2</th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Age</th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Status</th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200 bg-white">
-            {filteredStudents.map((student, index) => (
-              <tr key={student.id} className="transition hover:bg-gray-50">
-                <td className="px-6 py-4">
+      <div className="rounded-lg bg-white shadow-lg">
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-dashed divide-gray-400/60">
+            <thead>
+              <tr>
+                <th className="px-6 py-3">
                   <input
                     type="checkbox"
-                    checked={selectedIds.includes(student.id)}
-                    onChange={() => handleSelect(student.id)}
+                    checked={selectedIds.length === filteredStudents.length}
+                    onChange={handleSelectAll}
                   />
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-700">{index + 1}</td>
-                <td className="px-6 py-4 text-sm text-gray-700">{student.registerId}</td>
-                <td
-                  onClick={() => navigate(`/admin/students/student-admission-profile/${student.id}`)}
-                  className="cursor-pointer px-6 py-4 text-sm text-blue-600"
-                >
-                  {student.name}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-700">{student.parent1}</td>
-                <td className="px-6 py-4 text-sm text-gray-700">{student.parent2}</td>
-                <td className="px-6 py-4 text-sm text-gray-700">{student.age}</td>
-                <td className="px-6 py-4 text-sm">
-                  <span
-                    className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                      student.status === "Review"
-                        ? "bg-blue-100 text-blue-800"
-                        : student.status === "Waitlist"
-                          ? "bg-yellow-100 text-yellow-800"
-                          : student.status === "Rejected"
-                            ? "bg-red-100 text-red-800"
-                            : "bg-green-100 text-green-800"
-                    }`}
+                </th>
+                {["#", "Register ID", "Student Name", "Parent 1", "Parent 2", "Age", "Status"].map((col) => (
+                  <th
+                    key={col}
+                    className="cursor-pointer px-6 py-3 text-left text-sm font-bold text-gray-700"
+                    onClick={
+                      col === "Actions" || col === "#"
+                        ? undefined
+                        : () =>
+                            handleSort(
+                              col
+                                .toLowerCase()
+                                .replace(/\s+/g, "") // remove spaces
+                                .replace("#", "index") // special case for #
+                            )
+                    }
                   >
-                    {student.status}
-                  </span>
-                </td>
-                <td className="flex gap-2 px-6 py-4 text-sm text-gray-700">
-                  {student.status !== "Enrolled" && (
-                    <>
-                      {/* View Details */}
-                      <button
-                        onClick={() => alert(`Viewing ${student.name}`)}
-                        className="text-blue-600 hover:text-blue-800"
-                      >
-                        View
-                      </button>
-
-                      {/* Edit */}
-                      <button
-                        onClick={() => navigate(`/admin/students/edit/${student.id}`)}
-                        className="text-yellow-600 hover:text-yellow-800"
-                      >
-                        Edit
-                      </button>
-
-                      {/* Conditional Actions */}
-                      {student.status === "Review" && (
-                        <>
-                          <button
-                            onClick={() => updateStudentStatus(student.id, "Waitlist")}
-                            className="text-purple-600 hover:text-purple-800"
-                          >
-                            Waitlist
-                          </button>
-                          <button
-                            onClick={() => updateStudentStatus(student.id, "Enrolled")}
-                            className="text-green-600 hover:text-green-800"
-                          >
-                            Approve
-                          </button>
-                          <button
-                            onClick={() => updateStudentStatus(student.id, "Rejected")}
-                            className="text-red-600 hover:text-red-800"
-                          >
-                            Reject
-                          </button>
-                        </>
-                      )}
-
-                      {student.status === "Waitlist" && (
-                        <>
-                          <button
-                            onClick={() => updateStudentStatus(student.id, "Enrolled")}
-                            className="text-green-600 hover:text-green-800"
-                          >
-                            Accept
-                          </button>
-                          <button
-                            onClick={() => updateStudentStatus(student.id, "Rejected")}
-                            className="text-red-600 hover:text-red-800"
-                          >
-                            Reject
-                          </button>
-                        </>
-                      )}
-
-                      {student.status === "Rejected" && (
-                        <>
-                          <button
-                            onClick={() => updateStudentStatus(student.id, "Waitlist")}
-                            className="text-purple-600 hover:text-purple-800"
-                          >
-                            Waitlist
-                          </button>
-                          <button
-                            onClick={() => updateStudentStatus(student.id, "Enrolled")}
-                            className="text-green-600 hover:text-green-800"
-                          >
-                            Accept
-                          </button>
-                        </>
-                      )}
-                    </>
-                  )}
-                </td>
+                    {col} {/* sorting arrows */}
+                    {sortField === col.toLowerCase().replace(/\s+/g, "").replace("#", "index")
+                      ? sortOrder === "asc"
+                        ? " 🔼"
+                        : " 🔽"
+                      : ""}
+                  </th>
+                ))}
+                <th className="px-6 py-3 text-start text-sm font-bold text-gray-700">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-dashed divide-gray-400/60">
+              {filteredStudents.map((student, index) => (
+                <tr key={student.id} className="odd:bg-slate-100 even:bg-white">
+                  <td className="px-6 py-3">
+                    <input
+                      type="checkbox"
+                      checked={selectedIds.includes(student.id)}
+                      onChange={() => handleSelect(student.id)}
+                    />
+                  </td>
+                  <td className="px-6 py-3 font-normal text-gray-600">{index + 1}</td>
+                  <td className="px-6 py-3 font-normal text-gray-600">{student.registerId}</td>
+                  <td
+                    onClick={() => navigate(`/admin/students/student-admission-profile/${student.id}`)}
+                    className="cursor-pointer px-6 py-3 font-normal text-gray-600"
+                  >
+                    {student.name}
+                  </td>
+                  <td className="px-6 py-3 font-normal text-gray-600">{student.parent1}</td>
+                  <td className="px-6 py-3 font-normal text-gray-600">{student.parent2}</td>
+                  <td className="px-6 py-3 font-normal text-gray-600">{student.age}</td>
+                  <td className="px-6 py-3 font-normal text-gray-600">
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                        student.status === "Review"
+                          ? "bg-blue-100 text-blue-800"
+                          : student.status === "Waitlist"
+                            ? "bg-yellow-100 text-yellow-800"
+                            : student.status === "Rejected"
+                              ? "bg-red-100 text-red-800"
+                              : "bg-green-100 text-green-800"
+                      }`}
+                    >
+                      {student.status}
+                    </span>
+                  </td>
+                  <td className="flex justify-end gap-2 px-6 py-3">
+                    {student.status !== "Enrolled" && (
+                      <>
+                        {/* View Details */}
+                        <Link
+                          // to={`/admin/students/student-profile/${s.id}`}
+                          className="rounded bg-blue-100 p-[5px] text-blue-500 ring-blue-700 transition duration-300 hover:ring-1"
+                        >
+                          <EyeIcon className="h-5 w-5 stroke-[2]" />
+                        </Link>
+
+                        {/* Edit */}
+                        <Link
+                          to={`/admin/students/edit/${student.id}`}
+                          className="rounded bg-yellow-100 p-[5px] text-yellow-500 ring-yellow-700 transition duration-300 hover:ring-1"
+                        >
+                          <PencilSquareIcon className="h-5 w-5 stroke-[2]" />
+                        </Link>
+
+                        {/* Conditional Actions */}
+                        {student.status === "Review" && (
+                          <>
+                            <button
+                              onClick={() => updateStudentStatus(student.id, "Waitlist")}
+                              className="rounded bg-purple-100 p-[5px] text-purple-500 ring-purple-700 transition duration-300 hover:ring-1"
+                            >
+                              <ShieldCheckIcon className="h-5 w-5" />
+                            </button>
+                            <button
+                              onClick={() => updateStudentStatus(student.id, "Enrolled")}
+                              className="rounded bg-green-100 p-[5px] text-green-500 ring-green-700 transition duration-300 hover:ring-1"
+                            >
+                              <CheckCircleIcon className="h-5 w-5" />
+                            </button>
+                            <button
+                              onClick={() => updateStudentStatus(student.id, "Rejected")}
+                              className="rounded bg-red-100 p-[5px] text-red-500 ring-red-700 transition duration-300 hover:ring-1"
+                            >
+                              <XCircleIcon className="h-5 w-5" />
+                            </button>
+                          </>
+                        )}
+
+                        {student.status === "Waitlist" && (
+                          <>
+                            <button
+                              onClick={() => updateStudentStatus(student.id, "Enrolled")}
+                              className="rounded bg-green-100 p-[5px] text-green-500 ring-green-700 transition duration-300 hover:ring-1"
+                            >
+                              <CheckCircleIcon className="h-5 w-5" />
+                            </button>
+                            <button
+                              onClick={() => updateStudentStatus(student.id, "Rejected")}
+                              className="rounded bg-red-100 p-[5px] text-red-500 ring-red-700 transition duration-300 hover:ring-1"
+                            >
+                              <XCircleIcon className="h-5 w-5" />
+                            </button>
+                          </>
+                        )}
+
+                        {student.status === "Rejected" && (
+                          <>
+                            <button
+                              onClick={() => updateStudentStatus(student.id, "Waitlist")}
+                              className="rounded bg-purple-100 p-[5px] text-purple-500 ring-purple-700 transition duration-300 hover:ring-1"
+                            >
+                              <ShieldCheckIcon className="h-5 w-5" />
+                            </button>
+                            <button
+                              onClick={() => updateStudentStatus(student.id, "Enrolled")}
+                              className="rounded bg-green-100 p-[5px] text-green-500 ring-green-700 transition duration-300 hover:ring-1"
+                            >
+                              <CheckCircleIcon className="h-5 w-5" />
+                            </button>
+                          </>
+                        )}
+                      </>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {/* Pagination */}
+          <div className="mt-4 flex flex-col items-center justify-between gap-3 p-6 sm:flex-row">
+            <div className="text-sm text-gray-700">
+              Showing {paginatedStudents.length === 0 ? 0 : startIndex + 1} to {endIndex} of{" "}
+              {filteredStudents.length} entries
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 text-sm">
+                Rows per page:
+                <select
+                  value={rowsPerPage}
+                  onChange={(e) => {
+                    setRowsPerPage(Number(e.target.value));
+                    setCurrentPage(1);
+                  }}
+                  className="rounded border px-2 py-1"
+                >
+                  {[5, 10, 15].map((num) => (
+                    <option key={num} value={num}>
+                      {num}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <button
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage((p) => p - 1)}
+                className="rounded border px-3 py-1 hover:bg-gray-100 disabled:opacity-50"
+              >
+                Prev
+              </button>
+              <span className="text-sm">
+                Page {currentPage} of {totalPages || 1}
+              </span>
+              <button
+                disabled={currentPage === totalPages || totalPages === 0}
+                onClick={() => setCurrentPage((p) => p + 1)}
+                className="rounded border px-3 py-1 hover:bg-gray-100 disabled:opacity-50"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
+
       {showLinkModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">

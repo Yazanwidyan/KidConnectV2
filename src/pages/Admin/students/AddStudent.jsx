@@ -1,3 +1,4 @@
+import { UserGroupIcon, UserPlusIcon } from "@heroicons/react/24/outline";
 import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
 import React, { useState } from "react";
 import * as Yup from "yup";
@@ -60,8 +61,22 @@ const AddStudent = () => {
 
   return (
     <div className="w-full p-6">
-      <h2 className="mb-6 text-3xl font-bold text-gray-800">Add New Student</h2>
-
+      <div className="mb-6" aria-label="Breadcrumb">
+        <h1 className="text-primaryFont mb-1 text-3xl font-bold">Add Student</h1>
+        <nav className="flex" aria-label="Breadcrumb">
+          <ol className="inline-flex items-center space-x-2">
+            <li className="inline-flex items-center">
+              <div className="flex items-center gap-1 font-semibold text-black">
+                <UserPlusIcon className="h-4 w-4" /> <h5>Students</h5>
+              </div>
+            </li>
+            <span>/</span>
+            <li aria-current="page">
+              <span className="font-semibold text-primary">Add New Student</span>
+            </li>
+          </ol>
+        </nav>
+      </div>
       <Formik
         initialValues={{
           studentPhoto: null,

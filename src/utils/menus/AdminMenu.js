@@ -21,7 +21,7 @@ export const ADMIN_MENU = [
     path: "/admin/groups",
     subMenu: [
       { title: "Create Group", path: "/admin/groups/create-group" },
-      { title: "Group List", path: "/admin/groups/group-list" },
+      { title: "Groups List", path: "/admin/groups/group-list" },
     ],
   },
   {
@@ -79,9 +79,48 @@ export const ADMIN_MENU = [
     subMenu: [
       { title: "General Configurations", path: "/admin/configurations/general-configurations" },
       { title: "Student Configurations", path: "/admin/configurations/student-configurations" },
+      {
+        title: "Attendance Configurations",
+        path: "/admin/configurations/attendance-configurations",
+        subMenu: [
+          {
+            title: "kiosk",
+            path: "/admin/configurations/attendance-configurations/kiosk",
+          },
+          {
+            title: "Ratio Management",
+            path: "/admin/configurations/attendance-configurations/ratio-management",
+          },
+          {
+            title: "Student Attendance",
+            path: "/admin/configurations/attendance-configurations/student-attendance",
+          },
+          {
+            title: "Employee Attendance",
+            path: "/admin/configurations/attendance-configurations/employee-attendance",
+          },
+        ],
+      },
+
       { title: "Employee Configurations", path: "/admin/configurations/employee-configurations" },
-      { title: "Finance Configurations", path: "/admin/configurations/finance-configurations" },
-      { title: "Attendance Configurations", path: "/admin/configurations/attendance-configurations" },
+      {
+        title: "Finance Configurations",
+        path: "/admin/configurations/finance-configurations",
+        subMenu: [
+          {
+            title: "General Finance",
+            path: "/admin/configurations/finance-configurations/general-finance",
+          },
+          {
+            title: "Invoice and payment requests",
+            path: "/admin/configurations/finance-configurations/invoice-and-payment-requests",
+          },
+          {
+            title: "Templates",
+            path: "/admin/configurations/finance-configurations/templates",
+          },
+        ],
+      },
       { title: "Roles & Permissions", path: "/admin/configurations/roles-permissions" },
     ],
   },

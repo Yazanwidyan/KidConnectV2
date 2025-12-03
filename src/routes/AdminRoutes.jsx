@@ -10,9 +10,14 @@ import MessagesInbox from "../pages/admin/communication/messages/MessagesInbox";
 import MessagesSent from "../pages/admin/communication/messages/MessagesSent";
 import NotificationsIndex from "../pages/admin/communication/notifications";
 import Notifications from "../pages/admin/communication/notifications/Notifications";
-import AttendanceConfigurations from "../pages/admin/configurations/AttendanceConfigurations";
+import EmployeeConfigAttendance from "../pages/admin/configurations/AttendanceConfigurations/EmployeeAttendance";
+import Kiosk from "../pages/admin/configurations/AttendanceConfigurations/Kiosk";
+import RatioManagement from "../pages/admin/configurations/AttendanceConfigurations/RatioManagement";
+import StudentAttendance from "../pages/admin/configurations/AttendanceConfigurations/StudentAttendance";
 import EmployeeConfigurations from "../pages/admin/configurations/EmployeeConfigurations";
-import FinanceConfigurations from "../pages/admin/configurations/FinanceConfigurations";
+import GenaralFinance from "../pages/admin/configurations/financeConfigurations/GenaralFinance";
+import InvoiceAndPaymentRequests from "../pages/admin/configurations/financeConfigurations/InvoiceAndPaymentRequests";
+import Templates from "../pages/admin/configurations/financeConfigurations/Templates";
 import GeneralConfigurations from "../pages/admin/configurations/GeneralConfigurations";
 import RolesPermissions from "../pages/admin/configurations/RolesPermissions";
 import StudentConfigurations from "../pages/admin/configurations/StudentConfigurations";
@@ -101,9 +106,21 @@ const AdminRoutes = () => {
           <Route path="configurations">
             <Route path="general-configurations" element={<GeneralConfigurations />} />
             <Route path="student-configurations" element={<StudentConfigurations />} />
+            <Route path="attendance-configurations/kiosk" element={<Kiosk />} />
+            <Route path="attendance-configurations/ratio-management" element={<RatioManagement />} />
+            <Route path="attendance-configurations/student-attendance" element={<StudentAttendance />} />
+            <Route
+              path="attendance-configurations/employee-attendance"
+              element={<EmployeeConfigAttendance />}
+            />
+
             <Route path="employee-configurations" element={<EmployeeConfigurations />} />
-            <Route path="finance-configurations" element={<FinanceConfigurations />} />
-            <Route path="attendance-configurations" element={<AttendanceConfigurations />} />
+            <Route path="finance-configurations/general-finance" element={<GenaralFinance />} />
+            <Route
+              path="finance-configurations/invoice-and-payment-requests"
+              element={<InvoiceAndPaymentRequests />}
+            />
+            <Route path="finance-configurations/templates" element={<Templates />} />
             <Route path="roles-permissions" element={<RolesPermissions />} />
           </Route>
 

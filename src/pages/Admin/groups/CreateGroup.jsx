@@ -1,5 +1,6 @@
 // pages/admin/groups/CreateGroup.jsx
 
+import { ChevronDoubleRightIcon, ChevronRightIcon, UserGroupIcon } from "@heroicons/react/24/outline";
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import { FaChevronDown, FaChevronUp, FaImage } from "react-icons/fa";
@@ -100,7 +101,22 @@ const CreateGroup = () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-primaryFont mb-6 text-3xl font-bold">Create New Group</h1>
+      <div className="mb-6" aria-label="Breadcrumb">
+        <h1 className="text-primaryFont mb-1 text-3xl font-bold">Create New Group</h1>
+        <nav className="flex" aria-label="Breadcrumb">
+          <ol className="inline-flex items-center space-x-2">
+            <li className="inline-flex items-center">
+              <div className="flex items-center gap-1 font-semibold text-black">
+                <UserGroupIcon className="h-4 w-4" /> <h5>Groups</h5>
+              </div>
+            </li>
+            <span>/</span>
+            <li aria-current="page">
+              <span className="font-semibold text-primary">Create New Group</span>
+            </li>
+          </ol>
+        </nav>
+      </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* BASIC */}
