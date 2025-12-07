@@ -60,50 +60,50 @@ const AdminDashboard = () => {
       {/* Stat Cards */}
       <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-5">
         {/* Total Students */}
-        <div className="relative flex flex-col overflow-hidden rounded-lg bg-[#0F626A] p-6 shadow-lg">
+        <div className="relative flex flex-col overflow-hidden rounded-lg bg-[#0B868B] p-6 shadow-lg">
           <FaUsers className="pointer-events-none absolute -right-10 top-4 text-9xl text-white opacity-10" />
           <div className="z-10 mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-inner">
-            <FaUsers className="text-2xl text-[#0F626A]" />
+            <FaUsers className="text-2xl text-[#0B868B]" />
           </div>
           <h3 className="relative z-10 mb-1 text-4xl font-extrabold text-white">160</h3>
           <p className="relative z-10 text-lg text-white">Total Students</p>
         </div>
 
         {/* Total Parents */}
-        <div className="relative flex flex-col overflow-hidden rounded-lg bg-[#1E90A0] p-6 shadow-lg">
+        <div className="relative flex flex-col overflow-hidden rounded-lg bg-[#FFC353] p-6 shadow-lg">
           <FaUserFriends className="pointer-events-none absolute -right-10 top-4 text-9xl text-white opacity-10" />
           <div className="z-10 mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-inner">
-            <FaUserFriends className="text-2xl text-[#1E90A0]" />
+            <FaUserFriends className="text-2xl text-[#FFC353]" />
           </div>
           <h3 className="relative z-10 mb-1 text-4xl font-extrabold text-white">145</h3>
-          <p className="relative z-10 text-lg text-white">عدد الطلاب</p>
+          <p className="relative z-10 text-lg text-white">Total Parents</p>
         </div>
 
         {/* Total Employees */}
-        <div className="relative flex flex-col overflow-hidden rounded-lg bg-[#0F9D58] p-6 shadow-lg">
+        <div className="relative flex flex-col overflow-hidden rounded-lg bg-[#4F36A5] p-6 shadow-lg">
           <FaUserTie className="pointer-events-none absolute -right-10 top-4 text-9xl text-white opacity-10" />
           <div className="z-10 mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-inner">
-            <FaUserTie className="text-2xl text-[#0F9D58]" />
+            <FaUserTie className="text-2xl text-[#4F36A5]" />
           </div>
           <h3 className="relative z-10 mb-1 text-4xl font-extrabold text-white">25</h3>
           <p className="relative z-10 text-lg text-white">Total Employees</p>
         </div>
 
         {/* Pending Invoices */}
-        <div className="relative flex flex-col overflow-hidden rounded-lg bg-[#F4B400] p-6 shadow-lg">
+        <div className="relative flex flex-col overflow-hidden rounded-lg bg-[#00BCD8] p-6 shadow-lg">
           <FaFileInvoiceDollar className="pointer-events-none absolute -right-10 top-4 text-9xl text-white opacity-10" />
           <div className="z-10 mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-inner">
-            <FaFileInvoiceDollar className="text-2xl text-[#F4B400]" />
+            <FaFileInvoiceDollar className="text-2xl text-[#00BCD8]" />
           </div>
           <h3 className="relative z-10 mb-1 text-4xl font-extrabold text-white">$250</h3>
           <p className="relative z-10 text-lg text-white">Pending Invoices</p>
         </div>
 
         {/* Overdue Invoices */}
-        <div className="relative flex flex-col overflow-hidden rounded-lg bg-[#D32F2F] p-6 shadow-lg">
+        <div className="relative flex flex-col overflow-hidden rounded-lg bg-[#F13E3D] p-6 shadow-lg">
           <FaExclamationTriangle className="pointer-events-none absolute -right-10 top-4 text-9xl text-white opacity-10" />
           <div className="z-10 mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-inner">
-            <FaExclamationTriangle className="text-2xl text-[#D32F2F]" />
+            <FaExclamationTriangle className="text-2xl text-[#F13E3D]" />
           </div>
           <h3 className="relative z-10 mb-1 text-4xl font-extrabold text-white">$120</h3>
           <p className="relative z-10 text-lg text-white">Overdue Invoices</p>

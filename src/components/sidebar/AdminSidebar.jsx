@@ -38,32 +38,34 @@ const AdminSidebar = ({ collapsed }) => {
     <div
       onMouseEnter={() => setHovered(true)} // <-- Expand on hover
       onMouseLeave={() => setHovered(false)} // <-- Collapse when hover ends
-      className={`flex h-screen flex-col bg-white shadow-lg transition-all duration-300 ${
+      className={`flex h-screen flex-col bg-primary shadow-lg transition-all duration-300 ${
         isCollapsed ? "w-20" : "w-72"
       }`}
     >
       {/* Top bar */}
-      <div className="flex flex-shrink-0 items-center justify-between border-b border-r border-b-primary/20 px-4 py-[4px]">
-        <span className={`text-lg font-bold ${isCollapsed ? "hidden" : "block"}`}>
-          <img src="/assets/1.png" alt="User Avatar" className="w-40 object-cover" />
+      <div className="flex flex-shrink-0 items-center justify-between border-b border-b-secondary/20 px-4 py-[4px]">
+        <span className={`py-5 text-4xl font-light text-white ${isCollapsed ? "hidden" : "block"}`}>
+          <span className="font-extrabold">Kid</span>
+          Connect
+          {/* <img src="/assets/1.png" alt="User Avatar" className="w-40 object-cover" /> */}
         </span>
       </div>
 
       {/* User Section */}
-      <div className="relative border-b border-b-primary/20 px-4 py-4">
+      <div className="relative border-b border-b-secondary/20 px-4 py-4">
         <button className="flex w-full items-center gap-3" onClick={() => setMenuOpen((prev) => !prev)}>
           <img src="/assets/wa.png" alt="User Avatar" className="h-11 w-11 rounded-xl border object-cover" />
 
           {!isCollapsed && (
             <div className="flex-1 text-left">
-              <p className="text-lg text-sm font-semibold text-primary">John Doe</p>
-              <p className="text-xs text-gray-500">Administrator</p>
+              <p className="text-lg font-semibold text-secondary">John Doe</p>
+              <p className="text-xs text-white">Administrator</p>
             </div>
           )}
 
           {!isCollapsed && (
             <Cog8ToothIcon
-              className={`h-5 w-5 stroke-[2] transition-transform ${menuOpen ? "rotate-180" : "rotate-0"}`}
+              className={`h-5 w-5 stroke-[2] text-white transition-transform ${menuOpen ? "rotate-180" : "rotate-0"}`}
             />
           )}
         </button>
@@ -93,7 +95,7 @@ const AdminSidebar = ({ collapsed }) => {
                   else handleNavigate(item.path);
                 }}
                 className={`flex cursor-pointer items-center ${isCollapsed ? "justify-center" : "justify-between"} rounded-lg px-3 py-3 transition ${
-                  active || isSubmenuOpen ? "bg-primary font-bold text-white" : "font-semibold"
+                  active || isSubmenuOpen ? "bg-secondary font-bold text-primary" : "font-semibold text-white"
                 }`}
               >
                 <div className="flex items-center">
@@ -128,12 +130,12 @@ const AdminSidebar = ({ collapsed }) => {
                           }}
                           className={`relative flex cursor-pointer items-center px-4 py-2 transition ${
                             location.pathname.startsWith(sub.path)
-                              ? "font-semibold text-primary"
-                              : "text-gray-600"
+                              ? "font-semibold text-secondary"
+                              : "text-white"
                           }`}
                         >
                           {location.pathname.startsWith(sub.path) && (
-                            <span className="absolute left-0 h-7 w-1 rounded bg-primary"></span>
+                            <span className="absolute left-0 h-7 w-1 rounded bg-secondary"></span>
                           )}
                           <span>{sub.title}</span>
                           {hasSubSubmenu && (
@@ -155,12 +157,12 @@ const AdminSidebar = ({ collapsed }) => {
                                 onClick={() => handleNavigate(ss.path)}
                                 className={`relative flex cursor-pointer items-center px-4 py-2 transition ${
                                   location.pathname === ss.path
-                                    ? "font-semibold text-primary"
-                                    : "text-gray-600"
+                                    ? "font-semibold text-secondary"
+                                    : "text-white"
                                 }`}
                               >
                                 {location.pathname === ss.path && (
-                                  <span className="absolute left-0 h-1 w-1 rotate-45 ring-2 ring-primary"></span>
+                                  <span className="absolute left-0 h-1 w-1 rotate-45 ring-2 ring-secondary"></span>
                                 )}
                                 <span>{ss.title}</span>
                               </div>

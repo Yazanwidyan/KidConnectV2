@@ -1,3 +1,4 @@
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 import { FiEdit, FiPlus, FiTrash2 } from "react-icons/fi";
 
@@ -75,12 +76,11 @@ export default function RolesPermissions() {
   return (
     <div className="space-y-6 p-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-gray-700">Roles & Permissions</h1>
-
+      <div className="mb-6 flex flex-wrap items-center justify-between">
+        <h1 className="text-xl font-semibold text-gray-800">Roles & Permissions</h1>
         <button
+          className="flex items-center gap-2 rounded border border-primary bg-primary px-5 py-2 font-semibold text-white"
           onClick={openAddModal}
-          className="flex items-center gap-2 rounded-lg bg-teal-600 px-4 py-2 text-white hover:bg-teal-700"
         >
           <FiPlus /> Add Role
         </button>
@@ -88,9 +88,9 @@ export default function RolesPermissions() {
 
       {/* Roles Table */}
       <div className="overflow-hidden rounded-xl bg-white shadow">
-        <table className="w-full border-collapse text-left">
-          <thead className="bg-gray-100">
-            <tr>
+        <table className="w-full border-collapse text-left text-sm">
+          <thead>
+            <tr className="bg-gray-100 text-gray-700">
               <th className="border-b p-4 font-medium text-gray-600">Role Name</th>
               <th className="border-b p-4 font-medium text-gray-600">Permissions</th>
               <th className="border-b p-4 text-right font-medium text-gray-600">Actions</th>
@@ -116,17 +116,18 @@ export default function RolesPermissions() {
                     ))
                   )}
                 </td>
-
-                <td className="p-4 text-right">
+                <td className="flex gap-2 px-6 py-3">
                   <button
                     onClick={() => openEditModal(role)}
-                    className="mr-3 text-teal-600 hover:text-teal-800"
+                    className="rounded bg-green-100 p-[5px] text-green-500 ring-green-700 transition duration-300 hover:ring-1"
                   >
-                    <FiEdit size={18} />
+                    <PencilSquareIcon className="h-5 w-5 stroke-[2]" />
                   </button>
-
-                  <button onClick={() => deleteRole(role.id)} className="text-red-600 hover:text-red-800">
-                    <FiTrash2 size={18} />
+                  <button
+                    onClick={() => deleteRole(role.id)}
+                    className="rounded bg-red-100 p-[5px] text-red-500 ring-red-700 transition duration-300 hover:ring-1"
+                  >
+                    <TrashIcon className="h-5 w-5 stroke-[2]" />
                   </button>
                 </td>
               </tr>

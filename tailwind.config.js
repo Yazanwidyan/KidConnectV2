@@ -6,14 +6,13 @@ module.exports = {
       colors: {
         primary: "#09A67A", // Main green
         primaryFont: "#082f32",
-        secondary: "#FE6602", // Accent orange
+        secondary: "#F2F3EE", // Accent orange
         background: "#F5F5F5", // Page background
         header: "#F4EFD5", // Header background
         success: "#0F9D58", // Green for success/status
         warning: "#F4B400", // Yellow for warnings
         danger: "#D32F2F", // Red for errors/alerts
         info: "#1E90A0", // Teal/Info color
-        cardBlue: "#22C55E", // Darker blue for student card
         "slate-100": "#F4F4F4",
       },
       fontSize: {

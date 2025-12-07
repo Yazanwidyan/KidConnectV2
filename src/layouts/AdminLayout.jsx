@@ -12,7 +12,7 @@ const AdminLayout = ({ children }) => {
   const { i18n } = useTranslation();
 
   return (
-    <div className="flex h-screen flex-col bg-gray-100" dir={i18n.language === "ar" ? "rtl" : "ltr"}>
+    <div className="flex h-screen flex-col bg-secondary" dir={i18n.language === "ar" ? "rtl" : "ltr"}>
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
         <AdminSidebar toggleSidebar={toggleSidebar} collapsed={collapsed} />
@@ -56,7 +56,7 @@ const AdminLayout = ({ children }) => {
           </div>
 
           {/* Page Content */}
-          <main className="flex-1 overflow-auto p-6">
+          <main className="flex-1 overflow-auto px-6 py-0">
             <div className="container mx-auto max-w-7xl">{children ? children : <Outlet />}</div>
           </main>
 

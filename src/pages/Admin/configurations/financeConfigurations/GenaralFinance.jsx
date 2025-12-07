@@ -1,4 +1,9 @@
-import { BanknotesIcon, ClipboardDocumentListIcon } from "@heroicons/react/24/outline";
+import {
+  BanknotesIcon,
+  ClipboardDocumentListIcon,
+  PencilSquareIcon,
+  TrashIcon,
+} from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 import { FiEdit, FiPlus, FiTrash2 } from "react-icons/fi";
 
@@ -31,24 +36,8 @@ const GeneralFinance = () => {
   return (
     <div className="w-full p-6">
       {/* Header */}
-      <div className="mb-6 flex flex-wrap items-end justify-between">
-        <div aria-label="Breadcrumb">
-          <h1 className="text-2xl font-bold text-primaryFont">Product Configurations</h1>
-          <nav className="flex" aria-label="Breadcrumb">
-            <ol className="inline-flex items-center space-x-2">
-              <li className="inline-flex items-center">
-                <div className="flex items-center text-sm font-semibold text-black">
-                  <ClipboardDocumentListIcon className="h-4 w-4 stroke-[2]" /> <h5>Configurations</h5>
-                </div>
-              </li>
-              <span className="text-xs text-gray-500">/</span>
-              <li aria-current="page">
-                <span className="text-sm font-semibold text-primary">Product Configurations</span>
-              </li>
-            </ol>
-          </nav>
-        </div>
-
+      <div className="mb-6 flex flex-wrap items-center justify-between">
+        <h1 className="text-xl font-semibold text-gray-800">Product Configurations</h1>
         <button
           className="flex items-center gap-2 rounded border border-primary bg-primary px-5 py-2 font-semibold text-white"
           onClick={() => setIsModalOpen(true)}
@@ -90,14 +79,11 @@ const GeneralFinance = () => {
                 <td className="px-6 py-3 font-normal text-gray-700">{cat.nameEn}</td>
                 <td className="px-6 py-3 font-normal text-gray-700">{cat.nameAr}</td>
                 <td className="flex gap-2 px-6 py-3">
-                  <button className="rounded bg-blue-100 p-[5px] text-blue-500 ring-blue-700 transition duration-300 hover:ring-1">
-                    <FiEdit />
+                  <button className="rounded bg-green-100 p-[5px] text-green-500 ring-green-700 transition duration-300 hover:ring-1">
+                    <PencilSquareIcon className="h-5 w-5 stroke-[2]" />
                   </button>
-                  <button
-                    onClick={() => handleDelete(cat.id)}
-                    className="rounded bg-red-100 p-[5px] text-red-500 ring-red-700 transition duration-300 hover:ring-1"
-                  >
-                    <FiTrash2 />
+                  <button className="rounded bg-red-100 p-[5px] text-red-500 ring-red-700 transition duration-300 hover:ring-1">
+                    <TrashIcon className="h-5 w-5 stroke-[2]" />
                   </button>
                 </td>
               </tr>
@@ -110,7 +96,7 @@ const GeneralFinance = () => {
           <div>{categories.length} Total Records</div>
           <div className="flex gap-2">
             <button className="rounded border px-3 py-1">{"<"}</button>
-            <button className="rounded border bg-teal-600 px-3 py-1 text-white">1</button>
+            <button className="rounded border bg-primary px-3 py-1 text-white">1</button>
             <button className="rounded border px-3 py-1">{">"}</button>
           </div>
         </div>

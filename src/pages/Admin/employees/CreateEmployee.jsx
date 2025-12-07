@@ -647,7 +647,7 @@ const CreateEmployee = () => {
             <div>
               <button
                 type="submit"
-                className="w-full rounded-md bg-green-600 py-3 text-white transition hover:bg-green-700"
+                className="w-full rounded-md bg-primary py-3 text-white transition hover:bg-primary/80"
               >
                 Create Employee
               </button>

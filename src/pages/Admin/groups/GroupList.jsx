@@ -264,66 +264,74 @@ const GroupList = () => {
         </button>
       </div>
 
-      {/* ------------------ TABLE ------------------ */}
-      <div className="rounded-lg bg-white shadow-lg">
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-dashed divide-gray-400/60">
-            <thead>
-              <tr>
-                {["name", "type", "members", "status"].map((field) => (
-                  <th
-                    key={field}
-                    className="cursor-pointer px-6 py-3 text-left text-sm font-bold text-gray-700"
-                    onClick={() => handleSort(field)}
-                  >
-                    {field.charAt(0).toUpperCase() + field.slice(1)}
-                    {sortField === field ? (sortOrder === "asc" ? " 🔼" : " 🔽") : ""}
-                  </th>
-                ))}
-                <th className="px-6 py-3 text-right text-sm font-bold text-gray-700">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-dashed divide-gray-400/60">
-              {paginatedGroups.map((group) => (
-                <tr key={group.id} className="odd:bg-slate-100 even:bg-white">
-                  <td className="px-6 py-3 font-normal text-gray-600">{group.name}</td>
-                  <td className="px-6 py-3 font-normal text-gray-600">{group.type}</td>
-                  <td className="px-6 py-3 font-normal text-gray-600">{group.members}</td>
-                  <td className="px-6 py-3">
-                    <span
-                      className={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${
-                        group.status === "Active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-                      }`}
-                    >
-                      {group.status}
-                    </span>
-                  </td>
-                  <td className="flex justify-end gap-2 px-6 py-3 text-right">
-                    <Link
-                      to={`/admin/groups/group-list/group-details/${group.id}`}
-                      className="rounded bg-blue-100 p-[5px] text-blue-500 ring-blue-700 transition duration-300 hover:ring-1"
-                    >
-                      <EyeIcon className="h-5 w-5 stroke-[2]" />
-                    </Link>
-                    <Link
-                      to={`/admin/groups/edit-group/${group.id}`}
-                      className="rounded bg-green-100 p-[5px] text-green-500 ring-green-700 transition duration-300 hover:ring-1"
-                    >
-                      <PencilSquareIcon className="h-5 w-5 stroke-[2]" />
-                    </Link>
-                  </td>
-                </tr>
-              ))}
+      {/* ------------------ CARD GRID ------------------ */}
+      <div>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {paginatedGroups.map((group) => (
+            <div
+              key={group.id}
+              className="relative overflow-hidden rounded-xl p-5 text-white shadow-md"
+              style={{ backgroundColor: group.color }}
+            >
+              {/* Title */}
+              <div className="flex justify-between">
+                <div>
+                  <h2 className="text-xl font-semibold">{group.name}</h2>
+                  <p className="text-sm opacity-80">{group.type}</p>
+                  <p className="mt-1 text-sm opacity-80">{group.members} Students</p>
+                </div>
 
-              {paginatedGroups.length === 0 && (
-                <tr>
-                  <td colSpan="5" className="py-6 text-center text-gray-500">
-                    No groups found.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                {/* Big Number Circle */}
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/20 text-lg font-bold">
+                  {String(group.id).padStart(2, "0")}
+                </div>
+              </div>
+
+              {/* Avatar list (dummy images) */}
+              <div className="mt-4 flex items-center">
+                <img
+                  src="https://i.pravatar.cc/40?img=1"
+                  alt="avatar"
+                  className="-ml-0 h-8 w-8 rounded-full border-2 border-white"
+                />
+                <img
+                  src="https://i.pravatar.cc/40?img=2"
+                  alt="avatar"
+                  className="-ml-3 h-8 w-8 rounded-full border-2 border-white"
+                />
+                <img
+                  src="https://i.pravatar.cc/40?img=3"
+                  alt="avatar"
+                  className="-ml-3 h-8 w-8 rounded-full border-2 border-white"
+                />
+
+                <span className="ml-2 rounded-full bg-white/20 px-2 py-1 text-sm font-semibold">
+                  {group.members}+
+                </span>
+              </div>
+
+              {/* Actions */}
+              <div className="absolute bottom-3 right-3 flex gap-2">
+                <Link
+                  to={`/admin/groups/group-list/group-details/${group.id}`}
+                  className="rounded-lg bg-white/20 p-2 hover:bg-white/30"
+                >
+                  <EyeIcon className="h-5 w-5 text-white" />
+                </Link>
+
+                <Link
+                  to={`/admin/groups/edit-group/${group.id}`}
+                  className="rounded-lg bg-white/20 p-2 hover:bg-white/30"
+                >
+                  <PencilSquareIcon className="h-5 w-5 text-white" />
+                </Link>
+              </div>
+            </div>
+          ))}
+
+          {paginatedGroups.length === 0 && (
+            <p className="col-span-full text-center text-gray-500">No groups found.</p>
+          )}
         </div>
 
         {/* ------------------ PAGINATION ------------------ */}

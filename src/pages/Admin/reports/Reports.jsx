@@ -1,4 +1,4 @@
-import { BanknotesIcon } from "@heroicons/react/24/outline";
+import { BanknotesIcon, ChartBarIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
@@ -10,9 +10,23 @@ export default function Reports() {
 
   return (
     <div className="w-full space-y-6 p-6">
+      {/* Header */}
       <div className="mb-6 flex flex-wrap items-end justify-between">
         <div aria-label="Breadcrumb">
-          <h1 className="text-primaryFont mb-1 text-2xl font-bold">Reports</h1>
+          <h1 className="text-2xl font-bold text-primaryFont">All Reports</h1>
+          <nav className="flex" aria-label="Breadcrumb">
+            <ol className="inline-flex items-center space-x-2">
+              <li className="inline-flex items-center">
+                <div className="flex items-center text-sm font-semibold text-black">
+                  <ChartBarIcon className="h-4 w-4 stroke-[2]" /> <h5>Reports</h5>
+                </div>
+              </li>
+              <span className="text-xs text-gray-500">/</span>
+              <li aria-current="page">
+                <span className="text-sm font-semibold text-primary">All Reports</span>
+              </li>
+            </ol>
+          </nav>
         </div>
       </div>
 

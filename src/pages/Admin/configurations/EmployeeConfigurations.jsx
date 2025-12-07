@@ -1,4 +1,4 @@
-import { ClipboardDocumentListIcon } from "@heroicons/react/24/outline";
+import { ClipboardDocumentListIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 import { FiEdit, FiPlus, FiTrash2 } from "react-icons/fi";
 
@@ -140,15 +140,15 @@ const EmployeeConfigurations = () => {
                       setEditDocument(doc);
                       setModalOpen(true);
                     }}
-                    className="rounded bg-blue-100 p-[5px] text-blue-500 ring-blue-700 transition duration-300 hover:ring-1"
+                    className="rounded bg-green-100 p-[5px] text-green-500 ring-green-700 transition duration-300 hover:ring-1"
                   >
-                    <FiEdit />
+                    <PencilSquareIcon className="h-5 w-5 stroke-[2]" />
                   </button>
                   <button
                     onClick={() => handleDelete(doc.id)}
                     className="rounded bg-red-100 p-[5px] text-red-500 ring-red-700 transition duration-300 hover:ring-1"
                   >
-                    <FiTrash2 />
+                    <TrashIcon className="h-5 w-5 stroke-[2]" />
                   </button>
                 </td>
               </tr>
@@ -161,7 +161,7 @@ const EmployeeConfigurations = () => {
           <div>{documents.length} Total Records</div>
           <div className="flex gap-2">
             <button className="rounded border px-3 py-1">{"<"}</button>
-            <button className="rounded border bg-teal-600 px-3 py-1 text-white">1</button>
+            <button className="rounded border bg-primary px-3 py-1 text-white">1</button>
             <button className="rounded border px-3 py-1">{">"}</button>
           </div>
         </div>

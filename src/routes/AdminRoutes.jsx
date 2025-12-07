@@ -1,15 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 
 import AdminLayout from "../layouts/AdminLayout";
-import AnnouncementsIndex from "../pages/admin/communication/announcements";
-import AnnouncementsAdd from "../pages/admin/communication/announcements/AnnouncementsAdd";
-import AnnouncementsAll from "../pages/admin/communication/announcements/AnnouncementsAll";
-import MessagesIndex from "../pages/admin/communication/messages";
-import MessagesCompose from "../pages/admin/communication/messages/MessagesCompose";
-import MessagesInbox from "../pages/admin/communication/messages/MessagesInbox";
-import MessagesSent from "../pages/admin/communication/messages/MessagesSent";
-import NotificationsIndex from "../pages/admin/communication/notifications";
-import Notifications from "../pages/admin/communication/notifications/Notifications";
+import Announcements from "../pages/admin/communication/Announcements";
+import Messages from "../pages/admin/communication/Messages";
+import Notifications from "../pages/admin/communication/Notifications";
 import EmployeeConfigAttendance from "../pages/admin/configurations/AttendanceConfigurations/EmployeeAttendance";
 import Kiosk from "../pages/admin/configurations/AttendanceConfigurations/Kiosk";
 import RatioManagement from "../pages/admin/configurations/AttendanceConfigurations/RatioManagement";
@@ -127,24 +121,9 @@ const AdminRoutes = () => {
           {/* ---------- COMMUNICATION ---------- */}
           <Route path="communication">
             {/* Messages */}
-            <Route path="messages" element={<MessagesIndex />}>
-              <Route index element={<MessagesInbox />} />
-              <Route path="inbox" element={<MessagesInbox />} />
-              <Route path="sent" element={<MessagesSent />} />
-              <Route path="compose" element={<MessagesCompose />} />
-            </Route>
-
-            {/* Notifications */}
-            <Route path="notifications" element={<NotificationsIndex />}>
-              <Route index element={<Notifications />} />
-            </Route>
-
-            {/* Announcements */}
-            <Route path="announcements" element={<AnnouncementsIndex />}>
-              <Route index element={<AnnouncementsAll />} />
-              <Route path="all" element={<AnnouncementsAll />} />
-              <Route path="add" element={<AnnouncementsAdd />} />
-            </Route>
+            <Route path="messages" element={<Messages />} />
+            <Route path="notifications" element={<Notifications />} />
+            <Route path="announcements" element={<Announcements />} />
           </Route>
 
           {/* ---------- WILDCARD ---------- */}

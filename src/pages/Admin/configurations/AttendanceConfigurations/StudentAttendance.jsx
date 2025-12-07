@@ -1,5 +1,6 @@
 // StudentAttendance.js
 
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 import { FiEdit2, FiPlus, FiTrash2 } from "react-icons/fi";
 
@@ -35,10 +36,8 @@ const StudentAttendance = () => {
 
   const handleSaveReason = (newReason) => {
     if (editData) {
-      // update existing
       setReasons((prev) => prev.map((r) => (r.id === newReason.id ? newReason : r)));
     } else {
-      // add new
       setReasons((prev) => [...prev, newReason]);
     }
   };
@@ -48,14 +47,14 @@ const StudentAttendance = () => {
   };
 
   return (
-    <div className="w-full space-y-8 rounded-lg bg-white p-6 shadow-md">
-      <h1 className="text-xl font-semibold text-gray-800">Student Attendance Settings</h1>
+    <div className="min-h-screen space-y-6 bg-secondary p-6">
+      <h1 className="text-2xl font-bold text-gray-800">Student Attendance Settings</h1>
 
-      {/* Attendance Mode */}
-      <div className="space-y-3">
-        <h2 className="font-semibold text-gray-800">Attendance Mode</h2>
+      {/* Attendance Mode Card */}
+      <div className="space-y-4 rounded-xl bg-white p-6 shadow-lg">
+        <h2 className="text-lg font-semibold text-gray-800">Attendance Mode</h2>
 
-        <div className="flex gap-4">
+        <div className="flex flex-col gap-4 md:flex-row md:gap-6">
           <label className="flex items-center gap-2">
             <input
               type="radio"
@@ -80,8 +79,8 @@ const StudentAttendance = () => {
         </div>
       </div>
 
-      {/* Auto Checkout */}
-      <div className="space-y-3">
+      {/* Auto Checkout Card */}
+      <div className="space-y-4 rounded-xl bg-white p-6 shadow-lg">
         <label className="flex items-center gap-2">
           <input
             type="checkbox"
@@ -100,105 +99,88 @@ const StudentAttendance = () => {
             disabled={!autoCheckout}
             value={autoCheckoutInterval}
             onChange={(e) => setAutoCheckoutInterval(Number(e.target.value))}
-            className={`w-full rounded-lg border px-3 py-2 focus:ring-2 focus:ring-teal-600 ${
+            className={`w-full rounded-lg border px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-600 ${
               !autoCheckout && "cursor-not-allowed bg-gray-100"
             }`}
           />
         </div>
       </div>
 
-      {/* Parent Options */}
-      <div className="space-y-3">
-        <h2 className="font-semibold text-gray-800">Parent Options</h2>
+      {/* Parent Options Card */}
+      <div className="space-y-3 rounded-xl bg-white p-6 shadow-lg">
+        <h2 className="text-lg font-semibold text-gray-800">Parent Options</h2>
 
-        <label className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            checked={kioskMode}
-            onChange={() => setKioskMode(!kioskMode)}
-            className="h-5 w-5 text-teal-600"
-          />
-          Kiosk Mode for Parents
-        </label>
-
-        <label className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            checked={requireSignature}
-            onChange={() => setRequireSignature(!requireSignature)}
-            className="h-5 w-5 text-teal-600"
-          />
-          Require Signature from Parents
-        </label>
-
-        <label className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            checked={allowParentsAbsent}
-            onChange={() => setAllowParentsAbsent(!allowParentsAbsent)}
-            className="h-5 w-5 text-teal-600"
-          />
-          Allow Parents to Mark Student Absent
-        </label>
-
-        <label className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            checked={captureReason}
-            onChange={() => setCaptureReason(!captureReason)}
-            className="h-5 w-5 text-teal-600"
-          />
-          Capture Absence Reason
-        </label>
+        {[
+          { label: "Kiosk Mode for Parents", value: kioskMode, setter: setKioskMode },
+          { label: "Require Signature from Parents", value: requireSignature, setter: setRequireSignature },
+          {
+            label: "Allow Parents to Mark Student Absent",
+            value: allowParentsAbsent,
+            setter: setAllowParentsAbsent,
+          },
+          { label: "Capture Absence Reason", value: captureReason, setter: setCaptureReason },
+        ].map((opt, i) => (
+          <label key={i} className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={opt.value}
+              onChange={() => opt.setter(!opt.value)}
+              className="h-5 w-5 text-teal-600"
+            />
+            {opt.label}
+          </label>
+        ))}
       </div>
 
       {/* Reasons Table */}
       {captureReason && (
-        <div className="rounded-lg border bg-white p-4 shadow-sm">
-          <div className="mb-4 flex items-center justify-between">
+        <div className="space-y-4 rounded-xl bg-white p-6 shadow-lg">
+          <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold text-gray-800">Absent Reasons</h2>
-
             <button
               onClick={openAddModal}
-              className="flex items-center gap-2 rounded-lg bg-teal-600 px-4 py-2 text-white hover:bg-teal-700"
+              className="flex items-center justify-center gap-2 rounded border border-primary bg-primary px-5 py-2 font-semibold text-white hover:bg-primary/90"
             >
               <FiPlus /> Add Reason
             </button>
           </div>
 
-          <table className="w-full border text-left">
-            <thead className="bg-teal-600 text-white">
-              <tr>
-                <th className="px-4 py-2">Code</th>
-                <th className="px-4 py-2">English</th>
-                <th className="px-4 py-2">Arabic</th>
-                <th className="px-4 py-2"></th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {reasons.map((r) => (
-                <tr key={r.id} className="border-b">
-                  <td className="px-4 py-2">{r.code}</td>
-                  <td className="px-4 py-2">{r.reasonEn}</td>
-                  <td className="px-4 py-2">{r.reasonAr}</td>
-
-                  <td className="flex gap-3 px-4 py-2">
-                    <button onClick={() => openEditModal(r)} className="text-blue-600 hover:text-blue-800">
-                      <FiEdit2 />
-                    </button>
-
-                    <button
-                      onClick={() => handleDeleteReason(r.id)}
-                      className="text-red-600 hover:text-red-800"
-                    >
-                      <FiTrash2 />
-                    </button>
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse text-left text-sm">
+              <thead>
+                <tr className="bg-gray-100 text-gray-700">
+                  <th className="px-4 py-2">Code</th>
+                  <th className="px-4 py-2">English</th>
+                  <th className="px-4 py-2">Arabic</th>
+                  <th className="px-4 py-2">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+
+              <tbody>
+                {reasons.map((r) => (
+                  <tr key={r.id} className="border-b transition-colors hover:bg-gray-50">
+                    <td className="px-4 py-2">{r.code}</td>
+                    <td className="px-4 py-2">{r.reasonEn}</td>
+                    <td className="px-4 py-2">{r.reasonAr}</td>
+                    <td className="flex gap-3 px-4 py-2">
+                      <button
+                        onClick={() => openEditModal(r)}
+                        className="rounded bg-green-100 p-[5px] text-green-500 ring-green-700 transition duration-300 hover:ring-1"
+                      >
+                        <PencilSquareIcon className="h-5 w-5 stroke-[2]" />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteReason(r.id)}
+                        className="rounded bg-red-100 p-[5px] text-red-500 ring-red-700 transition duration-300 hover:ring-1"
+                      >
+                        <TrashIcon className="h-5 w-5 stroke-[2]" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 

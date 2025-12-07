@@ -1,5 +1,6 @@
 // InvoiceAndPaymentRequests.js
 
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 import { FiEdit, FiPlus, FiTrash2 } from "react-icons/fi";
 
@@ -68,16 +69,16 @@ const InvoiceAndPaymentRequests = () => {
         <div className="mb-4 flex items-center justify-between">
           <h2 className="font-semibold text-gray-700">Invoice Reminders</h2>
           <button
-            className="flex items-center gap-2 rounded-lg bg-teal-600 px-4 py-2 text-white hover:bg-teal-700"
+            className="flex items-center justify-center gap-2 rounded border border-primary bg-primary px-5 py-2 font-semibold text-white hover:bg-primary/90"
             onClick={() => setIsReminderModalOpen(true)}
           >
             <FiPlus /> Add Reminder
           </button>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full border text-left">
-            <thead className="bg-teal-600 text-white">
-              <tr>
+          <table className="w-full border-collapse text-left text-sm">
+            <thead>
+              <tr className="bg-gray-100 text-gray-700">
                 <th className="px-4 py-3">Active</th>
                 <th className="px-4 py-3">Reminder Name</th>
                 <th className="px-4 py-3">Schedule</th>
@@ -99,15 +100,12 @@ const InvoiceAndPaymentRequests = () => {
                   <td className="px-4 py-3">{reminder.name}</td>
                   <td className="px-4 py-3">{reminder.schedule}</td>
                   <td className="px-4 py-3">{reminder.type}</td>
-                  <td className="flex gap-2 px-4 py-3">
-                    <button className="text-blue-600 hover:text-blue-800">
-                      <FiEdit />
+                  <td className="flex gap-2 px-6 py-3">
+                    <button className="rounded bg-green-100 p-[5px] text-green-500 ring-green-700 transition duration-300 hover:ring-1">
+                      <PencilSquareIcon className="h-5 w-5 stroke-[2]" />
                     </button>
-                    <button
-                      onClick={() => handleDelete(reminder.id, "reminder")}
-                      className="text-red-600 hover:text-red-800"
-                    >
-                      <FiTrash2 />
+                    <button className="rounded bg-red-100 p-[5px] text-red-500 ring-red-700 transition duration-300 hover:ring-1">
+                      <TrashIcon className="h-5 w-5 stroke-[2]" />
                     </button>
                   </td>
                 </tr>
@@ -122,16 +120,16 @@ const InvoiceAndPaymentRequests = () => {
         <div className="mb-4 flex items-center justify-between">
           <h2 className="font-semibold text-gray-700">Payment Terms</h2>
           <button
-            className="flex items-center gap-2 rounded-lg bg-teal-600 px-4 py-2 text-white hover:bg-teal-700"
+            className="flex items-center justify-center gap-2 rounded border border-primary bg-primary px-5 py-2 font-semibold text-white hover:bg-primary/90"
             onClick={() => setIsPaymentTermModalOpen(true)}
           >
             <FiPlus /> Add Payment Term
           </button>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full border text-left">
-            <thead className="bg-teal-600 text-white">
-              <tr>
+          <table className="w-full border-collapse text-left text-sm">
+            <thead>
+              <tr className="bg-gray-100 text-gray-700">
                 <th className="px-4 py-3">Active</th>
                 <th className="px-4 py-3">Term Name</th>
                 <th className="px-4 py-3">Due Days</th>
@@ -153,15 +151,12 @@ const InvoiceAndPaymentRequests = () => {
                   <td className="px-4 py-3">{term.name}</td>
                   <td className="px-4 py-3">{term.dueDays}</td>
                   <td className="px-4 py-3">{term.type}</td>
-                  <td className="flex gap-2 px-4 py-3">
-                    <button className="text-blue-600 hover:text-blue-800">
-                      <FiEdit />
+                  <td className="flex gap-2 px-6 py-3">
+                    <button className="rounded bg-green-100 p-[5px] text-green-500 ring-green-700 transition duration-300 hover:ring-1">
+                      <PencilSquareIcon className="h-5 w-5 stroke-[2]" />
                     </button>
-                    <button
-                      onClick={() => handleDelete(term.id, "paymentTerm")}
-                      className="text-red-600 hover:text-red-800"
-                    >
-                      <FiTrash2 />
+                    <button className="rounded bg-red-100 p-[5px] text-red-500 ring-red-700 transition duration-300 hover:ring-1">
+                      <TrashIcon className="h-5 w-5 stroke-[2]" />
                     </button>
                   </td>
                 </tr>
@@ -176,16 +171,16 @@ const InvoiceAndPaymentRequests = () => {
         <div className="mb-4 flex items-center justify-between">
           <h2 className="font-semibold text-gray-700">Discounts</h2>
           <button
-            className="flex items-center gap-2 rounded-lg bg-teal-600 px-4 py-2 text-white hover:bg-teal-700"
+            className="flex items-center justify-center gap-2 rounded border border-primary bg-primary px-5 py-2 font-semibold text-white hover:bg-primary/90"
             onClick={() => setIsDiscountModalOpen(true)}
           >
             <FiPlus /> Add Discount
           </button>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full border text-left">
-            <thead className="bg-teal-600 text-white">
-              <tr>
+          <table className="w-full border-collapse text-left text-sm">
+            <thead>
+              <tr className="bg-gray-100 text-gray-700">
                 <th className="px-4 py-3">Active</th>
                 <th className="px-4 py-3">Discount Name</th>
                 <th className="px-4 py-3">Percentage</th>
@@ -207,15 +202,12 @@ const InvoiceAndPaymentRequests = () => {
                   <td className="px-4 py-3">{discount.name}</td>
                   <td className="px-4 py-3">{discount.percentage}%</td>
                   <td className="px-4 py-3">{discount.type}</td>
-                  <td className="flex gap-2 px-4 py-3">
-                    <button className="text-blue-600 hover:text-blue-800">
-                      <FiEdit />
+                  <td className="flex gap-2 px-6 py-3">
+                    <button className="rounded bg-green-100 p-[5px] text-green-500 ring-green-700 transition duration-300 hover:ring-1">
+                      <PencilSquareIcon className="h-5 w-5 stroke-[2]" />
                     </button>
-                    <button
-                      onClick={() => handleDelete(discount.id, "discount")}
-                      className="text-red-600 hover:text-red-800"
-                    >
-                      <FiTrash2 />
+                    <button className="rounded bg-red-100 p-[5px] text-red-500 ring-red-700 transition duration-300 hover:ring-1">
+                      <TrashIcon className="h-5 w-5 stroke-[2]" />
                     </button>
                   </td>
                 </tr>
