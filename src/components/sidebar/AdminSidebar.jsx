@@ -8,22 +8,21 @@ const AdminSidebar = ({ collapsed }) => {
   const [openMenu, setOpenMenu] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [openSubMenu, setOpenSubMenu] = useState(null);
+  const [hovered, setHovered] = useState(false); // <-- New state
   const location = useLocation();
   const navigate = useNavigate();
 
-  const handleNavigate = (path) => {
-    navigate(path);
-  };
+  const handleNavigate = (path) => navigate(path);
 
   const isActive = (item) => {
     if (item.subMenu) {
       return item.subMenu.some(
         (sub) =>
-          location.pathname === sub.path ||
-          (sub.subMenu && sub.subMenu.some((ss) => location.pathname === ss.path))
+          location.pathname.startsWith(sub.path) ||
+          (sub.subMenu && sub.subMenu.some((ss) => location.pathname.startsWith(ss.path)))
       );
     }
-    return location.pathname === item.path;
+    return location.pathname.startsWith(item.path);
   };
 
   const toggleSubmenu = (title) => {
@@ -31,20 +30,22 @@ const AdminSidebar = ({ collapsed }) => {
     setOpenSubMenu(null);
   };
 
-  const toggleSubSubmenu = (title) => {
-    setOpenSubMenu((prev) => (prev === title ? null : title));
-  };
+  const toggleSubSubmenu = (title) => setOpenSubMenu((prev) => (prev === title ? null : title));
+
+  const isCollapsed = collapsed && !hovered; // <-- Collapsed only if not hovered
 
   return (
     <div
+      onMouseEnter={() => setHovered(true)} // <-- Expand on hover
+      onMouseLeave={() => setHovered(false)} // <-- Collapse when hover ends
       className={`flex h-screen flex-col bg-white shadow-lg transition-all duration-300 ${
-        collapsed ? "w-16" : "w-72"
+        isCollapsed ? "w-20" : "w-72"
       }`}
     >
       {/* Top bar */}
-      <div className="flex flex-shrink-0 items-center justify-between border-b border-r border-b-primary/20 px-4 py-[20.9px]">
-        <span className={`text-lg font-bold ${collapsed ? "hidden" : "block"}`}>
-          <img src="/assets/1.png" alt="User Avatar" className="w-44 object-cover" />
+      <div className="flex flex-shrink-0 items-center justify-between border-b border-r border-b-primary/20 px-4 py-[4px]">
+        <span className={`text-lg font-bold ${isCollapsed ? "hidden" : "block"}`}>
+          <img src="/assets/1.png" alt="User Avatar" className="w-40 object-cover" />
         </span>
       </div>
 
@@ -53,22 +54,21 @@ const AdminSidebar = ({ collapsed }) => {
         <button className="flex w-full items-center gap-3" onClick={() => setMenuOpen((prev) => !prev)}>
           <img src="/assets/wa.png" alt="User Avatar" className="h-11 w-11 rounded-xl border object-cover" />
 
-          {!collapsed && (
+          {!isCollapsed && (
             <div className="flex-1 text-left">
-              <p className="text-lg font-semibold text-primary">John Doe</p>
+              <p className="text-lg text-sm font-semibold text-primary">John Doe</p>
               <p className="text-xs text-gray-500">Administrator</p>
             </div>
           )}
 
-          {!collapsed && (
+          {!isCollapsed && (
             <Cog8ToothIcon
               className={`h-5 w-5 stroke-[2] transition-transform ${menuOpen ? "rotate-180" : "rotate-0"}`}
             />
           )}
         </button>
 
-        {/* Dropdown Menu */}
-        {menuOpen && !collapsed && (
+        {menuOpen && !isCollapsed && (
           <div className="absolute right-0 z-50 mt-2 w-40 rounded-lg border bg-white py-2 shadow-lg">
             <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100">Profile</button>
             <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100">Settings</button>
@@ -87,24 +87,22 @@ const AdminSidebar = ({ collapsed }) => {
 
           return (
             <div key={item.title}>
-              {/* Parent menu */}
               <div
                 onClick={() => {
-                  if (item.subMenu) {
-                    toggleSubmenu(item.title);
-                  } else {
-                    handleNavigate(item.path);
-                  }
+                  if (item.subMenu) toggleSubmenu(item.title);
+                  else handleNavigate(item.path);
                 }}
-                className={`flex cursor-pointer items-center justify-between rounded-lg px-4 py-3 transition ${
+                className={`flex cursor-pointer items-center ${isCollapsed ? "justify-center" : "justify-between"} rounded-lg px-3 py-3 transition ${
                   active || isSubmenuOpen ? "bg-primary font-bold text-white" : "font-semibold"
-                } `}
+                }`}
               >
                 <div className="flex items-center">
-                  <item.icon className="mr-2 h-[21px] w-[21px] stroke-[2]" />
-                  {!collapsed && <span>{item.title}</span>}
+                  <item.icon
+                    className={` ${isCollapsed ? "mr-0" : "mr-[5px]"} h-[21px] w-[21px] stroke-[2]`}
+                  />
+                  {!isCollapsed && <span>{item.title}</span>}
                 </div>
-                {!collapsed && item.subMenu && (
+                {!isCollapsed && item.subMenu && (
                   <span>
                     {isSubmenuOpen ? (
                       <ChevronUpIcon className="h-3 w-3 stroke-[3]" />
@@ -115,8 +113,7 @@ const AdminSidebar = ({ collapsed }) => {
                 )}
               </div>
 
-              {/* Submenu items */}
-              {item.subMenu && isSubmenuOpen && !collapsed && (
+              {item.subMenu && isSubmenuOpen && !isCollapsed && (
                 <div className="ml-2 mt-1">
                   {item.subMenu.map((sub) => {
                     const isSubSubmenuOpen = openSubMenu === sub.title;
@@ -124,17 +121,18 @@ const AdminSidebar = ({ collapsed }) => {
 
                     return (
                       <div key={sub.title}>
-                        {/* Submenu item */}
                         <div
                           onClick={() => {
                             if (hasSubSubmenu) toggleSubSubmenu(sub.title);
                             else handleNavigate(sub.path);
                           }}
                           className={`relative flex cursor-pointer items-center px-4 py-2 transition ${
-                            location.pathname === sub.path ? "font-semibold text-primary" : "text-gray-600"
+                            location.pathname.startsWith(sub.path)
+                              ? "font-semibold text-primary"
+                              : "text-gray-600"
                           }`}
                         >
-                          {location.pathname === sub.path && (
+                          {location.pathname.startsWith(sub.path) && (
                             <span className="absolute left-0 h-7 w-1 rounded bg-primary"></span>
                           )}
                           <span>{sub.title}</span>
@@ -149,7 +147,6 @@ const AdminSidebar = ({ collapsed }) => {
                           )}
                         </div>
 
-                        {/* Sub-submenu items */}
                         {hasSubSubmenu && isSubSubmenuOpen && (
                           <div className="ml-6 mt-1">
                             {sub.subMenu.map((ss) => (

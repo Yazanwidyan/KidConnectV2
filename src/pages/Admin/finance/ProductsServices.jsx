@@ -104,17 +104,17 @@ const ProductsServices = () => {
       {/* Header */}
       <div className="mb-6 flex flex-wrap items-center justify-between">
         <div aria-label="Breadcrumb">
-          <h1 className="text-primaryFont mb-1 text-2xl font-bold">Products & Services</h1>
+          <h1 className="text-2xl font-bold text-primaryFont">Products & Services</h1>
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="inline-flex items-center space-x-2">
               <li className="inline-flex items-center">
-                <div className="flex items-center gap-1 font-semibold text-black">
+                <div className="flex items-center text-sm font-semibold text-black">
                   <BanknotesIcon className="h-4 w-4 stroke-[2]" /> <h5>Finance</h5>
                 </div>
               </li>
-              <span>/</span>
+              <span className="text-xs text-gray-500">/</span>
               <li aria-current="page">
-                <span className="font-semibold text-primary">Products & Services</span>
+                <span className="text-sm font-semibold text-primary">Products & Services</span>
               </li>
             </ol>
           </nav>

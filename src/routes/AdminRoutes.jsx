@@ -63,7 +63,7 @@ const AdminRoutes = () => {
             <Route path="create-group" element={<CreateGroup />} />
             <Route path="edit-group/:id" element={<EditGroup />} />
             <Route path="group-list" element={<GroupList />} />
-            <Route path="group-details/:id" element={<GroupDetails />} />
+            <Route path="group-list/group-details/:id" element={<GroupDetails />} />
           </Route>
 
           {/* ---------- STUDENTS ---------- */}

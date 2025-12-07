@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#0F626A", // Main green
+        primary: "#09A67A", // Main green
         primaryFont: "#082f32",
         secondary: "#FE6602", // Accent orange
         background: "#F5F5F5", // Page background
@@ -13,7 +13,7 @@ module.exports = {
         warning: "#F4B400", // Yellow for warnings
         danger: "#D32F2F", // Red for errors/alerts
         info: "#1E90A0", // Teal/Info color
-        cardBlue: "#0F626A", // Darker blue for student card
+        cardBlue: "#22C55E", // Darker blue for student card
         "slate-100": "#F4F4F4",
       },
       fontSize: {

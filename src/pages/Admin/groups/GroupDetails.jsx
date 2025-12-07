@@ -1,13 +1,17 @@
-// pages/admin/groups/GroupDetailsPage.jsx
+// Improved GroupDetailsPage.jsx — Cleaner, Better Layout for Group Details
+// Responsive, structured, and visually aligned with EmployeeList design
 
+import { UserPlusIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 import { FaArrowLeft, FaTrash, FaUserPlus } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import Select from "react-select";
 
 import Modal from "../../../components/Modal";
+import AssignStaffModal from "./modals/AssignStaffModal";
+import AssignStudentsModal from "./modals/AssignStudentsModal";
 
-// Sample data
+// Sample Data
 const groupsData = [
   {
     id: 1,
@@ -54,170 +58,187 @@ const GroupDetailsPage = () => {
   const staffOptions = allStaff.map((s) => ({ value: s.id, label: s.name }));
 
   return (
-    <div className="w-full space-y-6 p-6">
+    <div className="w-full p-6">
       {/* Header */}
-      <div className="flex items-center gap-2">
-        <Link
-          to="/admin/groups/group-list"
-          className="flex items-center gap-2 font-semibold text-blue-600 hover:underline"
-        >
-          <FaArrowLeft /> Back to Groups
-        </Link>
+      <div className="mb-6 flex items-center gap-2">
+        <div aria-label="Breadcrumb">
+          <h1 className="text-2xl font-bold text-primaryFont">{group.groupName}</h1>
+          <Link
+            to="/admin/groups/group-list"
+            className="flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
+          >
+            <FaArrowLeft /> Back to Groups
+          </Link>
+        </div>
       </div>
 
-      {/* Group Info Card */}
-      <div className="flex flex-col gap-6 rounded-lg bg-white p-6 shadow md:flex-row">
-        {/* Image */}
-        {group.groupImage ? (
-          <img
-            src={group.groupImage}
-            alt={group.groupName}
-            className="h-32 w-32 rounded object-cover shadow-lg"
-          />
-        ) : (
-          <div
-            className="flex h-32 w-32 items-center justify-center rounded text-3xl font-bold text-white shadow"
-            style={{ backgroundColor: group.groupColor }}
-          >
-            {group.groupName[0]}
-          </div>
-        )}
-
-        {/* Details */}
-        <div className="flex-1 space-y-2">
-          <h2 className="text-2xl font-bold text-gray-800">{group.groupName}</h2>
-          <div className="mt-2 flex flex-wrap items-center gap-4">
-            <span className="font-medium">Type:</span> {group.groupType}
-            <span className="font-medium">Status:</span>
-            <span
-              className={`rounded-full px-2 py-1 ${
-                group.status === "Active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-              }`}
+      {/* Main Content Split */}
+      <div className="flex flex-col gap-6 lg:flex-row">
+        {/* Left Panel — Group Info */}
+        <div className="w-full rounded-lg bg-white p-6 shadow-lg lg:w-1/3">
+          {/* Image */}
+          {group.groupImage ? (
+            <img
+              src={group.groupImage}
+              alt={group.groupName}
+              className="mx-auto mb-4 h-32 w-32 rounded object-cover shadow-lg"
+            />
+          ) : (
+            <div
+              className="mx-auto mb-4 flex h-32 w-32 items-center justify-center rounded text-4xl font-bold text-white shadow"
+              style={{ backgroundColor: group.groupColor }}
             >
-              {group.status}
-            </span>
-            <span className="font-medium">Color:</span>
-            <div className="h-6 w-6 rounded" style={{ backgroundColor: group.groupColor }}></div>
+              {group.groupName[0]}
+            </div>
+          )}
+
+          <h2 className="mb-4 text-center text-xl font-bold text-gray-800">{group.groupName}</h2>
+
+          <div className="space-y-4 text-gray-700">
+            {/* Additional Stats */}
+            <div className="flex justify-between">
+              <span className="font-semibold">Total Students:</span>
+              <span>{group.students.length}</span>
+            </div>
+
+            <div className="flex justify-between">
+              <span className="font-semibold">Total Staff:</span>
+              <span>{group.staff.length}</span>
+            </div>
+
+            <div className="flex justify-between">
+              <span className="font-semibold">Created On:</span>
+              <span>12 Jan 2025</span>
+            </div>
+
+            <div className="flex justify-between">
+              <span className="font-semibold">Last Updated:</span>
+              <span>02 Feb 2025</span>
+            </div>
+
+            <div className="border-b border-dashed pb-2"></div>
+            <div className="flex justify-between">
+              <span className="font-semibold">Type:</span>
+              <span>{group.groupType}</span>
+            </div>
+
+            <div className="flex justify-between">
+              <span className="font-semibold">Status:</span>
+              <span
+                className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                  group.status === "Active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+                }`}
+              >
+                {group.status}
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <span className="font-semibold">Color:</span>
+              <div className="h-6 w-6 rounded" style={{ backgroundColor: group.groupColor }}></div>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Students Section */}
-      <div className="rounded-lg bg-white p-6 shadow">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-lg font-semibold">Students</h3>
-          <button
-            className="flex items-center gap-2 rounded bg-blue-600 px-3 py-1 text-white hover:bg-blue-700"
-            onClick={() => setShowStudentModal(true)}
-          >
-            <FaUserPlus /> Add Students
-          </button>
-        </div>
-        <table className="w-full divide-y divide-gray-200 text-left">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="px-4 py-2">#</th>
-              <th className="px-4 py-2">Name</th>
-              <th className="px-4 py-2">Role</th>
-              <th className="px-4 py-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200">
-            {group.students.map((s, idx) => (
-              <tr key={s.id} className="transition hover:bg-gray-50">
-                <td className="px-4 py-2">{idx + 1}</td>
-                <td className="px-4 py-2">{s.name}</td>
-                <td className="px-4 py-2">{s.role}</td>
-                <td className="px-4 py-2">
-                  <button className="text-red-600 hover:text-red-800">
-                    <FaTrash />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+        {/* Right Panel — Students + Staff */}
+        <div className="flex w-full flex-col gap-6 lg:w-2/3">
+          {/* Staff Section */}
+          <div className="rounded-lg bg-white shadow-lg">
+            <div className="mb-4 flex items-center justify-between p-6">
+              <h3 className="text-lg font-semibold">Staff</h3>
+              <button
+                className="flex items-center gap-2 rounded bg-primary px-4 py-2 font-semibold text-white hover:bg-primary/90"
+                onClick={() => setShowStaffModal(true)}
+              >
+                <UserPlusIcon className="h-5 w-5 stroke-[2]" /> Assign Staff
+              </button>
+            </div>
 
-      {/* Staff Section */}
-      <div className="rounded-lg bg-white p-6 shadow">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-lg font-semibold">Staff</h3>
-          <button
-            className="flex items-center gap-2 rounded bg-purple-600 px-3 py-1 text-white hover:bg-purple-700"
-            onClick={() => setShowStaffModal(true)}
-          >
-            <FaUserPlus /> Add Staff
-          </button>
+            <div className="overflow-hidden rounded-b-lg">
+              <table className="min-w-full divide-y divide-dashed divide-gray-400/60">
+                <thead className="bg-gray-50">
+                  <tr>
+                    {["#", "Name", "Role", "Actions"].map((col) => (
+                      <th key={col} className="px-6 py-3 text-left text-sm font-bold text-gray-700">
+                        {col}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-dashed divide-gray-400/60">
+                  {group.staff.map((s, idx) => (
+                    <tr key={s.id} className="transition odd:bg-slate-100 even:bg-white hover:bg-gray-50">
+                      <td className="px-6 py-3">{idx + 1}</td>
+                      <td className="px-6 py-3">{s.name}</td>
+                      <td className="px-6 py-3">{s.role}</td>
+                      <td className="px-6 py-3">
+                        <button className="rounded bg-red-100 p-2 text-red-600 ring-red-700 transition hover:ring-1">
+                          <FaTrash />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          {/* Students Section */}
+          <div className="rounded-lg bg-white shadow-lg">
+            <div className="mb-4 flex items-center justify-between p-6">
+              <h3 className="text-lg font-semibold">Students</h3>
+              <button
+                className="flex items-center gap-2 rounded bg-primary px-4 py-2 font-semibold text-white hover:bg-primary/90"
+                onClick={() => setShowStudentModal(true)}
+              >
+                <UserPlusIcon className="h-5 w-5 stroke-[2]" /> Assign Students
+              </button>
+            </div>
+
+            <div className="overflow-hidden rounded-b-lg">
+              <table className="min-w-full divide-y divide-dashed divide-gray-400/60">
+                <thead className="bg-gray-50">
+                  <tr>
+                    {["#", "Name", "Role", "Actions"].map((col) => (
+                      <th key={col} className="px-6 py-3 text-left text-sm font-bold text-gray-700">
+                        {col}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-dashed divide-gray-400/60">
+                  {group.students.map((s, idx) => (
+                    <tr key={s.id} className="transition odd:bg-slate-100 even:bg-white hover:bg-gray-50">
+                      <td className="px-6 py-3">{idx + 1}</td>
+                      <td className="px-6 py-3">{s.name}</td>
+                      <td className="px-6 py-3">{s.role}</td>
+                      <td className="px-6 py-3">
+                        <button className="rounded bg-red-100 p-2 text-red-600 ring-red-700 transition hover:ring-1">
+                          <FaTrash />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
-        <table className="w-full divide-y divide-gray-200 text-left">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="px-4 py-2">#</th>
-              <th className="px-4 py-2">Name</th>
-              <th className="px-4 py-2">Role</th>
-              <th className="px-4 py-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200">
-            {group.staff.map((s, idx) => (
-              <tr key={s.id} className="transition hover:bg-gray-50">
-                <td className="px-4 py-2">{idx + 1}</td>
-                <td className="px-4 py-2">{s.name}</td>
-                <td className="px-4 py-2">{s.role}</td>
-                <td className="px-4 py-2">
-                  <button className="text-red-600 hover:text-red-800">
-                    <FaTrash />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
       </div>
 
       {/* Student Modal */}
       {showStudentModal && (
-        <Modal title="Assign Students" onClose={() => setShowStudentModal(false)}>
-          <Select
-            options={studentOptions}
-            isMulti
-            placeholder="Select students..."
-            onChange={(selected) => setSelectedStudents(selected)}
-            className="mb-4"
-          />
-          <button
-            className="w-full rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-            onClick={() => {
-              alert(`Assigned ${selectedStudents.map((s) => s.label).join(", ")}`);
-              setShowStudentModal(false);
-            }}
-          >
-            Assign Selected
-          </button>
-        </Modal>
+        <AssignStudentsModal
+          onClose={() => setShowStudentModal(false)}
+          // onAssign={(selected) => handleAssignStaff(selected)}
+        />
       )}
 
       {/* Staff Modal */}
       {showStaffModal && (
-        <Modal title="Assign Staff" onClose={() => setShowStaffModal(false)}>
-          <Select
-            options={staffOptions}
-            isMulti
-            placeholder="Select staff..."
-            onChange={(selected) => setSelectedStaff(selected)}
-            className="mb-4"
-          />
-          <button
-            className="w-full rounded bg-purple-600 px-4 py-2 text-white hover:bg-purple-700"
-            onClick={() => {
-              alert(`Assigned ${selectedStaff.map((s) => s.label).join(", ")}`);
-              setShowStaffModal(false);
-            }}
-          >
-            Assign Selected
-          </button>
-        </Modal>
+        <AssignStaffModal
+          onClose={() => setShowStaffModal(false)}
+          // onAssign={(selected) => handleAssignStaff(selected)}
+        />
       )}
     </div>
   );

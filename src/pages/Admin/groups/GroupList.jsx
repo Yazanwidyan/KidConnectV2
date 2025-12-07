@@ -1,17 +1,8 @@
-import {
-  EyeDropperIcon,
-  EyeIcon,
-  PencilSquareIcon,
-  UserGroupIcon,
-  ViewfinderCircleIcon,
-} from "@heroicons/react/24/outline";
+import { ChevronDownIcon, EyeIcon, PencilSquareIcon, UserGroupIcon } from "@heroicons/react/24/outline";
 import React, { useMemo, useState } from "react";
-import { FaEdit, FaEye } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const GroupList = () => {
-  const navigate = useNavigate();
-
   const [groups, setGroups] = useState([
     {
       id: 1,
@@ -105,11 +96,19 @@ const GroupList = () => {
     },
   ]);
 
-  // ------------------ FILTER STATE ------------------
+  // ------------------ FILTER INPUT STATE ------------------
   const [filterGroupName, setFilterGroupName] = useState("");
   const [filterStaffName, setFilterStaffName] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
   const [filterType, setFilterType] = useState("");
+
+  // ------------------ APPLIED FILTERS ------------------
+  const [appliedFilters, setAppliedFilters] = useState({
+    GroupName: "",
+    StaffName: "",
+    FilterStatus: "",
+    FilterType: "",
+  });
 
   // ------------------ SORT STATE ------------------
   const [sortField, setSortField] = useState("");
@@ -123,10 +122,10 @@ const GroupList = () => {
   const filteredGroups = useMemo(() => {
     let data = groups.filter(
       (g) =>
-        g.name.toLowerCase().includes(filterGroupName.toLowerCase()) &&
-        g.staffName.toLowerCase().includes(filterStaffName.toLowerCase()) &&
-        (filterStatus ? g.status === filterStatus : true) &&
-        (filterType ? g.type === filterType : true)
+        g.name.toLowerCase().includes(appliedFilters.GroupName.toLowerCase()) &&
+        g.staffName.toLowerCase().includes(appliedFilters.StaffName.toLowerCase()) &&
+        (appliedFilters.FilterStatus ? g.status === appliedFilters.FilterStatus : true) &&
+        (appliedFilters.FilterType ? g.type === appliedFilters.FilterType : true)
     );
 
     if (sortField) {
@@ -138,7 +137,7 @@ const GroupList = () => {
     }
 
     return data;
-  }, [groups, filterGroupName, filterStaffName, filterStatus, filterType, sortField, sortOrder]);
+  }, [groups, appliedFilters, sortField, sortOrder]);
 
   // ------------------ PAGINATION LOGIC ------------------
   const totalPages = Math.ceil(filteredGroups.length / rowsPerPage);
@@ -152,11 +151,27 @@ const GroupList = () => {
     setSortOrder(order);
   };
 
+  const applyFilters = () => {
+    setAppliedFilters({
+      GroupName: filterGroupName,
+      StaffName: filterStaffName,
+      FilterStatus: filterStatus,
+      FilterType: filterType,
+    });
+    setCurrentPage(1);
+  };
+
   const resetFilters = () => {
     setFilterGroupName("");
     setFilterStaffName("");
     setFilterStatus("");
     setFilterType("");
+    setAppliedFilters({
+      GroupName: "",
+      StaffName: "",
+      FilterStatus: "",
+      FilterType: "",
+    });
     setCurrentPage(1);
   };
 
@@ -166,17 +181,17 @@ const GroupList = () => {
     <div className="w-full p-6">
       <div className="mb-6 flex flex-wrap items-end justify-between">
         <div aria-label="Breadcrumb">
-          <h1 className="text-primaryFont mb-1 text-2xl font-bold">Groups List</h1>
+          <h1 className="text-2xl font-bold text-primaryFont">Groups List</h1>
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="inline-flex items-center space-x-2">
               <li className="inline-flex items-center">
-                <div className="flex items-center gap-1 font-semibold text-black">
+                <div className="flex items-center text-sm font-semibold text-black">
                   <UserGroupIcon className="h-4 w-4 stroke-[2]" /> <h5>Groups</h5>
                 </div>
               </li>
-              <span>/</span>
+              <span className="text-xs text-gray-500">/</span>
               <li aria-current="page">
-                <span className="font-semibold text-primary">Groups List</span>
+                <span className="text-sm font-semibold text-primary">Groups List</span>
               </li>
             </ol>
           </nav>
@@ -190,6 +205,7 @@ const GroupList = () => {
           </Link>
         </div>
       </div>
+
       {/* ------------------ FILTERS ------------------ */}
       <div className="mb-6 flex flex-wrap items-center gap-2 rounded-lg bg-white p-6 shadow-lg">
         <input
@@ -197,46 +213,59 @@ const GroupList = () => {
           placeholder="Group Name"
           value={filterGroupName}
           onChange={(e) => setFilterGroupName(e.target.value)}
-          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
+          className="w-40 rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-primary focus:ring-4 focus:ring-primary/20"
         />
         <input
           type="text"
           placeholder="Staff Name"
           value={filterStaffName}
           onChange={(e) => setFilterStaffName(e.target.value)}
-          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
+          className="w-40 rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-primary focus:ring-4 focus:ring-primary/20"
         />
-        <select
-          value={filterStatus}
-          onChange={(e) => setFilterStatus(e.target.value)}
-          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
+        <div className="relative w-32">
+          <select
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+            className="w-full appearance-none rounded-lg border border-gray-300 px-3 py-2 pr-10 outline-none focus:border-primary focus:ring-4 focus:ring-primary/20"
+          >
+            <option value="">All Status</option>
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+          <ChevronDownIcon className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 stroke-[2] text-gray-500" />
+        </div>
+        <div className="relative w-32">
+          <select
+            value={filterType}
+            onChange={(e) => setFilterType(e.target.value)}
+            className="w-full appearance-none rounded-lg border border-gray-300 px-3 py-2 pr-10 outline-none focus:border-primary focus:ring-4 focus:ring-primary/20"
+          >
+            <option value="">All Types</option>
+            {uniqueTypes.map((t) => (
+              <option key={t} value={t}>
+                {t}
+              </option>
+            ))}
+          </select>
+          <ChevronDownIcon className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 stroke-[2] text-gray-500" />
+        </div>
+
+        <button
+          onClick={applyFilters}
+          className="ml-auto rounded bg-green-100 px-4 py-2 text-green-500 ring-green-700 transition duration-300 hover:ring-1"
         >
-          <option value="">All Status</option>
-          <option value="Active">Active</option>
-          <option value="Inactive">Inactive</option>
-        </select>
-        <select
-          value={filterType}
-          onChange={(e) => setFilterType(e.target.value)}
-          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-        >
-          <option value="">All Types</option>
-          {uniqueTypes.map((t) => (
-            <option key={t} value={t}>
-              {t}
-            </option>
-          ))}
-        </select>
+          Filter
+        </button>
         <button
           onClick={resetFilters}
-          className="rounded border-gray-200 bg-gray-200 px-4 py-2 text-gray-600 ring-gray-600 transition hover:bg-gray-300 hover:ring-1"
+          className="rounded bg-gray-200 px-4 py-2 text-gray-700 ring-gray-700 transition duration-300 hover:ring-1"
         >
           Reset
         </button>
       </div>
 
+      {/* ------------------ TABLE ------------------ */}
       <div className="rounded-lg bg-white shadow-lg">
-        {/* ------------------ TABLE ------------------ */}
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-dashed divide-gray-400/60">
             <thead>
@@ -269,15 +298,13 @@ const GroupList = () => {
                       {group.status}
                     </span>
                   </td>
-
                   <td className="flex justify-end gap-2 px-6 py-3 text-right">
                     <Link
-                      to={`/admin/groups/group-details/${group.id}`}
+                      to={`/admin/groups/group-list/group-details/${group.id}`}
                       className="rounded bg-blue-100 p-[5px] text-blue-500 ring-blue-700 transition duration-300 hover:ring-1"
                     >
                       <EyeIcon className="h-5 w-5 stroke-[2]" />
                     </Link>
-
                     <Link
                       to={`/admin/groups/edit-group/${group.id}`}
                       className="rounded bg-green-100 p-[5px] text-green-500 ring-green-700 transition duration-300 hover:ring-1"

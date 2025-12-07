@@ -1,6 +1,6 @@
 // pages/admin/groups/CreateGroup.jsx
 
-import { ChevronDoubleRightIcon, ChevronRightIcon, UserGroupIcon } from "@heroicons/react/24/outline";
+import { ChevronDownIcon, ChevronUpIcon, UserGroupIcon } from "@heroicons/react/24/outline";
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import { FaChevronDown, FaChevronUp, FaImage } from "react-icons/fa";
@@ -40,9 +40,9 @@ const GroupSchema = Yup.object().shape({
 });
 
 /* -------------------------
-  Section Component
+  AccordionCard Component
 ------------------------- */
-const Section = ({ title, open, toggle, children, hint }) => (
+const AccordionCard = ({ title, open, toggle, children, hint }) => (
   <div className="mb-4 rounded-lg bg-white shadow-lg">
     <button
       type="button"
@@ -53,7 +53,11 @@ const Section = ({ title, open, toggle, children, hint }) => (
         <h3 className="text-lg font-semibold">{title}</h3>
         {hint && <span className="rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-600">{hint}</span>}
       </div>
-      {open ? <FaChevronUp /> : <FaChevronDown />}
+      {open ? (
+        <ChevronUpIcon className="h-5 w-5 stroke-[2]" />
+      ) : (
+        <ChevronDownIcon className="h-5 w-5 stroke-[2]" />
+      )}
     </button>
     {open && <div className="px-6 pb-4">{children}</div>}
   </div>
@@ -102,17 +106,17 @@ const CreateGroup = () => {
   return (
     <div className="w-full p-6">
       <div className="mb-6" aria-label="Breadcrumb">
-        <h1 className="text-primaryFont mb-1 text-2xl font-bold">Create New Group</h1>
+        <h1 className="text-2xl font-bold text-primaryFont">Create New Group</h1>
         <nav className="flex" aria-label="Breadcrumb">
           <ol className="inline-flex items-center space-x-2">
             <li className="inline-flex items-center">
-              <div className="flex items-center gap-1 font-semibold text-black">
+              <div className="flex items-center text-sm font-semibold text-black">
                 <UserGroupIcon className="h-4 w-4 stroke-[2]" /> <h5>Groups</h5>
               </div>
             </li>
-            <span>/</span>
+            <span className="text-xs text-gray-500">/</span>
             <li aria-current="page">
-              <span className="font-semibold text-primary">Create New Group</span>
+              <span className="text-sm font-semibold text-primary">Create New Group</span>
             </li>
           </ol>
         </nav>
@@ -120,7 +124,7 @@ const CreateGroup = () => {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* BASIC */}
-        <Section
+        <AccordionCard
           title="Basic Information"
           open={sectionsOpen.basic}
           toggle={() => toggleSection("basic")}
@@ -200,10 +204,10 @@ const CreateGroup = () => {
               </label>
             </div>
           </div>
-        </Section>
+        </AccordionCard>
 
         {/* LIMITS */}
-        <Section
+        <AccordionCard
           title="Limits"
           open={sectionsOpen.limits}
           toggle={() => toggleSection("limits")}
@@ -243,10 +247,10 @@ const CreateGroup = () => {
               />
             </div>
           </div>
-        </Section>
+        </AccordionCard>
 
         {/* STAFF */}
-        <Section
+        <AccordionCard
           title="Staff Assignment"
           open={sectionsOpen.staff}
           toggle={() => toggleSection("staff")}
@@ -294,7 +298,7 @@ const CreateGroup = () => {
               </div>
             </div>
           </div>
-        </Section>
+        </AccordionCard>
 
         {/* Submit */}
         <div className="flex justify-end gap-3">

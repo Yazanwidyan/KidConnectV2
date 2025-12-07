@@ -1,7 +1,10 @@
-import { UserGroupIcon, UserPlusIcon } from "@heroicons/react/24/outline";
+import { ChevronDownIcon, ChevronUpIcon, UserGroupIcon, UserPlusIcon } from "@heroicons/react/24/outline";
 import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
 import React, { useState } from "react";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import * as Yup from "yup";
+
+import ProfilePicModal from "../../../components/ProfilePicModal";
 
 const genders = ["Male", "Female", "Other"];
 const bloodGroups = ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"];
@@ -54,201 +57,229 @@ const StudentSchema = Yup.object().shape({
   ),
 });
 
+// ------------------- REUSABLE INPUT CLASS -------------------
+const inputClass =
+  "w-full rounded-lg border border-gray-300 px-3 py-2 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20";
+
 // --------------------------- COMPONENT ----------------------------
 const AddStudent = () => {
   const [preview, setPreview] = useState(null);
   const [attachmentsPreview, setAttachmentsPreview] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [sectionsOpen, setSectionsOpen] = useState({
+    personal: true,
+    additional: false,
+    attachments: false,
+    dynamic: false,
+  });
+  const toggleSection = (key) => setSectionsOpen((prev) => ({ ...prev, [key]: !prev[key] }));
 
   return (
-    <div className="w-full p-6">
-      <div className="mb-6" aria-label="Breadcrumb">
-        <h1 className="text-primaryFont mb-1 text-2xl font-bold">Add Student</h1>
+    <div className="w-full space-y-6 p-6">
+      {/* ------------------- Header / Breadcrumb ------------------- */}
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-primaryFont">Add Student</h1>
         <nav className="flex" aria-label="Breadcrumb">
           <ol className="inline-flex items-center space-x-2">
             <li className="inline-flex items-center">
-              <div className="flex items-center gap-1 font-semibold text-black">
+              <div className="flex items-center text-sm font-semibold text-black">
                 <UserPlusIcon className="h-4 w-4 stroke-[2]" /> <h5>Students</h5>
               </div>
             </li>
-            <span>/</span>
+            <span className="text-xs text-gray-500">/</span>
             <li aria-current="page">
-              <span className="font-semibold text-primary">Add New Student</span>
+              <span className="text-sm font-semibold text-primary">Add New Student</span>
             </li>
           </ol>
         </nav>
       </div>
-      <div className="mb-4 rounded-lg bg-white px-6 py-4 shadow-lg">
-        <Formik
-          initialValues={{
-            studentPhoto: null,
-            firstDayAtSchool: "",
-            firstName: "",
-            secondName: "",
-            thirdName: "",
-            lastName: "",
-            governmentId: "",
-            nationality: "",
-            placeOfBirth: "",
-            gender: genders[0],
-            dob: "",
-            bloodGroup: bloodGroups[0],
-            religion: religions[0],
-            address: "",
-            allergies: "",
-            medications: "",
-            nurseryNotes: "",
-            parentNotes: "",
-            groupName: "",
-            attachments: [],
-            parents: [{ parentName: "", parentPhone: "", parentEmail: "", parentRelation: "" }],
-            emergencyContacts: [{ name: "", phone: "", relation: "" }],
-            authorizedPickups: [{ name: "", phone: "", id: "", relation: "" }],
-          }}
-          validationSchema={StudentSchema}
-          onSubmit={(values) => {
-            console.log(values);
-            alert("Student Added Successfully!");
-          }}
-        >
-          {({ values, setFieldValue }) => (
-            <Form className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              {/* ------------------- STUDENT PHOTO ------------------- */}
-              <div className="md:col-span-2">
-                <label className="mb-2 font-medium text-gray-700">Student Photo</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    const file = e.target.files[0];
-                    setFieldValue("studentPhoto", file);
-                    if (file) setPreview(URL.createObjectURL(file));
-                  }}
-                  className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-                />
-                {preview && (
-                  <img src={preview} alt="preview" className="mt-3 h-32 w-32 rounded-lg object-cover" />
-                )}
-                <ErrorMessage name="studentPhoto" component="div" className="text-sm text-red-500" />
-              </div>
 
-              {/* ------------------- STUDENT INFO ------------------- */}
-              {[
-                { name: "firstName", label: "First Name" },
-                { name: "secondName", label: "Second Name" },
-                { name: "thirdName", label: "Third Name" },
-                { name: "lastName", label: "Last Name" },
-                { name: "governmentId", label: "Government ID" },
-                { name: "nationality", label: "Nationality" },
-                { name: "placeOfBirth", label: "Place of Birth" },
-                { name: "address", label: "Address" },
-                { name: "allergies", label: "Allergies" },
-                { name: "medications", label: "Medications" },
-                { name: "nurseryNotes", label: "Nursery Notes" },
-                { name: "parentNotes", label: "Parent Notes" },
-                { name: "groupName", label: "Group Name" },
-              ].map((field) => (
-                <div key={field.name} className="flex flex-col">
-                  <label className="mb-2 font-medium text-gray-700">{field.label}</label>
-                  <Field
-                    name={field.name}
-                    className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
+      <Formik
+        initialValues={{
+          studentPhoto: null,
+          firstDayAtSchool: "",
+          firstName: "",
+          secondName: "",
+          thirdName: "",
+          lastName: "",
+          governmentId: "",
+          nationality: "",
+          placeOfBirth: "",
+          gender: genders[0],
+          dob: "",
+          bloodGroup: bloodGroups[0],
+          religion: religions[0],
+          address: "",
+          allergies: "",
+          medications: "",
+          nurseryNotes: "",
+          parentNotes: "",
+          groupName: "",
+          attachments: [],
+          parents: [{ parentName: "", parentPhone: "", parentEmail: "", parentRelation: "" }],
+          emergencyContacts: [{ name: "", phone: "", relation: "" }],
+          authorizedPickups: [{ name: "", phone: "", id: "", relation: "" }],
+        }}
+        validationSchema={StudentSchema}
+        onSubmit={(values) => {
+          console.log(values);
+          alert("Student Added Successfully!");
+        }}
+      >
+        {({ values, setFieldValue }) => (
+          <Form className="">
+            {/* ------------------- 1. Personal Information Card ------------------- */}
+            <AccordionCard
+              title="Personal Information"
+              open={sectionsOpen.personal}
+              toggle={() => toggleSection("personal")}
+              hint="Required"
+            >
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+                {/* Profile Photo */}
+                <div className="flex flex-col items-center md:col-span-1">
+                  <label className="mb-2 font-medium text-gray-700">Student Photo</label>
+                  <button
+                    type="button"
+                    onClick={() => setModalOpen(true)}
+                    className="relative flex h-32 w-32 items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-gray-300 bg-gray-100 text-gray-400 hover:border-gray-400 hover:bg-gray-200"
+                  >
+                    {preview ? (
+                      <img src={preview} alt="preview" className="h-full w-full object-cover" />
+                    ) : (
+                      <span className="text-center text-sm">Upload / Crop</span>
+                    )}
+                  </button>
+                  <ProfilePicModal
+                    isOpen={modalOpen}
+                    onClose={() => setModalOpen(false)}
+                    setFieldValue={setFieldValue}
+                    setPreview2={setPreview}
+                    name="studentPhoto"
                   />
-                  <ErrorMessage name={field.name} component="div" className="text-sm text-red-500" />
+                  <ErrorMessage name="studentPhoto" component="div" className="mt-2 text-sm text-red-500" />
+                </div>
+
+                {/* Personal Fields */}
+                <div className="grid grid-cols-1 gap-4 md:col-span-2 md:grid-cols-2">
+                  {/* Text Fields */}
+                  {["firstName", "secondName", "thirdName", "lastName"].map((field) => (
+                    <div key={field} className="flex flex-col">
+                      <label className="mb-2 font-medium text-gray-700">
+                        {field.replace(/([A-Z])/g, " $1")}
+                      </label>
+                      <Field name={field} className={inputClass} />
+                      <ErrorMessage name={field} component="div" className="text-sm text-red-500" />
+                    </div>
+                  ))}
+                </div>
+                <div className="grid grid-cols-1 gap-4 md:col-span-3 md:grid-cols-3">
+                  {/* Text Fields */}
+                  {["governmentId", "nationality", "placeOfBirth", "address"].map((field) => (
+                    <div key={field} className="flex flex-col">
+                      <label className="mb-2 font-medium text-gray-700">
+                        {field.replace(/([A-Z])/g, " $1")}
+                      </label>
+                      <Field name={field} className={inputClass} />
+                      <ErrorMessage name={field} component="div" className="text-sm text-red-500" />
+                    </div>
+                  ))}
+
+                  {/* Date Fields */}
+                  <div className="flex flex-col">
+                    <label className="mb-2 font-medium text-gray-700">First Day at School</label>
+                    <Field type="date" name="firstDayAtSchool" className={inputClass} />
+                    <ErrorMessage name="firstDayAtSchool" component="div" className="text-sm text-red-500" />
+                  </div>
+                  <div className="flex flex-col">
+                    <label className="mb-2 font-medium text-gray-700">Date of Birth</label>
+                    <Field type="date" name="dob" className={inputClass} />
+                    <ErrorMessage name="dob" component="div" className="text-sm text-red-500" />
+                  </div>
+
+                  {/* Select Fields */}
+                  <div className="flex flex-col">
+                    <label className="mb-2 font-medium text-gray-700">Gender</label>
+                    <Field as="select" name="gender" className={inputClass}>
+                      {genders.map((g) => (
+                        <option key={g}>{g}</option>
+                      ))}
+                    </Field>
+                    <ErrorMessage name="gender" component="div" className="text-sm text-red-500" />
+                  </div>
+                  <div className="flex flex-col">
+                    <label className="mb-2 font-medium text-gray-700">Blood Group</label>
+                    <Field as="select" name="bloodGroup" className={inputClass}>
+                      {bloodGroups.map((b) => (
+                        <option key={b}>{b}</option>
+                      ))}
+                    </Field>
+                    <ErrorMessage name="bloodGroup" component="div" className="text-sm text-red-500" />
+                  </div>
+                  <div className="flex flex-col">
+                    <label className="mb-2 font-medium text-gray-700">Religion</label>
+                    <Field as="select" name="religion" className={inputClass}>
+                      {religions.map((r) => (
+                        <option key={r}>{r}</option>
+                      ))}
+                    </Field>
+                    <ErrorMessage name="religion" component="div" className="text-sm text-red-500" />
+                  </div>
+                </div>
+              </div>
+            </AccordionCard>
+
+            {/* ------------------- 2. Additional Info Card ------------------- */}
+            <AccordionCard
+              title="Additional Information"
+              open={sectionsOpen.additional}
+              toggle={() => toggleSection("additional")}
+              hint="Required"
+            >
+              {["allergies", "medications", "nurseryNotes", "parentNotes", "groupName"].map((field) => (
+                <div key={field} className="flex flex-col">
+                  <label className="mb-2 font-medium text-gray-700">{field.replace(/([A-Z])/g, " $1")}</label>
+                  <Field name={field} className={inputClass} />
+                  <ErrorMessage name={field} component="div" className="text-sm text-red-500" />
                 </div>
               ))}
+            </AccordionCard>
 
-              {/* First Day at School */}
-              <div className="flex flex-col">
-                <label className="mb-2 font-medium text-gray-700">First Day at School</label>
-                <Field
-                  type="date"
-                  name="firstDayAtSchool"
-                  className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-                />
-                <ErrorMessage name="firstDayAtSchool" component="div" className="text-sm text-red-500" />
-              </div>
-
-              {/* Date of Birth */}
-              <div className="flex flex-col">
-                <label className="mb-2 font-medium text-gray-700">Date of Birth</label>
-                <Field
-                  type="date"
-                  name="dob"
-                  className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-                />
-                <ErrorMessage name="dob" component="div" className="text-sm text-red-500" />
-              </div>
-
-              {/* Gender */}
-              <div className="flex flex-col">
-                <label className="mb-2 font-medium text-gray-700">Gender</label>
-                <Field
-                  as="select"
-                  name="gender"
-                  className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-                >
-                  {genders.map((g) => (
-                    <option key={g}>{g}</option>
+            {/* ------------------- 3. Attachments Card ------------------- */}
+            <AccordionCard
+              title="Attachments"
+              open={sectionsOpen.attachments}
+              toggle={() => toggleSection("attachments")}
+              hint="Required"
+            >
+              <input
+                type="file"
+                multiple
+                onChange={(e) => {
+                  const files = Array.from(e.target.files);
+                  setFieldValue("attachments", files);
+                  setAttachmentsPreview(files.map((f) => URL.createObjectURL(f)));
+                }}
+                className={inputClass}
+              />
+              {attachmentsPreview.length > 0 && (
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {attachmentsPreview.map((file, i) => (
+                    <span key={i} className="rounded border bg-gray-100 px-2 py-1 text-sm">
+                      File {i + 1}
+                    </span>
                   ))}
-                </Field>
-                <ErrorMessage name="gender" component="div" className="text-sm text-red-500" />
-              </div>
+                </div>
+              )}
+            </AccordionCard>
 
-              {/* Blood Group */}
-              <div className="flex flex-col">
-                <label className="mb-2 font-medium text-gray-700">Blood Group</label>
-                <Field
-                  as="select"
-                  name="bloodGroup"
-                  className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-                >
-                  {bloodGroups.map((b) => (
-                    <option key={b}>{b}</option>
-                  ))}
-                </Field>
-                <ErrorMessage name="bloodGroup" component="div" className="text-sm text-red-500" />
-              </div>
-
-              {/* Religion */}
-              <div className="flex flex-col">
-                <label className="mb-2 font-medium text-gray-700">Religion</label>
-                <Field
-                  as="select"
-                  name="religion"
-                  className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-                >
-                  {religions.map((r) => (
-                    <option key={r}>{r}</option>
-                  ))}
-                </Field>
-                <ErrorMessage name="religion" component="div" className="text-sm text-red-500" />
-              </div>
-
-              {/* Attachments */}
-              <div className="md:col-span-2">
-                <label className="mb-2 font-medium text-gray-700">Attachments</label>
-                <input
-                  type="file"
-                  multiple
-                  onChange={(e) => {
-                    const files = Array.from(e.target.files);
-                    setFieldValue("attachments", files);
-                    setAttachmentsPreview(files.map((f) => URL.createObjectURL(f)));
-                  }}
-                  className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-                />
-                {attachmentsPreview.length > 0 && (
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    {attachmentsPreview.map((file, i) => (
-                      <span key={i} className="rounded border bg-gray-100 px-2 py-1 text-sm">
-                        File {i + 1}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* ------------------- Parents, Emergency, Authorized Pickups ------------------- */}
+            {/* ------------------- 4. Dynamic Sections Card ------------------- */}
+            <AccordionCard
+              title="Dynamic Sections"
+              open={sectionsOpen.dynamic}
+              toggle={() => toggleSection("dynamic")}
+              hint="Required"
+            >
               <DynamicSection
                 name="parents"
                 title="Parents"
@@ -264,32 +295,52 @@ const AddStudent = () => {
                 title="Authorized Pickups"
                 fields={["name", "phone", "id", "relation"]}
               />
+            </AccordionCard>
 
-              {/* Submit Button */}
-              <div className="md:col-span-2">
-                <button
-                  type="submit"
-                  className="w-full rounded-lg bg-blue-600 py-3 font-semibold text-white hover:bg-blue-700"
-                >
-                  Add Student
-                </button>
-              </div>
-            </Form>
-          )}
-        </Formik>
-      </div>
+            {/* ------------------- 5. Submit Button Card ------------------- */}
+            <div className="md:col-span-3">
+              <button
+                type="submit"
+                className="w-full rounded-lg bg-blue-600 py-3 font-semibold text-white hover:bg-blue-700"
+              >
+                Add Student
+              </button>
+            </div>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 };
-
+// ------------------- Accordion Card Component -------------------
+const AccordionCard = ({ title, open, toggle, children, hint }) => (
+  <div className="mb-4 rounded-lg bg-white shadow-lg">
+    <button
+      type="button"
+      onClick={toggle}
+      className="flex w-full items-center justify-between px-6 py-4 text-left"
+    >
+      <div className="flex items-center gap-2">
+        <h3 className="text-lg font-semibold">{title}</h3>
+        {hint && <span className="rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-600">{hint}</span>}
+      </div>
+      {open ? (
+        <ChevronUpIcon className="h-5 w-5 stroke-[2]" />
+      ) : (
+        <ChevronDownIcon className="h-5 w-5 stroke-[2]" />
+      )}
+    </button>
+    {open && <div className="px-6 pb-4">{children}</div>}
+  </div>
+);
 // ------------------- DYNAMIC FIELD ARRAY COMPONENT -------------------
 const DynamicSection = ({ name, title, fields }) => (
   <FieldArray name={name}>
     {({ push, remove, form }) => (
-      <div className="md:col-span-2">
-        <h3 className="text-xl font-semibold text-gray-700">{title}</h3>
+      <div className="md:col-span-3">
+        <h3 className="mb-2 text-xl font-semibold text-gray-700">{title}</h3>
         {form.values[name].map((_, index) => (
-          <div key={index} className="relative mb-4 rounded-lg border bg-gray-50 p-4">
+          <div key={index} className="relative mb-4 rounded-lg border bg-gray-50 p-4 shadow-sm">
             {index > 0 && (
               <button
                 type="button"
@@ -299,27 +350,27 @@ const DynamicSection = ({ name, title, fields }) => (
                 Remove
               </button>
             )}
-            {fields.map((field) => (
-              <div key={field} className="mb-2 flex flex-col">
-                <label className="font-medium text-gray-700">{field}</label>
-                <Field
-                  name={`${name}[${index}].${field}`}
-                  className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-                />
-                <ErrorMessage
-                  name={`${name}[${index}].${field}`}
-                  component="div"
-                  className="text-sm text-red-500"
-                />
-              </div>
-            ))}
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              {fields.map((field) => (
+                <div key={field} className="flex flex-col">
+                  <label className="font-medium text-gray-700">{field}</label>
+                  <Field name={`${name}[${index}].${field}`} className={inputClass} />
+                  <ErrorMessage
+                    name={`${name}[${index}].${field}`}
+                    component="div"
+                    className="text-sm text-red-500"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         ))}
         <button
           type="button"
           onClick={() => push(fields.reduce((acc, f) => ({ ...acc, [f]: "" }), {}))}
-          className="rounded bg-blue-600 px-4 py-2 text-white"
+          className="flex items-center gap-2 rounded border border-primary bg-primary px-5 py-2 font-semibold text-white"
         >
+          <UserPlusIcon className="h-5 w-5 stroke-[2]" />
           Add {title.slice(0, -1)}
         </button>
       </div>

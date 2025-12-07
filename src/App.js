@@ -17,7 +17,6 @@ function App() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Handle ?lang=ar/en
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     let lang = searchParams.get("lang");
@@ -28,10 +27,9 @@ function App() {
       navigate(`${location.pathname}?${searchParams.toString()}`, { replace: true });
     }
 
-    // if (lang !== i18n.language) {
-    //   i18n?.changeLanguage(lang);
-    // }
+    if (lang !== i18n.language) i18n.changeLanguage(lang);
   }, [location.search, i18n, navigate, location.pathname]);
+
   return (
     <Routes>
       {/* صفحة تسجيل الدخول */}

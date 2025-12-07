@@ -109,65 +109,6 @@ const AdminDashboard = () => {
           <p className="relative z-10 text-lg text-white">Overdue Invoices</p>
         </div>
       </div>
-
-      {/* Charts */}
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        {/* Students Daily Attendance */}
-        <div className="rounded-lg bg-white p-6 shadow-lg">
-          <h3 className="mb-4 text-lg font-semibold text-gray-700">Daily Attendance</h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={dailyAttendance}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="day" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="attendance" fill="#0F626A" barSize={30} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* Average Time Spent */}
-        <div className="rounded-lg bg-white p-6 shadow-lg">
-          <h3 className="mb-4 text-lg font-semibold text-gray-700">Average Time Spent per Student (hrs)</h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <LineChart data={averageTimeSpent}>
-              <XAxis dataKey="day" />
-              <YAxis />
-              <Tooltip />
-              <Line type="monotone" dataKey="hours" stroke="#FACC15" strokeWidth={3} />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* Students Growth */}
-        <div className="rounded-lg bg-white p-6 shadow-lg">
-          <h3 className="mb-4 text-lg font-semibold text-gray-700">Students Growth</h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <LineChart data={studentData}>
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip />
-              <Line type="monotone" dataKey="students" stroke="#25A0DD" strokeWidth={3} />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* Revenue & Invoices */}
-        <div className="rounded-lg bg-white p-6 shadow-lg">
-          <h3 className="mb-4 text-lg font-semibold text-gray-700">Revenue & Invoices</h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={revenueData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="revenue" fill="#0F626A" barSize={30} />
-              <Bar dataKey="pending" fill="#F9C123" barSize={30} />
-              <Bar dataKey="overdue" fill="#FD8896" barSize={30} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
     </div>
   );
 };
