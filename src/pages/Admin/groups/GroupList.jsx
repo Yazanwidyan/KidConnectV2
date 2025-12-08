@@ -1,4 +1,10 @@
-import { ChevronDownIcon, EyeIcon, PencilSquareIcon, UserGroupIcon } from "@heroicons/react/24/outline";
+import {
+  ChevronDownIcon,
+  EyeIcon,
+  MagnifyingGlassIcon,
+  PencilSquareIcon,
+  UserGroupIcon,
+} from "@heroicons/react/24/outline";
 import React, { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -179,89 +185,64 @@ const GroupList = () => {
 
   return (
     <div className="w-full p-6">
-      <div className="mb-6 flex flex-wrap items-end justify-between">
+      <div className="mb-3 flex flex-wrap items-end justify-between">
         <div aria-label="Breadcrumb">
-          <h1 className="text-2xl font-bold text-primaryFont">Groups List</h1>
-          <nav className="flex" aria-label="Breadcrumb">
-            <ol className="inline-flex items-center space-x-2">
-              <li className="inline-flex items-center">
-                <div className="flex items-center text-sm font-semibold text-black">
-                  <UserGroupIcon className="h-4 w-4 stroke-[2]" /> <h5>Groups</h5>
-                </div>
-              </li>
-              <span className="text-xs text-gray-500">/</span>
-              <li aria-current="page">
-                <span className="text-sm font-semibold text-primary">Groups List</span>
-              </li>
-            </ol>
-          </nav>
-        </div>
-        <div className="flex flex-wrap gap-4">
-          <Link
-            to="/admin/groups/create-group"
-            className="rounded border border-primary bg-primary px-5 py-2 text-white"
-          >
-            + Create Group
-          </Link>
+          <h1 className="text-2xl font-bold text-black">Groups</h1>
         </div>
       </div>
 
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-2">
+        <div className="flex flex-1 items-center gap-2">
+          <div className="relative w-1/4">
+            <label className="mb-1 block text-gray-600">Types</label>
+            <select
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+              className="w-full appearance-none rounded-lg border border-gray-300 px-3 py-2 pr-10 outline-none focus:border-primary focus:ring-4 focus:ring-primary/20"
+            >
+              <option value="">All Types</option>
+              {uniqueTypes.map((t) => (
+                <option key={t} value={t}>
+                  {t}
+                </option>
+              ))}
+            </select>
+            <ChevronDownIcon className="pointer-events-none absolute right-3 top-11 h-4 w-4 -translate-y-1/2 stroke-2 text-gray-500" />
+          </div>
+          <div className="relative w-1/4">
+            <label className="mb-1 block text-gray-600">Status</label>
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="w-full appearance-none rounded-lg border border-gray-300 px-3 py-2 pr-10 outline-none focus:border-primary focus:ring-4 focus:ring-primary/20"
+            >
+              <option value="">All Status</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+            <ChevronDownIcon className="pointer-events-none absolute right-3 top-11 h-4 w-4 -translate-y-1/2 stroke-2 text-gray-500" />
+          </div>
+        </div>
+        <Link
+          to="/admin/groups/create-group"
+          className="rounded border border-primary bg-primary px-5 py-2 text-white"
+        >
+          + Create Group
+        </Link>
+      </div>
       {/* ------------------ FILTERS ------------------ */}
-      <div className="mb-6 flex flex-wrap items-center gap-2 rounded-lg bg-white p-6 shadow-lg">
-        <input
-          type="text"
-          placeholder="Group Name"
-          value={filterGroupName}
-          onChange={(e) => setFilterGroupName(e.target.value)}
-          className="w-40 rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-primary focus:ring-4 focus:ring-primary/20"
-        />
-        <input
-          type="text"
-          placeholder="Staff Name"
-          value={filterStaffName}
-          onChange={(e) => setFilterStaffName(e.target.value)}
-          className="w-40 rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-primary focus:ring-4 focus:ring-primary/20"
-        />
-        <div className="relative w-32">
-          <select
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-            className="w-full appearance-none rounded-lg border border-gray-300 px-3 py-2 pr-10 outline-none focus:border-primary focus:ring-4 focus:ring-primary/20"
-          >
-            <option value="">All Status</option>
-            <option value="Active">Active</option>
-            <option value="Inactive">Inactive</option>
-          </select>
-          <ChevronDownIcon className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 stroke-[2] text-gray-500" />
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-2">
+        <div className="relative w-1/3">
+          <input
+            type="text"
+            name="search"
+            placeholder="Search by group name or staff name"
+            value={filterGroupName}
+            onChange={(e) => setFilterGroupName(e.target.value)}
+            className="w-full rounded-lg border border-gray-300 px-3 py-2 pr-10 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
+          />
+          <MagnifyingGlassIcon className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 stroke-2 text-gray-500" />
         </div>
-        <div className="relative w-32">
-          <select
-            value={filterType}
-            onChange={(e) => setFilterType(e.target.value)}
-            className="w-full appearance-none rounded-lg border border-gray-300 px-3 py-2 pr-10 outline-none focus:border-primary focus:ring-4 focus:ring-primary/20"
-          >
-            <option value="">All Types</option>
-            {uniqueTypes.map((t) => (
-              <option key={t} value={t}>
-                {t}
-              </option>
-            ))}
-          </select>
-          <ChevronDownIcon className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 stroke-[2] text-gray-500" />
-        </div>
-
-        <button
-          onClick={applyFilters}
-          className="ml-auto rounded bg-green-100 px-4 py-2 text-green-500 ring-green-700 transition duration-300 hover:ring-1"
-        >
-          Filter
-        </button>
-        <button
-          onClick={resetFilters}
-          className="rounded bg-gray-200 px-4 py-2 text-gray-700 ring-gray-700 transition duration-300 hover:ring-1"
-        >
-          Reset
-        </button>
       </div>
 
       {/* ------------------ CARD GRID ------------------ */}

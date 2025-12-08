@@ -94,7 +94,7 @@ const AddInvoice = () => {
       {/* Header */}
       <div className="mb-6 flex items-center gap-2">
         <div aria-label="Breadcrumb">
-          <h1 className="text-2xl font-bold text-primaryFont">Create Invoice</h1>
+          <h1 className="text-2xl font-bold text-black">Create Invoice</h1>
           <Link
             to="/admin/finance/invoices"
             className="flex items-center gap-2 text-sm font-semibold text-primary hover:underline"

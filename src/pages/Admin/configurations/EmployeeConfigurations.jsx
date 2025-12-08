@@ -65,7 +65,7 @@ const EmployeeConfigurations = () => {
       {/* Header */}
       <div className="mb-6 flex flex-wrap items-end justify-between">
         <div aria-label="Breadcrumb">
-          <h1 className="text-2xl font-bold text-primaryFont">Employee Document Settings</h1>
+          <h1 className="text-2xl font-bold text-black">Employee Document Settings</h1>
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="inline-flex items-center space-x-2">
               <li className="inline-flex items-center">
@@ -115,7 +115,7 @@ const EmployeeConfigurations = () => {
 
           <tbody className="divide-y divide-dashed divide-gray-400/60">
             {documents.map((doc, index) => (
-              <tr key={doc.id} className="transition odd:bg-slate-100 even:bg-white hover:bg-gray-50">
+              <tr key={doc.id} className="transition odd:bg-gray-100 even:bg-white hover:bg-gray-50">
                 <td className="px-6 py-3 font-normal text-gray-700">{index + 1}</td>
                 <td className="px-6 py-3">
                   <input

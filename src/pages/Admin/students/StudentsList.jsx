@@ -1,4 +1,11 @@
-import { EyeIcon, PencilSquareIcon, UserPlusIcon } from "@heroicons/react/24/outline";
+import {
+  CheckIcon,
+  ChevronDownIcon,
+  EyeIcon,
+  IdentificationIcon,
+  PencilSquareIcon,
+  UserPlusIcon,
+} from "@heroicons/react/24/outline";
 import { saveAs } from "file-saver";
 import React, { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -31,6 +38,7 @@ const StudentsList = () => {
       id: 1,
       firstName: "John",
       lastName: "Doe",
+      student_image: "https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250",
       age: 6,
       groupName: "KG-1",
       groupType: "Toddlers",
@@ -43,6 +51,7 @@ const StudentsList = () => {
       id: 2,
       firstName: "Mary",
       lastName: "Smith",
+      student_image: "https://avatar.iran.liara.run/public/boy?username=Ash",
       age: 5,
       groupName: "KG-2",
       groupType: "Infants",
@@ -50,7 +59,69 @@ const StudentsList = () => {
       parent1: "Anna Smith",
       parentPhone1: "9876543210",
     },
-    // ... add more students
+    // New 5 students
+    {
+      id: 3,
+      firstName: "Liam",
+      lastName: "Johnson",
+      student_image: "https://randomuser.me/api/portraits/lego/1.jpg",
+      age: 4,
+      groupName: "KG-1",
+      groupType: "Toddlers",
+      status: "Active",
+      parent1: "Olivia Johnson",
+      parentPhone1: "5551234567",
+    },
+    {
+      id: 4,
+      firstName: "Emma",
+      lastName: "Williams",
+      student_image: "https://randomuser.me/api/portraits/women/44.jpg",
+      age: 6,
+      groupName: "KG-3",
+      groupType: "Early Preschool",
+      status: "Active",
+      parent1: "James Williams",
+      parentPhone1: "5559876543",
+      parent2: "Sophia Williams",
+    },
+    {
+      id: 5,
+      firstName: "Noah",
+      lastName: "Brown",
+      student_image: "https://randomuser.me/api/portraits/men/32.jpg",
+      age: 5,
+      groupName: "KG-2",
+      groupType: "Infants",
+      status: "Inactive",
+      parent1: "Mia Brown",
+      parentPhone1: "5558765432",
+    },
+    {
+      id: 6,
+      firstName: "Ava",
+      lastName: "Jones",
+      student_image: "https://randomuser.me/api/portraits/women/68.jpg",
+      age: 7,
+      groupName: "KG-3",
+      groupType: "Pre-K",
+      status: "Active",
+      parent1: "William Jones",
+      parentPhone1: "5553456789",
+    },
+    {
+      id: 7,
+      firstName: "Oliver",
+      lastName: "Davis",
+      student_image: "https://randomuser.me/api/portraits/men/45.jpg",
+      age: 6,
+      groupName: "KG-1",
+      groupType: "Toddlers",
+      status: "Active",
+      parent1: "Isabella Davis",
+      parentPhone1: "5552345678",
+      parent2: "Charlotte Davis",
+    },
   ];
 
   const groupNames = ["KG-1", "KG-2", "KG-3"];
@@ -173,23 +244,53 @@ const StudentsList = () => {
 
   return (
     <div className="w-full p-6">
-      <div className="mb-6 flex flex-wrap items-end justify-between">
+      <div className="mb-3 flex flex-wrap items-end justify-between">
         <div aria-label="Breadcrumb">
-          <h1 className="text-2xl font-bold text-primaryFont">Students List</h1>
-          <nav className="flex" aria-label="Breadcrumb">
-            <ol className="inline-flex items-center space-x-2">
-              <li className="inline-flex items-center">
-                <div className="flex items-center text-sm font-semibold text-black">
-                  <UserPlusIcon className="h-4 w-4 stroke-[2]" /> <h5>Students</h5>
-                </div>
-              </li>
-              <span className="text-xs text-gray-500">/</span>
-              <li aria-current="page">
-                <span className="text-sm font-semibold text-primary">Students List</span>
-              </li>
-            </ol>
-          </nav>
+          <h1 className="text-2xl font-bold text-black">Students</h1>
         </div>
+      </div>
+      {/* Filters */}
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-2">
+        <div className="flex flex-1 items-center gap-2">
+          <div className="relative w-1/4">
+            <label htmlFor="groupName" className="mb-1 block text-gray-600">
+              Groups
+            </label>
+            <select
+              id="groupName"
+              name="groupName"
+              value={filters.groupName}
+              onChange={handleFilterChange}
+              className="w-full appearance-none rounded-lg border border-gray-300 px-3 py-2 pr-10 outline-none focus:border-primary focus:ring-4 focus:ring-primary/20"
+            >
+              <option value="">All Groups</option>
+              {groupNames.map((g) => (
+                <option key={g} value={g}>
+                  {g}
+                </option>
+              ))}
+            </select>
+            <ChevronDownIcon className="pointer-events-none absolute right-3 top-11 h-4 w-4 -translate-y-1/2 stroke-2 text-gray-500" />
+          </div>
+          <div className="relative w-1/4">
+            <label htmlFor="status" className="mb-1 block text-gray-600">
+              Status
+            </label>
+            <select
+              id="status"
+              name="status"
+              value={filters.status}
+              onChange={handleFilterChange}
+              className="w-full appearance-none rounded-lg border border-gray-300 px-3 py-2 pr-10 outline-none focus:border-primary focus:ring-4 focus:ring-primary/20"
+            >
+              <option value="">All Status</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+            <ChevronDownIcon className="pointer-events-none absolute right-3 top-11 h-4 w-4 -translate-y-1/2 stroke-2 text-gray-500" />
+          </div>
+        </div>
+
         <Link
           to="/admin/students/add-student"
           className="flex items-center gap-2 rounded border border-primary bg-primary px-5 py-2 font-semibold text-white"
@@ -198,99 +299,76 @@ const StudentsList = () => {
           Add Student
         </Link>
       </div>
+      {/* Status Cards */}
+      <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+        <div className="flex flex-col items-start justify-center rounded-xl border-l-4 border-green-400 bg-white p-4 shadow-lg">
+          <h3 className="text-xl font-bold text-gray-800">105</h3>
+          <p className="text-sm text-gray-600">Active</p>
+        </div>
 
-      {/* Filters */}
-      <div className="mb-6 flex flex-wrap items-center gap-2 rounded-lg bg-white p-6 shadow-lg">
+        <div className="flex flex-col items-start justify-center rounded-xl border-l-4 border-red-400 bg-white p-4 shadow-lg">
+          <h3 className="text-xl font-bold text-gray-800">8</h3>
+          <p className="text-sm text-gray-600">Inactive</p>
+        </div>
+
+        <div className="flex flex-col items-start justify-center rounded-xl border-l-4 border-purple-400 bg-white p-4 shadow-lg">
+          <h3 className="text-xl font-bold text-gray-800">3</h3>
+          <p className="text-sm text-gray-600">On Hold</p>
+        </div>
+
+        <div className="flex flex-col items-start justify-center rounded-xl border-l-4 border-orange-400 bg-white p-4 shadow-lg">
+          <h3 className="text-xl font-bold text-gray-800">13</h3>
+          <p className="text-sm text-gray-600">Withdrawn</p>
+        </div>
+
+        <div className="flex flex-col items-start justify-center rounded-xl border-l-4 border-blue-400 bg-white p-4 shadow-lg">
+          <h3 className="text-xl font-bold text-gray-800">17</h3>
+          <p className="text-sm text-gray-600">Signed Up</p>
+        </div>
+
+        <div className="flex flex-col items-start justify-center rounded-xl border-l-4 border-cyan-400 bg-white p-4 shadow-lg">
+          <h3 className="text-xl font-bold text-gray-800">17</h3>
+          <p className="text-sm text-gray-600">Transferred</p>
+        </div>
+      </div>
+
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-2">
         <input
           type="text"
           name="search"
-          placeholder="Student Name or ID"
+          placeholder="Student Name or ID or phone number"
           value={filters.search}
           onChange={handleFilterChange}
-          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-        />
-        <input
-          type="text"
-          name="parentName"
-          placeholder="Parent Name"
-          value={filters.parentName}
-          onChange={handleFilterChange}
-          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-        />
-        <input
-          type="text"
-          name="parentPhone"
-          placeholder="Parent Phone"
-          value={filters.parentPhone}
-          onChange={handleFilterChange}
-          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-        />
-        <select
-          name="status"
-          value={filters.status}
-          onChange={handleFilterChange}
-          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-        >
-          <option value="">All Status</option>
-          <option value="Active">Active</option>
-          <option value="Inactive">Inactive</option>
-        </select>
-        <select
-          name="groupName"
-          value={filters.groupName}
-          onChange={handleFilterChange}
-          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-        >
-          <option value="">All Groups</option>
-          {groupNames.map((g) => (
-            <option key={g} value={g}>
-              {g}
-            </option>
-          ))}
-        </select>
-        <input
-          type="number"
-          name="ageFrom"
-          placeholder="Age From"
-          value={filters.ageFrom}
-          onChange={handleFilterChange}
-          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-        />
-        <input
-          type="number"
-          name="ageTo"
-          placeholder="Age To"
-          value={filters.ageTo}
-          onChange={handleFilterChange}
-          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
+          className="w-1/3 rounded-lg border border-gray-300 px-3 py-2 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
         />
         <button
-          onClick={applyFilters}
-          className="rounded bg-primary/10 px-4 py-2 text-primary hover:bg-primary/20"
+          onClick={handleExport}
+          className="hover:bg-primary-dark whitespace-nowrap rounded bg-primary px-5 py-2 font-semibold text-white transition"
         >
-          Filter
-        </button>
-        <button
-          onClick={resetFilters}
-          className="rounded bg-gray-200 px-4 py-2 text-gray-700 hover:bg-gray-300"
-        >
-          Reset
+          Export Selected
         </button>
       </div>
+
       <div className="rounded-lg bg-white shadow-lg">
         {/* Table */}
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-dashed divide-gray-400/60">
+          <table className="min-w-full divide-y divide-gray-200">
             <thead>
               <tr>
-                <th className="px-6 py-3">
-                  <input
-                    type="checkbox"
-                    checked={
-                      selectedStudents.length === filteredStudents.length && filteredStudents.length > 0
-                    }
-                    onChange={handleSelectAll}
-                  />
+                <th className="px-6 py-3 text-left">
+                  <label className="relative inline-flex cursor-pointer items-center">
+                    <input
+                      type="checkbox"
+                      checked={
+                        selectedStudents.length === filteredStudents.length && filteredStudents.length > 0
+                      }
+                      onChange={handleSelectAll}
+                      className="peer sr-only"
+                    />
+                    <div className="flex h-5 w-5 items-center justify-center rounded border border-gray-300 bg-white transition-colors peer-checked:border-primary peer-checked:bg-primary">
+                      <CheckIcon className="hidden h-4 w-4 text-white peer-checked:block" />
+                    </div>
+                  </label>
                 </th>
                 {["Student", "Parent 1", "Parent 2", "Age", "Group", "Status"].map((col) => (
                   <th
@@ -309,21 +387,40 @@ const StudentsList = () => {
                 <th className="px-6 py-3 text-right text-sm font-bold text-gray-700">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-dashed divide-gray-400/60">
+            <tbody className="divide-y divide-gray-200">
               {paginatedStudents.map((s) => (
-                <tr key={s.id} className="odd:bg-slate-100 even:bg-white">
+                <tr key={s.id} className="odd:bg-gray-100 even:bg-white">
                   <td className="px-6 py-3">
-                    <input
-                      type="checkbox"
-                      checked={selectedStudents.includes(s.id)}
-                      onChange={() => handleCheckboxChange(s.id)}
-                    />
+                    <label className="relative inline-flex cursor-pointer items-center">
+                      <input
+                        type="checkbox"
+                        checked={selectedStudents.includes(s.id)}
+                        onChange={() => handleCheckboxChange(s.id)}
+                        className="peer sr-only"
+                      />
+                      <div className="flex h-5 w-5 items-center justify-center rounded border border-gray-300 bg-white transition-colors peer-checked:border-primary peer-checked:bg-primary">
+                        <CheckIcon className="hidden h-4 w-4 text-white peer-checked:block" />
+                      </div>
+                    </label>
                   </td>
                   <td
-                    className="cursor-pointer px-6 py-3 font-normal text-gray-600"
+                    className="flex cursor-pointer items-center gap-3 px-6 py-3 text-gray-700 hover:text-primary"
                     onClick={() => navigate(`/admin/students/student-profile/${s.id}`)}
                   >
-                    {s.firstName} {s.lastName}
+                    <img
+                      src={s.student_image}
+                      alt={`${s.firstName} ${s.lastName}`}
+                      className="h-10 w-10 rounded-full border border-gray-300 object-cover"
+                    />
+                    <div className="flex flex-col truncate">
+                      <span className="truncate font-medium">
+                        {s.firstName} {s.lastName}
+                      </span>
+                      <span className="mt-1 flex items-center gap-1 text-xs text-gray-500">
+                        <IdentificationIcon className="h-4 w-4" />
+                        ID: {s.id}
+                      </span>
+                    </div>
                   </td>
                   <td className="px-6 py-3 font-normal text-gray-600">{s.parent1}</td>
                   <td className="px-6 py-3 font-normal text-gray-600">{s.parent2 || "—"}</td>

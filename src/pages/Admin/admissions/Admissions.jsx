@@ -1,6 +1,7 @@
 import {
   ArrowDownTrayIcon,
   CheckCircleIcon,
+  ChevronDownIcon,
   ClipboardDocumentIcon,
   ClockIcon,
   EyeIcon,
@@ -207,24 +208,34 @@ const Admissions = () => {
 
   return (
     <div className="w-full p-6">
-      <div className="mb-6 flex flex-wrap items-end justify-between">
+      <div className="mb-3 flex flex-wrap items-end justify-between">
         <div aria-label="Breadcrumb">
-          <h1 className="text-2xl font-bold text-primaryFont">Admissions</h1>
-          <nav className="flex" aria-label="Breadcrumb">
-            <ol className="inline-flex items-center space-x-2">
-              <li className="inline-flex items-center">
-                <div className="flex items-center text-sm font-semibold text-black">
-                  <UserPlusIcon className="h-4 w-4 stroke-[2]" /> <h5>Students</h5>
-                </div>
-              </li>
-              <span className="text-xs text-gray-500">/</span>
-              <li aria-current="page">
-                <span className="text-sm font-semibold text-primary">Admissions</span>
-              </li>
-            </ol>
-          </nav>
+          <h1 className="text-2xl font-bold text-black">Admissions</h1>
         </div>
-        {/* Buttons */}
+      </div>
+
+      {/* Filters */}
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-2">
+        <div className="flex flex-1 items-center gap-2">
+          <div className="relative w-1/4">
+            <label htmlFor="status" className="mb-1 block text-gray-600">
+              Status
+            </label>
+            <select
+              value={filters.status}
+              onChange={(e) => setFilters({ ...filters, status: e.target.value })}
+              className="w-full appearance-none rounded-lg border border-gray-300 px-3 py-2 pr-10 outline-none focus:border-primary focus:ring-4 focus:ring-primary/20"
+            >
+              <option value="all">All Status</option>
+              <option value="Review">Review</option>
+              <option value="Waitlist">Waitlist</option>
+              <option value="Enrolled">Enrolled</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+            <ChevronDownIcon className="pointer-events-none absolute right-3 top-11 h-4 w-4 -translate-y-1/2 stroke-2 text-gray-500" />
+          </div>
+        </div>
+
         <div className="flex gap-2">
           <button
             onClick={() => setShowLinkModal(true)}
@@ -265,77 +276,15 @@ const Admissions = () => {
         })}
       </div>
 
-      {/* Filter Section */}
-      <div className="mb-6 flex flex-wrap items-center gap-2 rounded-lg bg-white p-6 shadow-lg">
-        <input
-          type="text"
-          placeholder="Student Name"
-          value={filters.studentName}
-          onChange={(e) => setFilters({ ...filters, studentName: e.target.value })}
-          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-        />
-        <input
-          type="text"
-          placeholder="Parent Name"
-          value={filters.parentName}
-          onChange={(e) => setFilters({ ...filters, parentName: e.target.value })}
-          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-        />
-        <input
-          type="text"
-          placeholder="Parent Phone"
-          value={filters.parentPhone}
-          onChange={(e) => setFilters({ ...filters, parentPhone: e.target.value })}
-          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-        />
-        <input
-          type="text"
-          placeholder="Registration ID"
-          value={filters.registerId}
-          onChange={(e) => setFilters({ ...filters, registerId: e.target.value })}
-          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-        />
-        <select
-          value={filters.status}
-          onChange={(e) => setFilters({ ...filters, status: e.target.value })}
-          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-        >
-          <option value="all">All Status</option>
-          <option value="Review">Review</option>
-          <option value="Waitlist">Waitlist</option>
-          <option value="Enrolled">Enrolled</option>
-          <option value="Rejected">Rejected</option>
-        </select>
-        <input
-          type="number"
-          placeholder="Age From"
-          value={filters.ageFrom}
-          onChange={(e) => setFilters({ ...filters, ageFrom: e.target.value })}
-          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-        />
-        <input
-          type="number"
-          placeholder="Age To"
-          value={filters.ageTo}
-          onChange={(e) => setFilters({ ...filters, ageTo: e.target.value })}
-          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-        />
-        <button
-          onClick={applyFilters}
-          className="rounded bg-primary/10 px-4 py-2 text-primary hover:bg-primary/20"
-        >
-          Filter
-        </button>
-        <button
-          onClick={resetFilters}
-          className="rounded bg-gray-200 px-4 py-2 text-gray-700 hover:bg-gray-300"
-        >
-          Reset
-        </button>
-      </div>
-
       {/* Export */}
-      <div className="mb-4 flex justify-end">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-2">
+        <input
+          type="text"
+          name="search"
+          placeholder="Student Name or ID or phone number"
+          value={filters.search}
+          className="w-1/3 rounded-lg border border-gray-300 px-3 py-2 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
+        />
         <button
           onClick={exportToExcel}
           className="flex items-center gap-2 rounded border border-primary bg-primary px-5 py-2 font-semibold text-white"
@@ -386,7 +335,7 @@ const Admissions = () => {
             </thead>
             <tbody className="divide-y divide-dashed divide-gray-400/60">
               {filteredStudents.map((student, index) => (
-                <tr key={student.id} className="odd:bg-slate-100 even:bg-white">
+                <tr key={student.id} className="odd:bg-gray-100 even:bg-white">
                   <td className="px-6 py-3">
                     <input
                       type="checkbox"

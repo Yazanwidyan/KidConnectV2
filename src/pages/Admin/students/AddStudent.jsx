@@ -78,7 +78,7 @@ const AddStudent = () => {
     <div className="w-full space-y-6 p-6">
       {/* ------------------- Header / Breadcrumb ------------------- */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-primaryFont">Add Student</h1>
+        <h1 className="text-2xl font-bold text-black">Add Student</h1>
         <nav className="flex" aria-label="Breadcrumb">
           <ol className="inline-flex items-center space-x-2">
             <li className="inline-flex items-center">

@@ -216,7 +216,7 @@ const AssignStudentsModal = ({ onClose, onAssign }) => {
                 </thead>
                 <tbody className="divide-y divide-dashed divide-gray-400/60">
                   {paginatedStudents.map((s) => (
-                    <tr key={s.id} className="odd:bg-slate-100 even:bg-white">
+                    <tr key={s.id} className="odd:bg-gray-100 even:bg-white">
                       <td className="px-6 py-3">
                         <input
                           type="checkbox"

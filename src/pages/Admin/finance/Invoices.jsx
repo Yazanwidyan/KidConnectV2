@@ -90,7 +90,7 @@ const Invoices = () => {
       {/* Header */}
       <div className="mb-6 flex flex-wrap items-end justify-between">
         <div aria-label="Breadcrumb">
-          <h1 className="text-2xl font-bold text-primaryFont">Invoices</h1>
+          <h1 className="text-2xl font-bold text-black">Invoices</h1>
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="inline-flex items-center space-x-2">
               <li className="inline-flex items-center">
@@ -182,7 +182,7 @@ const Invoices = () => {
           <tbody className="divide-y divide-dashed divide-gray-400/60">
             {filteredInvoices.length > 0 ? (
               filteredInvoices.map((inv, index) => (
-                <tr key={inv.id} className="transition odd:bg-slate-100 even:bg-white hover:bg-gray-50">
+                <tr key={inv.id} className="transition odd:bg-gray-100 even:bg-white hover:bg-gray-50">
                   <td className="px-6 py-3 font-normal text-gray-700">{index + 1}</td>
                   <td className="px-6 py-3 font-normal text-gray-700">{inv.invoiceNo}</td>
                   <td className="px-6 py-3 font-normal text-gray-700">{inv.billTo}</td>

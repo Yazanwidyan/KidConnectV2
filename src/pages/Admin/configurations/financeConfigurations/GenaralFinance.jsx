@@ -65,7 +65,7 @@ const GeneralFinance = () => {
           </thead>
           <tbody className="divide-y divide-dashed divide-gray-400/60">
             {categories.map((cat, index) => (
-              <tr key={cat.id} className="transition odd:bg-slate-100 even:bg-white hover:bg-gray-50">
+              <tr key={cat.id} className="transition odd:bg-gray-100 even:bg-white hover:bg-gray-50">
                 <td className="px-6 py-3 font-normal text-gray-700">{index + 1}</td>
                 <td className="px-6 py-3 font-normal text-gray-700">
                   <input

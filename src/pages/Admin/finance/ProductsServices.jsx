@@ -104,7 +104,7 @@ const ProductsServices = () => {
       {/* Header */}
       <div className="mb-6 flex flex-wrap items-center justify-between">
         <div aria-label="Breadcrumb">
-          <h1 className="text-2xl font-bold text-primaryFont">Products & Services</h1>
+          <h1 className="text-2xl font-bold text-black">Products & Services</h1>
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="inline-flex items-center space-x-2">
               <li className="inline-flex items-center">
@@ -198,7 +198,7 @@ const ProductsServices = () => {
           <tbody className="divide-y divide-dashed divide-gray-400/60">
             {filteredProducts.length > 0 ? (
               filteredProducts.map((item) => (
-                <tr key={item.id} className="transition odd:bg-slate-100 even:bg-white hover:bg-gray-50">
+                <tr key={item.id} className="transition odd:bg-gray-100 even:bg-white hover:bg-gray-50">
                   <td className="px-6 py-3 font-normal text-gray-700">{item.sku}</td>
                   <td className="px-6 py-3 font-normal text-gray-700">{item.name}</td>
                   <td className="px-6 py-3 font-normal text-gray-700">{item.category}</td>

@@ -61,7 +61,7 @@ export default function Announcements() {
       {/* HEADER */}
       <div className="mb-6 flex flex-wrap items-end justify-between">
         <div aria-label="Breadcrumb">
-          <h1 className="text-2xl font-bold text-primaryFont"> Announcements</h1>
+          <h1 className="text-2xl font-bold text-black"> Announcements</h1>
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="inline-flex items-center space-x-2">
               <li className="inline-flex items-center">

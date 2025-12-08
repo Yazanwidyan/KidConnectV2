@@ -148,7 +148,7 @@ const CreateEmployee = () => {
     <div className="w-full p-6">
       <div className="mb-6 flex flex-wrap items-end justify-between">
         <div aria-label="Breadcrumb">
-          <h1 className="text-2xl font-bold text-primaryFont">Add New Employee</h1>
+          <h1 className="text-2xl font-bold text-black">Add New Employee</h1>
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="inline-flex items-center space-x-2">
               <li className="inline-flex items-center">

@@ -1,4 +1,12 @@
-import { EyeIcon, PencilSquareIcon, UserCircleIcon, UserPlusIcon } from "@heroicons/react/24/outline";
+import {
+  ChevronDownIcon,
+  EyeIcon,
+  IdentificationIcon,
+  MagnifyingGlassIcon,
+  PencilSquareIcon,
+  UserCircleIcon,
+  UserPlusIcon,
+} from "@heroicons/react/24/outline";
 import React, { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -10,6 +18,7 @@ const EmployeeList = () => {
     {
       id: 1,
       name: "Alice Johnson",
+      employee_image: "https://randomuser.me/api/portraits/women/24.jpg",
       role: "Teacher",
       phone: "+9629721975",
       status: "Active",
@@ -18,6 +27,7 @@ const EmployeeList = () => {
     {
       id: 2,
       name: "Bob Smith",
+      employee_image: "https://randomuser.me/api/portraits/men/85.jpg",
       role: "Administrator",
       phone: "+9629732187",
       status: "Active",
@@ -31,7 +41,65 @@ const EmployeeList = () => {
       status: "Inactive",
       title: "Support Staff",
     },
-    // Add more employees as needed
+    {
+      id: 4,
+      name: "David Lee",
+      employee_image: "https://randomuser.me/api/portraits/men/68.jpg",
+      role: "Teacher",
+      phone: "+9629876543",
+      status: "Active",
+      title: "Science Teacher",
+    },
+    {
+      id: 5,
+      name: "Eva Green",
+      role: "Teacher",
+      phone: "+9629765432",
+      status: "Active",
+      title: "English Teacher",
+    },
+    {
+      id: 6,
+      name: "Frank White",
+      role: "Administrator",
+      phone: "+9629123456",
+      status: "Active",
+      title: "IT Administrator",
+    },
+    {
+      id: 7,
+      name: "Grace Kim",
+      employee_image: "https://randomuser.me/api/portraits/women/24.jpg",
+      role: "Staff",
+      phone: "+9629456789",
+      status: "Active",
+      title: "Librarian",
+    },
+    {
+      id: 8,
+      name: "Henry Ford",
+      role: "Staff",
+      phone: "+9629345678",
+      status: "Inactive",
+      title: "Maintenance Staff",
+    },
+    {
+      id: 9,
+      name: "Isabella Moore",
+      employee_image: "https://randomuser.me/api/portraits/women/85.jpg",
+      role: "Teacher",
+      phone: "+9629787654",
+      status: "Active",
+      title: "History Teacher",
+    },
+    {
+      id: 10,
+      name: "Jack Turner",
+      role: "Administrator",
+      phone: "+9629234567",
+      status: "Active",
+      title: "HR Manager",
+    },
   ];
 
   // Filter options
@@ -101,22 +169,47 @@ const EmployeeList = () => {
   return (
     <div className="w-full p-6">
       {/* Header */}
-      <div className="mb-6 flex flex-wrap items-end justify-between">
+      <div className="mb-3 flex flex-wrap items-end justify-between">
         <div aria-label="Breadcrumb">
-          <h1 className="text-2xl font-bold text-primaryFont">Employees List</h1>
-          <nav className="flex" aria-label="Breadcrumb">
-            <ol className="inline-flex items-center space-x-2">
-              <li className="inline-flex items-center">
-                <div className="flex items-center text-sm font-semibold text-black">
-                  <UserCircleIcon className="h-4 w-4 stroke-[2]" /> <h5>Employees</h5>
-                </div>
-              </li>
-              <span className="text-xs text-gray-500">/</span>
-              <li aria-current="page">
-                <span className="text-sm font-semibold text-primary">Employees List</span>
-              </li>
-            </ol>
-          </nav>
+          <h1 className="text-2xl font-bold text-black">Employees</h1>
+        </div>
+      </div>
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-2">
+        <div className="flex flex-1 items-center gap-2">
+          <div className="relative w-1/4">
+            <label className="mb-1 block text-gray-600">Roles</label>
+            <select
+              name="role"
+              value={filters.role}
+              onChange={handleFilterChange}
+              className="w-full appearance-none rounded-lg border border-gray-300 px-3 py-2 pr-10 outline-none focus:border-primary focus:ring-4 focus:ring-primary/20"
+            >
+              <option value="">All Roles</option>
+              {rolesList.map((r) => (
+                <option key={r} value={r}>
+                  {r}
+                </option>
+              ))}
+            </select>
+            <ChevronDownIcon className="pointer-events-none absolute right-3 top-11 h-4 w-4 -translate-y-1/2 stroke-2 text-gray-500" />
+          </div>
+          <div className="relative w-1/4">
+            <label className="mb-1 block text-gray-600">Status</label>
+            <select
+              name="status"
+              value={filters.status}
+              onChange={handleFilterChange}
+              className="w-full appearance-none rounded-lg border border-gray-300 px-3 py-2 pr-10 outline-none focus:border-primary focus:ring-4 focus:ring-primary/20"
+            >
+              <option value="">All Status</option>
+              {statuses.map((s) => (
+                <option key={s} value={s}>
+                  {s}
+                </option>
+              ))}
+            </select>
+            <ChevronDownIcon className="pointer-events-none absolute right-3 top-11 h-4 w-4 -translate-y-1/2 stroke-2 text-gray-500" />
+          </div>
         </div>
         <Link
           to="/admin/employees/add-employee"
@@ -125,76 +218,24 @@ const EmployeeList = () => {
           <UserPlusIcon className="h-5 w-5" /> Add Employee
         </Link>
       </div>
-
-      {/* Filters Section */}
-      <div className="mb-6 flex flex-wrap items-center gap-2 rounded-lg bg-white p-6 shadow-lg">
-        <input
-          type="text"
-          name="name"
-          placeholder="Name"
-          value={filters.name}
-          onChange={handleFilterChange}
-          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-        />
-        <select
-          name="role"
-          value={filters.role}
-          onChange={handleFilterChange}
-          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-        >
-          <option value="">All Roles</option>
-          {rolesList.map((r) => (
-            <option key={r} value={r}>
-              {r}
-            </option>
-          ))}
-        </select>
-        <input
-          type="text"
-          name="phone"
-          placeholder="Phone"
-          value={filters.phone}
-          onChange={handleFilterChange}
-          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-        />
-        <input
-          type="text"
-          name="title"
-          placeholder="Title"
-          value={filters.title}
-          onChange={handleFilterChange}
-          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-        />
-        <select
-          name="status"
-          value={filters.status}
-          onChange={handleFilterChange}
-          className="rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-        >
-          <option value="">All Status</option>
-          {statuses.map((s) => (
-            <option key={s} value={s}>
-              {s}
-            </option>
-          ))}
-        </select>
-        <button
-          onClick={applyFilters}
-          className="rounded bg-primary/10 px-4 py-2 text-primary hover:bg-primary/20"
-        >
-          Filter
-        </button>
-        <button
-          onClick={resetFilters}
-          className="rounded bg-gray-200 px-4 py-2 text-gray-700 hover:bg-gray-300"
-        >
-          Reset
-        </button>
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-2">
+        <div className="relative w-1/3">
+          <input
+            type="text"
+            name="name"
+            placeholder="Search by name or phone number"
+            value={filters.name}
+            onChange={handleFilterChange}
+            className="w-full rounded-lg border border-gray-300 px-3 py-2 pr-10 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
+          />
+          <MagnifyingGlassIcon className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 stroke-2 text-gray-500" />
+        </div>
       </div>
 
+      {/* Filters Section */}
       {/* Employee Table */}
       <div className="overflow-x-auto rounded-lg bg-white shadow-lg">
-        <table className="min-w-full divide-y divide-dashed divide-gray-400/60">
+        <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
               {["Name", "Role", "Title", "Phone", "Status", "Actions"].map((col) => (
@@ -209,15 +250,26 @@ const EmployeeList = () => {
             </tr>
           </thead>
 
-          <tbody className="divide-y divide-dashed divide-gray-400/60">
+          <tbody className="divide-y divide-gray-200">
             {paginatedEmployees.length > 0 ? (
               paginatedEmployees.map((emp) => (
-                <tr key={emp.id} className="transition odd:bg-slate-100 even:bg-white hover:bg-gray-50">
+                <tr key={emp.id} className="transition odd:bg-gray-100 even:bg-white hover:bg-gray-50">
                   <td
-                    className="cursor-pointer px-6 py-3 font-normal text-gray-700"
+                    className="flex cursor-pointer items-center gap-3 px-6 py-3 text-gray-700 hover:text-primary"
                     onClick={() => navigate(`/admin/employees/employee-profile/${emp.id}`)}
                   >
-                    {emp.name}
+                    <img
+                      src={emp.employee_image}
+                      alt={`${emp.name}`}
+                      className="h-10 w-10 rounded-full border border-gray-300 object-cover"
+                    />
+                    <div className="flex flex-col truncate">
+                      <span className="truncate font-medium">{emp.name}</span>
+                      <span className="mt-1 flex items-center gap-1 text-xs text-gray-500">
+                        <IdentificationIcon className="h-4 w-4" />
+                        ID: {emp.id}
+                      </span>
+                    </div>
                   </td>
                   <td className="px-6 py-3 font-normal text-gray-700">{emp.role}</td>
                   <td className="px-6 py-3 font-normal text-gray-700">{emp.title}</td>

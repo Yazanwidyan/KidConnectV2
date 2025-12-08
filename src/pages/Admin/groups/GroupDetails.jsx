@@ -62,7 +62,7 @@ const GroupDetailsPage = () => {
       {/* Header */}
       <div className="mb-6 flex items-center gap-2">
         <div aria-label="Breadcrumb">
-          <h1 className="text-2xl font-bold text-primaryFont">{group.groupName}</h1>
+          <h1 className="text-2xl font-bold text-black">{group.groupName}</h1>
           <Link
             to="/admin/groups"
             className="flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
@@ -167,7 +167,7 @@ const GroupDetailsPage = () => {
                 </thead>
                 <tbody className="divide-y divide-dashed divide-gray-400/60">
                   {group.staff.map((s, idx) => (
-                    <tr key={s.id} className="transition odd:bg-slate-100 even:bg-white hover:bg-gray-50">
+                    <tr key={s.id} className="transition odd:bg-gray-100 even:bg-white hover:bg-gray-50">
                       <td className="px-6 py-3">{idx + 1}</td>
                       <td className="px-6 py-3">{s.name}</td>
                       <td className="px-6 py-3">{s.role}</td>
@@ -207,7 +207,7 @@ const GroupDetailsPage = () => {
                 </thead>
                 <tbody className="divide-y divide-dashed divide-gray-400/60">
                   {group.students.map((s, idx) => (
-                    <tr key={s.id} className="transition odd:bg-slate-100 even:bg-white hover:bg-gray-50">
+                    <tr key={s.id} className="transition odd:bg-gray-100 even:bg-white hover:bg-gray-50">
                       <td className="px-6 py-3">{idx + 1}</td>
                       <td className="px-6 py-3">{s.name}</td>
                       <td className="px-6 py-3">{s.role}</td>

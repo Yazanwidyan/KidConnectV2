@@ -109,7 +109,7 @@ const CreateGroup = () => {
   return (
     <div className="w-full p-6">
       <div className="mb-6" aria-label="Breadcrumb">
-        <h1 className="text-2xl font-bold text-primaryFont">Create New Group</h1>
+        <h1 className="text-2xl font-bold text-black">Create New Group</h1>
         <nav className="flex" aria-label="Breadcrumb">
           <ol className="inline-flex items-center space-x-2">
             <li className="inline-flex items-center">
@@ -281,7 +281,7 @@ const CreateGroup = () => {
               </thead>
               <tbody className="divide-y divide-dashed divide-gray-400/60">
                 {/* {group.staff.map((s, idx) => (
-                    <tr key={s.id} className="transition odd:bg-slate-100 even:bg-white hover:bg-gray-50">
+                    <tr key={s.id} className="transition odd:bg-gray-100 even:bg-white hover:bg-gray-50">
                       <td className="px-6 py-3">{idx + 1}</td>
                       <td className="px-6 py-3">{s.name}</td>
                       <td className="px-6 py-3">{s.role}</td>

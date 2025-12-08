@@ -103,7 +103,7 @@ const StudentProfile = () => {
     <div className="w-full space-y-6 p-6">
       <div className="mb-6 flex flex-wrap items-end justify-between">
         <div aria-label="Breadcrumb">
-          <h1 className="text-2xl font-bold text-primaryFont">
+          <h1 className="text-2xl font-bold text-black">
             {" "}
             {student.firstName} {student.secondName} {student.thirdName} {student.lastName}
           </h1>

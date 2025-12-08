@@ -55,7 +55,7 @@ export default function PaymentRequests() {
     <div className="w-full p-6">
       <div className="mb-6 flex flex-wrap items-end justify-between">
         <div aria-label="Breadcrumb">
-          <h1 className="text-2xl font-bold text-primaryFont">Payment Requests</h1>
+          <h1 className="text-2xl font-bold text-black">Payment Requests</h1>
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="inline-flex items-center space-x-2">
               <li className="inline-flex items-center">
@@ -153,7 +153,7 @@ export default function PaymentRequests() {
           <tbody className="divide-y divide-dashed divide-gray-400/60">
             {filteredRows.length > 0 ? (
               filteredRows.map((row, idx) => (
-                <tr key={idx} className="transition odd:bg-slate-100 even:bg-white hover:bg-gray-50">
+                <tr key={idx} className="transition odd:bg-gray-100 even:bg-white hover:bg-gray-50">
                   <td className="px-6 py-3 font-normal text-gray-700">{row.bill}</td>
                   <td className="px-6 py-3 font-normal text-gray-700">-</td>
                   <td className="px-6 py-3 font-normal text-gray-700">{row.date}</td>

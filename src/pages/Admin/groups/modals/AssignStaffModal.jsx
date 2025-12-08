@@ -192,7 +192,7 @@ const AssignStaffModal = ({ onClose, onAssign }) => {
               <tbody className="divide-y divide-dashed divide-gray-400/60">
                 {paginatedEmployees.length > 0 ? (
                   paginatedEmployees.map((emp) => (
-                    <tr key={emp.id} className="transition odd:bg-slate-100 even:bg-white hover:bg-gray-50">
+                    <tr key={emp.id} className="transition odd:bg-gray-100 even:bg-white hover:bg-gray-50">
                       <td className="px-6 py-3">
                         <input
                           type="checkbox"
