@@ -8,7 +8,7 @@ import {
 } from "@heroicons/react/24/outline";
 import React, { useMemo, useState } from "react";
 
-const Leaves = () => {
+const EmployeesLeaves = () => {
   const [requests, setRequests] = useState([
     {
       id: 1,
@@ -463,4 +463,4 @@ const Leaves = () => {
   );
 };
 
-export default Leaves;
+export default EmployeesLeaves;

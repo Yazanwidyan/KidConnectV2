@@ -51,36 +51,6 @@ const AdminSidebar = ({ collapsed }) => {
         </span>
       </div>
 
-      {/* User Section */}
-      <div className="relative border-b border-b-secondary/20 px-4 py-4">
-        <button className="flex w-full items-center gap-3" onClick={() => setMenuOpen((prev) => !prev)}>
-          <img src="/assets/wa.png" alt="User Avatar" className="h-11 w-11 rounded-xl border object-cover" />
-
-          {!isCollapsed && (
-            <div className="flex-1 text-left">
-              <p className="text-lg font-semibold text-secondary">John Doe</p>
-              <p className="text-xs text-white">Administrator</p>
-            </div>
-          )}
-
-          {!isCollapsed && (
-            <Cog8ToothIcon
-              className={`h-5 w-5 stroke-[2] text-white transition-transform ${menuOpen ? "rotate-180" : "rotate-0"}`}
-            />
-          )}
-        </button>
-
-        {menuOpen && !isCollapsed && (
-          <div className="absolute right-0 z-50 mt-2 w-40 rounded-lg border bg-white py-2 shadow-lg">
-            <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100">Profile</button>
-            <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100">Settings</button>
-            <button className="w-full px-4 py-2 text-left text-sm text-red-500 hover:bg-gray-100">
-              Logout
-            </button>
-          </div>
-        )}
-      </div>
-
       {/* Scrollable menu */}
       <nav className="custom-1 mx-1 mt-4 flex-1 space-y-1 overflow-y-auto px-2">
         {ADMIN_MENU.map((item) => {

@@ -108,7 +108,7 @@ const StudentProfile = () => {
             {student.firstName} {student.secondName} {student.thirdName} {student.lastName}
           </h1>
           <Link
-            to="/admin/students/students-list"
+            to="/admin/students"
             className="flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
           >
             <FaArrowLeft /> Back to Students

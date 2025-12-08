@@ -313,7 +313,7 @@ const GroupList = () => {
               {/* Actions */}
               <div className="absolute bottom-3 right-3 flex gap-2">
                 <Link
-                  to={`/admin/groups/group-list/group-details/${group.id}`}
+                  to={`/admin/groups/group-details/${group.id}`}
                   className="rounded-lg bg-white/20 p-2 hover:bg-white/30"
                 >
                   <EyeIcon className="h-5 w-5 text-white" />

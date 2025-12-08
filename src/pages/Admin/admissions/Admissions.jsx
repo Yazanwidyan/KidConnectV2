@@ -397,7 +397,7 @@ const Admissions = () => {
                   <td className="px-6 py-3 font-normal text-gray-600">{index + 1}</td>
                   <td className="px-6 py-3 font-normal text-gray-600">{student.registerId}</td>
                   <td
-                    onClick={() => navigate(`/admin/students/student-admission-profile/${student.id}`)}
+                    onClick={() => navigate(`/admin/admissions/student-admission-profile/${student.id}`)}
                     className="cursor-pointer px-6 py-3 font-normal text-gray-600"
                   >
                     {student.name}

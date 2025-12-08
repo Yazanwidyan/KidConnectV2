@@ -1,11 +1,14 @@
 import {
   BanknotesIcon,
+  BriefcaseIcon,
+  CalendarDaysIcon,
   ChartBarIcon,
+  ChatBubbleLeftRightIcon,
+  ClipboardDocumentCheckIcon,
   ClipboardDocumentListIcon,
+  Cog6ToothIcon,
   HomeIcon,
-  UserCircleIcon,
   UserGroupIcon,
-  UserPlusIcon,
   UsersIcon,
 } from "@heroicons/react/24/outline";
 
@@ -19,25 +22,35 @@ export const ADMIN_MENU = [
     title: "Groups",
     icon: UserGroupIcon,
     path: "/admin/groups",
-    subMenu: [
-      { title: "Create Group", path: "/admin/groups/create-group" },
-      { title: "Groups List", path: "/admin/groups/group-list" },
-    ],
   },
   {
     title: "Students",
-    icon: UserPlusIcon,
+    icon: UsersIcon,
     path: "/admin/students",
+  },
+  {
+    title: "Employees",
+    icon: BriefcaseIcon,
+    path: "/admin/employees",
+  },
+  {
+    title: "Admissions",
+    icon: ClipboardDocumentCheckIcon,
+    path: "/admin/admissions",
+  },
+  {
+    title: "Attendance & Leaves",
+    icon: CalendarDaysIcon,
     subMenu: [
-      { title: "Add Student", path: "/admin/students/add-student" },
-      { title: "Students List", path: "/admin/students/students-list" },
-      { title: "Attendance", path: "/admin/students/attendance" },
-      { title: "Admissions", path: "/admin/students/admissions" },
+      { title: "Student Attendance", path: "/admin/students-attendance" },
+      { title: "Employee Attendance", path: "/admin/employees-attendance" },
+      { title: "Student Leaves", path: "/admin/students-leaves" },
+      { title: "Employee leaves", path: "/admin/employees-leaves" },
     ],
   },
   {
     title: "Communication",
-    icon: UsersIcon,
+    icon: ChatBubbleLeftRightIcon,
     path: "/admin/communication",
     subMenu: [
       { title: "Messages", path: "/admin/communication/messages" },
@@ -45,17 +58,7 @@ export const ADMIN_MENU = [
       { title: "Announcements", path: "/admin/communication/announcements" },
     ],
   },
-  {
-    title: "Employees",
-    icon: UserCircleIcon,
-    path: "/admin/employees",
-    subMenu: [
-      { title: "Add Employee", path: "/admin/employees/add-employee" },
-      { title: "Employee List", path: "/admin/employees/employee-list" },
-      { title: "Attendance", path: "/admin/employees/employee-attendance" },
-      { title: "Leaves", path: "/admin/employees/employee-leaves" },
-    ],
-  },
+
   {
     title: "Finance",
     icon: BanknotesIcon,
@@ -74,7 +77,7 @@ export const ADMIN_MENU = [
   },
   {
     title: "Configurations",
-    icon: ClipboardDocumentListIcon,
+    icon: Cog6ToothIcon,
     path: "/admin/configurations",
     subMenu: [
       { title: "General Configurations", path: "/admin/configurations/general-configurations" },
@@ -83,10 +86,7 @@ export const ADMIN_MENU = [
         title: "Attendance Configurations",
         path: "/admin/configurations/attendance-configurations",
         subMenu: [
-          {
-            title: "kiosk",
-            path: "/admin/configurations/attendance-configurations/kiosk",
-          },
+          { title: "kiosk", path: "/admin/configurations/attendance-configurations/kiosk" },
           {
             title: "Ratio Management",
             path: "/admin/configurations/attendance-configurations/ratio-management",
@@ -107,18 +107,12 @@ export const ADMIN_MENU = [
         title: "Finance Configurations",
         path: "/admin/configurations/finance-configurations",
         subMenu: [
-          {
-            title: "General Finance",
-            path: "/admin/configurations/finance-configurations/general-finance",
-          },
+          { title: "General Finance", path: "/admin/configurations/finance-configurations/general-finance" },
           {
             title: "Invoice and payment requests",
             path: "/admin/configurations/finance-configurations/invoice-and-payment-requests",
           },
-          {
-            title: "Templates",
-            path: "/admin/configurations/finance-configurations/templates",
-          },
+          { title: "Templates", path: "/admin/configurations/finance-configurations/templates" },
         ],
       },
       { title: "Roles & Permissions", path: "/admin/configurations/roles-permissions" },

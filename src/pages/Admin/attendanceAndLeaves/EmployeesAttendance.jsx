@@ -2,7 +2,7 @@ import { ClipboardDocumentIcon, UserCircleIcon, UserPlusIcon } from "@heroicons/
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-const Attendance = () => {
+const EmployeesAttendance = () => {
   const days = Array.from({ length: 31 }, (_, i) => i + 1);
 
   const initialEmployees = [
@@ -309,4 +309,4 @@ const Attendance = () => {
   );
 };
 
-export default Attendance;
+export default EmployeesAttendance;

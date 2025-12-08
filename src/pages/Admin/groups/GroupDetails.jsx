@@ -64,7 +64,7 @@ const GroupDetailsPage = () => {
         <div aria-label="Breadcrumb">
           <h1 className="text-2xl font-bold text-primaryFont">{group.groupName}</h1>
           <Link
-            to="/admin/groups/group-list"
+            to="/admin/groups"
             className="flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
           >
             <FaArrowLeft /> Back to Groups

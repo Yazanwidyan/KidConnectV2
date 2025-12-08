@@ -1,6 +1,12 @@
 import { Route, Routes } from "react-router-dom";
 
 import AdminLayout from "../layouts/AdminLayout";
+import Admissions from "../pages/admin/admissions/Admissions";
+import StudentAdmissionDetails from "../pages/admin/admissions/StudentAdmissionDetails";
+import EmployeesAttendance from "../pages/admin/attendanceAndLeaves/EmployeesAttendance";
+import EmployeesLeaves from "../pages/admin/attendanceAndLeaves/EmployeesLeaves";
+import StudentsAttendance from "../pages/admin/attendanceAndLeaves/StudentsAttendance";
+import StudentsLeaves from "../pages/admin/attendanceAndLeaves/StudentsLeaves";
 import Announcements from "../pages/admin/communication/Announcements";
 import Messages from "../pages/admin/communication/Messages";
 import Notifications from "../pages/admin/communication/Notifications";
@@ -16,12 +22,10 @@ import GeneralConfigurations from "../pages/admin/configurations/GeneralConfigur
 import RolesPermissions from "../pages/admin/configurations/RolesPermissions";
 import StudentConfigurations from "../pages/admin/configurations/StudentConfigurations";
 import AdminDashboard from "../pages/admin/dashboard/AdminDashboard";
-import EmployeeAttendance from "../pages/admin/employees/Attendance";
 import CreateEmployee from "../pages/admin/employees/CreateEmployee";
 import EditEmployee from "../pages/admin/employees/EditEmployee";
 import EmployeeList from "../pages/admin/employees/EmployeeList";
 import EmployeeProfile from "../pages/admin/employees/EmployeeProfile";
-import EmployeeLeaves from "../pages/admin/employees/Leaves";
 import AddInvoice from "../pages/admin/finance/AddInvoice";
 import Invoices from "../pages/admin/finance/Invoices";
 import PaymentRequests from "../pages/admin/finance/PaymentRequests";
@@ -34,11 +38,8 @@ import GroupList from "../pages/admin/groups/GroupList";
 import Reports from "../pages/admin/reports/Reports";
 import StudentActivityReport from "../pages/admin/reports/StudentActivityReport";
 import AddStudent from "../pages/admin/students/AddStudent";
-import Admissions from "../pages/admin/students/Admissions";
 import EditStudent from "../pages/admin/students/EditStudent";
-import StudentAdmissionDetails from "../pages/admin/students/StudentAdmissionDetails";
 import StudentProfile from "../pages/admin/students/StudentProfile";
-import StudentsAttendance from "../pages/admin/students/StudentsAttendance";
 import StudentsList from "../pages/admin/students/StudentsList";
 import NotFound from "../pages/NotFound";
 import { ROLES } from "../utils/roles";
@@ -53,33 +54,32 @@ const AdminRoutes = () => {
           <Route path="dashboard" element={<AdminDashboard />} />
 
           {/* ---------- GROUPS ---------- */}
-          <Route path="groups">
-            <Route path="create-group" element={<CreateGroup />} />
-            <Route path="edit-group/:id" element={<EditGroup />} />
-            <Route path="group-list" element={<GroupList />} />
-            <Route path="group-list/group-details/:id" element={<GroupDetails />} />
-          </Route>
+          <Route path="groups" element={<GroupList />} />
+          <Route path="groups/create-group" element={<CreateGroup />} />
+          <Route path="groups/edit-group/:id" element={<EditGroup />} />
+          <Route path="groups/group-details/:id" element={<GroupDetails />} />
 
           {/* ---------- STUDENTS ---------- */}
-          <Route path="students">
-            <Route path="add-student" element={<AddStudent />} />
-            <Route path="student-profile/:id" element={<StudentProfile />} />
-            <Route path="edit-student/:id" element={<EditStudent />} />
-            <Route path="students-list" element={<StudentsList />} />
-            <Route path="attendance" element={<StudentsAttendance />} />
-            <Route path="admissions" element={<Admissions />} />
-            <Route path="student-admission-profile/:id" element={<StudentAdmissionDetails />} />
-          </Route>
+          <Route path="students" element={<StudentsList />} />
+          <Route path="students/add-student" element={<AddStudent />} />
+          <Route path="students/student-profile/:id" element={<StudentProfile />} />
+          <Route path="students/edit-student/:id" element={<EditStudent />} />
+
+          {/* ---------- ATTENDANCE ---------- */}
+          <Route path="students-attendance" element={<StudentsAttendance />} />
+          <Route path="employees-attendance" element={<EmployeesAttendance />} />
+          <Route path="students-leaves" element={<StudentsLeaves />} />
+          <Route path="employees-leaves" element={<EmployeesLeaves />} />
+
+          {/* ---------- ADMISSIONS ---------- */}
+          <Route path="admissions" element={<Admissions />} />
+          <Route path="admissions/student-admission-profile/:id" element={<StudentAdmissionDetails />} />
 
           {/* ---------- EMPLOYEES ---------- */}
-          <Route path="employees">
-            <Route path="add-employee" element={<CreateEmployee />} />
-            <Route path="employee-profile/:id" element={<EmployeeProfile />} />
-            <Route path="edit-employee/:id" element={<EditEmployee />} />
-            <Route path="employee-list" element={<EmployeeList />} />
-            <Route path="employee-leaves" element={<EmployeeLeaves />} />
-            <Route path="employee-attendance" element={<EmployeeAttendance />} />
-          </Route>
+          <Route path="employees" element={<EmployeeList />} />
+          <Route path="employees/add-employee" element={<CreateEmployee />} />
+          <Route path="employees/employee-profile/:id" element={<EmployeeProfile />} />
+          <Route path="employees/edit-employee/:id" element={<EditEmployee />} />
 
           {/* ---------- FINANCE ---------- */}
           <Route path="finance">

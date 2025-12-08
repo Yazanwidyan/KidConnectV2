@@ -1,10 +1,12 @@
 // pages/admin/groups/CreateGroup.jsx
 
-import { ChevronDownIcon, ChevronUpIcon, UserGroupIcon } from "@heroicons/react/24/outline";
+import { ChevronDownIcon, ChevronUpIcon, UserGroupIcon, UserPlusIcon } from "@heroicons/react/24/outline";
 import { useFormik } from "formik";
 import React, { useState } from "react";
-import { FaChevronDown, FaChevronUp, FaImage } from "react-icons/fa";
+import { FaChevronDown, FaChevronUp, FaImage, FaTrash } from "react-icons/fa";
 import * as Yup from "yup";
+
+import AssignStaffModal from "./modals/AssignStaffModal";
 
 /* -------------------------
   Mock staff
@@ -68,6 +70,7 @@ const AccordionCard = ({ title, open, toggle, children, hint }) => (
 ------------------------- */
 const CreateGroup = () => {
   const [previewImage, setPreviewImage] = useState(null);
+  const [showStaffModal, setShowStaffModal] = useState(false);
 
   const [sectionsOpen, setSectionsOpen] = useState({
     basic: true,
@@ -256,47 +259,41 @@ const CreateGroup = () => {
           toggle={() => toggleSection("staff")}
           hint="Optional"
         >
-          <div className="grid gap-4 md:grid-cols-2">
-            <div>
-              <label className="mb-1 block">Group Leader</label>
-              <select
-                name="leader"
-                value={values.leader}
-                onChange={handleChange}
-                className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-              >
-                <option value="">— Select —</option>
-                {mockStaff.map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {s.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+          <div className="mb-4 flex items-center justify-between p-6">
+            <button
+              className="flex items-center gap-2 rounded bg-primary px-4 py-2 font-semibold text-white hover:bg-primary/90"
+              onClick={() => setShowStaffModal(true)}
+            >
+              <UserPlusIcon className="h-5 w-5 stroke-[2]" /> Assign Staff
+            </button>
+          </div>
 
-            <div>
-              <label className="mb-1 block">Assistants</label>
-              <div className="space-y-1">
-                {mockStaff.map((s) => (
-                  <label key={s.id} className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={values.assistants.includes(String(s.id))}
-                      onChange={(e) => {
-                        if (e.target.checked)
-                          setFieldValue("assistants", [...values.assistants, String(s.id)]);
-                        else
-                          setFieldValue(
-                            "assistants",
-                            values.assistants.filter((id) => id !== String(s.id))
-                          );
-                      }}
-                    />
-                    {s.name}
-                  </label>
-                ))}
-              </div>
-            </div>
+          <div className="overflow-hidden rounded-b-lg">
+            <table className="min-w-full divide-y divide-dashed divide-gray-400/60">
+              <thead className="bg-gray-50">
+                <tr>
+                  {["#", "Name", "Role", "Actions"].map((col) => (
+                    <th key={col} className="px-6 py-3 text-left text-sm font-bold text-gray-700">
+                      {col}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-dashed divide-gray-400/60">
+                {/* {group.staff.map((s, idx) => (
+                    <tr key={s.id} className="transition odd:bg-slate-100 even:bg-white hover:bg-gray-50">
+                      <td className="px-6 py-3">{idx + 1}</td>
+                      <td className="px-6 py-3">{s.name}</td>
+                      <td className="px-6 py-3">{s.role}</td>
+                      <td className="px-6 py-3">
+                        <button className="rounded bg-red-100 p-2 text-red-600 ring-red-700 transition hover:ring-1">
+                          <FaTrash />
+                        </button>
+                      </td>
+                    </tr>
+                  ))} */}
+              </tbody>
+            </table>
           </div>
         </AccordionCard>
 
@@ -307,6 +304,13 @@ const CreateGroup = () => {
           </button>
         </div>
       </form>
+      {/* Staff Modal */}
+      {showStaffModal && (
+        <AssignStaffModal
+          onClose={() => setShowStaffModal(false)}
+          // onAssign={(selected) => handleAssignStaff(selected)}
+        />
+      )}
     </div>
   );
 };
