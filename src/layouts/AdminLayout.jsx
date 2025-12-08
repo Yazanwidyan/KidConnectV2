@@ -30,7 +30,7 @@ const AdminLayout = ({ children }) => {
         <div className="flex flex-1 flex-col overflow-auto">
           {/* Header */}
           <div className="bg-white shadow-lg">
-            <header className="container mx-auto flex max-w-7xl items-center justify-between px-6 py-[15px]">
+            <header className="container mx-auto flex max-w-7xl items-center justify-between px-12 py-[15px]">
               {/* Left: Menu button and search */}
               <div className="flex items-center space-x-4">
                 {/* Sidebar Toggle */}
