@@ -66,7 +66,7 @@ export default function Announcements() {
             <ol className="inline-flex items-center space-x-2">
               <li className="inline-flex items-center">
                 <div className="flex items-center text-sm font-semibold text-black">
-                  <UsersIcon className="h-4 w-4 stroke-[2]" /> <h5>Communications</h5>
+                  <UsersIcon className="h-4 w-4 stroke-2" /> <h5>Communications</h5>
                 </div>
               </li>
               <span className="text-xs text-gray-500">/</span>
@@ -80,7 +80,7 @@ export default function Announcements() {
           onClick={() => setShowModal(true)}
           className="flex items-center gap-2 rounded border border-primary bg-primary px-5 py-2 font-semibold text-white"
         >
-          <PlusCircleIcon className="h-5 w-5 stroke-[2]" /> New Announcement
+          <PlusCircleIcon className="h-5 w-5 stroke-2" /> New Announcement
         </button>
       </div>
 

@@ -102,10 +102,10 @@ const InvoiceAndPaymentRequests = () => {
                   <td className="px-4 py-3">{reminder.type}</td>
                   <td className="flex gap-2 px-6 py-3">
                     <button className="rounded bg-green-100 p-[5px] text-green-500 ring-green-700 transition duration-300 hover:ring-1">
-                      <PencilSquareIcon className="h-5 w-5 stroke-[2]" />
+                      <PencilSquareIcon className="h-5 w-5 stroke-2" />
                     </button>
                     <button className="rounded bg-red-100 p-[5px] text-red-500 ring-red-700 transition duration-300 hover:ring-1">
-                      <TrashIcon className="h-5 w-5 stroke-[2]" />
+                      <TrashIcon className="h-5 w-5 stroke-2" />
                     </button>
                   </td>
                 </tr>
@@ -153,10 +153,10 @@ const InvoiceAndPaymentRequests = () => {
                   <td className="px-4 py-3">{term.type}</td>
                   <td className="flex gap-2 px-6 py-3">
                     <button className="rounded bg-green-100 p-[5px] text-green-500 ring-green-700 transition duration-300 hover:ring-1">
-                      <PencilSquareIcon className="h-5 w-5 stroke-[2]" />
+                      <PencilSquareIcon className="h-5 w-5 stroke-2" />
                     </button>
                     <button className="rounded bg-red-100 p-[5px] text-red-500 ring-red-700 transition duration-300 hover:ring-1">
-                      <TrashIcon className="h-5 w-5 stroke-[2]" />
+                      <TrashIcon className="h-5 w-5 stroke-2" />
                     </button>
                   </td>
                 </tr>
@@ -204,10 +204,10 @@ const InvoiceAndPaymentRequests = () => {
                   <td className="px-4 py-3">{discount.type}</td>
                   <td className="flex gap-2 px-6 py-3">
                     <button className="rounded bg-green-100 p-[5px] text-green-500 ring-green-700 transition duration-300 hover:ring-1">
-                      <PencilSquareIcon className="h-5 w-5 stroke-[2]" />
+                      <PencilSquareIcon className="h-5 w-5 stroke-2" />
                     </button>
                     <button className="rounded bg-red-100 p-[5px] text-red-500 ring-red-700 transition duration-300 hover:ring-1">
-                      <TrashIcon className="h-5 w-5 stroke-[2]" />
+                      <TrashIcon className="h-5 w-5 stroke-2" />
                     </button>
                   </td>
                 </tr>

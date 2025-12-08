@@ -232,12 +232,11 @@ const EmployeeList = () => {
         </div>
       </div>
 
-      {/* Filters Section */}
       {/* Employee Table */}
-      <div className="overflow-x-auto rounded-lg bg-white shadow-lg">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
+      <div className="overflow-x-auto">
+        <table className="min-w-full" style={{ borderCollapse: "separate", borderSpacing: "0 6px" }}>
+          <thead>
+            <tr className="bg-white shadow-lg">
               {["Name", "Role", "Title", "Phone", "Status", "Actions"].map((col) => (
                 <th
                   key={col}
@@ -250,10 +249,10 @@ const EmployeeList = () => {
             </tr>
           </thead>
 
-          <tbody className="divide-y divide-gray-200">
+          <tbody>
             {paginatedEmployees.length > 0 ? (
               paginatedEmployees.map((emp) => (
-                <tr key={emp.id} className="transition odd:bg-gray-100 even:bg-white hover:bg-gray-50">
+                <tr key={emp.id} className="bg-white shadow-sm">
                   <td
                     className="flex cursor-pointer items-center gap-3 px-6 py-3 text-gray-700 hover:text-primary"
                     onClick={() => navigate(`/admin/employees/employee-profile/${emp.id}`)}
@@ -286,13 +285,13 @@ const EmployeeList = () => {
                       to={`/admin/employees/employee-profile/${emp.id}`}
                       className="rounded bg-blue-100 p-[5px] text-blue-500 ring-blue-700 transition duration-300 hover:ring-1"
                     >
-                      <EyeIcon className="h-5 w-5 stroke-[2]" />
+                      <EyeIcon className="h-5 w-5 stroke-2" />
                     </Link>
                     <Link
                       to={`/admin/employees/edit-employee/${emp.id}`}
                       className="rounded bg-green-100 p-[5px] text-green-500 ring-green-700 transition duration-300 hover:ring-1"
                     >
-                      <PencilSquareIcon className="h-5 w-5 stroke-[2]" />
+                      <PencilSquareIcon className="h-5 w-5 stroke-2" />
                     </Link>
                   </td>
                 </tr>

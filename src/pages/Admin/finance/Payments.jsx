@@ -55,7 +55,7 @@ const Payments = () => {
             <ol className="inline-flex items-center space-x-2">
               <li className="inline-flex items-center">
                 <div className="flex items-center text-sm font-semibold text-black">
-                  <BanknotesIcon className="h-4 w-4 stroke-[2]" /> <h5>Finance</h5>
+                  <BanknotesIcon className="h-4 w-4 stroke-2" /> <h5>Finance</h5>
                 </div>
               </li>
               <span className="text-xs text-gray-500">/</span>

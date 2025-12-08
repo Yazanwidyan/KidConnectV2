@@ -161,7 +161,7 @@ const EmployeesLeaves = () => {
             <ol className="inline-flex items-center space-x-2">
               <li className="inline-flex items-center">
                 <div className="flex items-center text-sm font-semibold text-black">
-                  <UserCircleIcon className="h-4 w-4 stroke-[2]" /> <h5>Employees</h5>
+                  <UserCircleIcon className="h-4 w-4 stroke-2" /> <h5>Employees</h5>
                 </div>
               </li>
               <span className="text-xs text-gray-500">/</span>
@@ -278,7 +278,7 @@ const EmployeesLeaves = () => {
                       onClick={() => setViewModal(req)}
                       className="rounded bg-blue-100 p-[5px] text-blue-500 hover:ring-1 hover:ring-blue-700"
                     >
-                      <EyeIcon className="h-5 w-5 stroke-[2]" />
+                      <EyeIcon className="h-5 w-5 stroke-2" />
                     </button>
                     {req.status === "Pending" && (
                       <>
@@ -286,13 +286,13 @@ const EmployeesLeaves = () => {
                           onClick={() => openApproveReject(req, "approve")}
                           className="rounded bg-green-100 p-[5px] text-green-500 hover:ring-1 hover:ring-green-700"
                         >
-                          <CheckCircleIcon className="h-5 w-5 stroke-[2]" />
+                          <CheckCircleIcon className="h-5 w-5 stroke-2" />
                         </button>
                         <button
                           onClick={() => openApproveReject(req, "reject")}
                           className="rounded bg-red-100 p-[5px] text-red-500 hover:ring-1 hover:ring-red-700"
                         >
-                          <XCircleIcon className="h-5 w-5 stroke-[2]" />
+                          <XCircleIcon className="h-5 w-5 stroke-2" />
                         </button>
                       </>
                     )}

@@ -1,5 +1,12 @@
-import { Bars3CenterLeftIcon, BellIcon, ChevronDownIcon, MoonIcon } from "@heroicons/react/24/outline";
+import {
+  Bars3CenterLeftIcon,
+  BellIcon,
+  ChevronDownIcon,
+  MoonIcon,
+  Squares2X2Icon,
+} from "@heroicons/react/24/outline";
 import { Cog8ToothIcon } from "@heroicons/react/24/outline";
+import { ListBulletIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet } from "react-router-dom";
@@ -31,7 +38,7 @@ const AdminLayout = ({ children }) => {
                   onClick={toggleSidebar}
                   className="rounded-full bg-primary/20 p-2 text-primary transition"
                 >
-                  <Bars3CenterLeftIcon className="w-[21px h-[21px] stroke-[2]" />
+                  <Squares2X2Icon className="w-[21px h-[21px] stroke-2" />
                 </button>
               </div>
 
@@ -43,12 +50,12 @@ const AdminLayout = ({ children }) => {
 
                 {/* Dark Mode Toggle */}
                 <button className="rounded-full bg-gray-200 p-2 text-gray-600 shadow-lg transition hover:bg-gray-100 hover:shadow-lg">
-                  <MoonIcon className="w-[21px h-[21px] stroke-[2]" />
+                  <MoonIcon className="w-[21px h-[21px] stroke-2" />
                 </button>
 
                 {/* Notifications */}
                 <button className="relative rounded-full bg-gray-200 p-2 text-gray-600 shadow-lg transition hover:bg-gray-100 hover:shadow-lg">
-                  <BellIcon className="w-[21px h-[21px] stroke-[2]" />
+                  <BellIcon className="w-[21px h-[21px] stroke-2" />
                   <span className="absolute -right-1 -top-1 inline-flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs text-white">
                     5
                   </span>
@@ -77,7 +84,7 @@ const AdminLayout = ({ children }) => {
                     {/* Settings icon */}
                     {!collapsed && (
                       <ChevronDownIcon
-                        className={`h-4 w-4 stroke-[2] text-gray-700 transition-transform ${
+                        className={`h-4 w-4 stroke-2 text-gray-700 transition-transform ${
                           menuOpen ? "rotate-180" : ""
                         }`}
                       />

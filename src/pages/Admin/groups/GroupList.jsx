@@ -3,6 +3,7 @@ import {
   EyeIcon,
   MagnifyingGlassIcon,
   PencilSquareIcon,
+  PlusIcon,
   UserGroupIcon,
 } from "@heroicons/react/24/outline";
 import React, { useMemo, useState } from "react";
@@ -225,9 +226,10 @@ const GroupList = () => {
         </div>
         <Link
           to="/admin/groups/create-group"
-          className="rounded border border-primary bg-primary px-5 py-2 text-white"
+          className="flex items-center gap-2 rounded border border-primary bg-primary px-5 py-2 font-semibold text-white"
         >
-          + Create Group
+          <PlusIcon className="h-5 w-5 stroke-2" />
+          Create Group
         </Link>
       </div>
       {/* ------------------ FILTERS ------------------ */}

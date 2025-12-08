@@ -120,14 +120,14 @@ const StudentsAttendance = () => {
             onClick={() => scrollRef.current?.scrollBy({ left: 200, behavior: "smooth" })}
             className="rounded-full bg-white p-2 text-primary shadow transition hover:bg-white/90"
           >
-            <ArrowRightIcon className="h-5 w-5 stroke-[2]" />
+            <ArrowRightIcon className="h-5 w-5 stroke-2" />
           </button>
 
           <button
             onClick={() => scrollRef.current?.scrollBy({ left: -200, behavior: "smooth" })}
             className="rounded-full bg-white p-2 text-primary shadow transition hover:bg-white/90"
           >
-            <ArrowLeftIcon className="h-5 w-5 stroke-[2]" />
+            <ArrowLeftIcon className="h-5 w-5 stroke-2" />
           </button>
         </div>
       </div>

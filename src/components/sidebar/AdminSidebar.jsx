@@ -69,9 +69,7 @@ const AdminSidebar = ({ collapsed }) => {
                 }`}
               >
                 <div className="flex items-center">
-                  <item.icon
-                    className={` ${isCollapsed ? "mr-0" : "mr-[5px]"} h-[21px] w-[21px] stroke-[2]`}
-                  />
+                  <item.icon className={` ${isCollapsed ? "mr-0" : "mr-[5px]"} h-[21px] w-[21px] stroke-2`} />
                   {!isCollapsed && <span>{item.title}</span>}
                 </div>
                 {!isCollapsed && item.subMenu && (

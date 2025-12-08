@@ -150,7 +150,7 @@ const GroupDetailsPage = () => {
                 className="flex items-center gap-2 rounded bg-primary px-4 py-2 font-semibold text-white hover:bg-primary/90"
                 onClick={() => setShowStaffModal(true)}
               >
-                <UserPlusIcon className="h-5 w-5 stroke-[2]" /> Assign Staff
+                <UserPlusIcon className="h-5 w-5 stroke-2" /> Assign Staff
               </button>
             </div>
 
@@ -190,7 +190,7 @@ const GroupDetailsPage = () => {
                 className="flex items-center gap-2 rounded bg-primary px-4 py-2 font-semibold text-white hover:bg-primary/90"
                 onClick={() => setShowStudentModal(true)}
               >
-                <UserPlusIcon className="h-5 w-5 stroke-[2]" /> Assign Students
+                <UserPlusIcon className="h-5 w-5 stroke-2" /> Assign Students
               </button>
             </div>
 

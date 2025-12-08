@@ -60,7 +60,7 @@ export default function PaymentRequests() {
             <ol className="inline-flex items-center space-x-2">
               <li className="inline-flex items-center">
                 <div className="flex items-center text-sm font-semibold text-black">
-                  <BanknotesIcon className="h-4 w-4 stroke-[2]" /> <h5>Finance</h5>
+                  <BanknotesIcon className="h-4 w-4 stroke-2" /> <h5>Finance</h5>
                 </div>
               </li>
               <span className="text-xs text-gray-500">/</span>
@@ -174,7 +174,7 @@ export default function PaymentRequests() {
                       onClick={() => console.log("View request", idx)}
                       className="rounded bg-blue-100 p-[5px] text-blue-500 ring-blue-700 transition duration-300 hover:ring-1"
                     >
-                      <EyeIcon className="h-5 w-5 stroke-[2]" />
+                      <EyeIcon className="h-5 w-5 stroke-2" />
                     </button>
 
                     {/* Approve / Process Request */}
@@ -182,7 +182,7 @@ export default function PaymentRequests() {
                       onClick={() => console.log("Approve request", idx)}
                       className="rounded bg-green-100 p-[5px] text-green-500 ring-green-700 transition duration-300 hover:ring-1"
                     >
-                      <CheckIcon className="h-5 w-5 stroke-[2]" />
+                      <CheckIcon className="h-5 w-5 stroke-2" />
                     </button>
 
                     {/* Delete Request */}
@@ -190,7 +190,7 @@ export default function PaymentRequests() {
                       onClick={() => console.log("Delete request", idx)}
                       className="rounded bg-red-100 p-[5px] text-red-500 ring-red-700 transition duration-300 hover:ring-1"
                     >
-                      <TrashIcon className="h-5 w-5 stroke-[2]" />
+                      <TrashIcon className="h-5 w-5 stroke-2" />
                     </button>
                   </td>
                 </tr>

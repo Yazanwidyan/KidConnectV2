@@ -295,7 +295,7 @@ const StudentsList = () => {
           to="/admin/students/add-student"
           className="flex items-center gap-2 rounded border border-primary bg-primary px-5 py-2 font-semibold text-white"
         >
-          <UserPlusIcon className="h-5 w-5 stroke-[2]" />
+          <UserPlusIcon className="h-5 w-5 stroke-2" />
           Add Student
         </Link>
       </div>
@@ -349,158 +349,156 @@ const StudentsList = () => {
         </button>
       </div>
 
-      <div className="rounded-lg bg-white shadow-lg">
-        {/* Table */}
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead>
-              <tr>
-                <th className="px-6 py-3 text-left">
+      {/* Table */}
+      <div className="overflow-x-auto">
+        <table className="min-w-full" style={{ borderCollapse: "separate", borderSpacing: "0 6px" }}>
+          <thead>
+            <tr className="bg-white shadow-lg">
+              <th className="px-6 py-3 text-left">
+                <label className="relative inline-flex cursor-pointer items-center">
+                  <input
+                    type="checkbox"
+                    checked={
+                      selectedStudents.length === filteredStudents.length && filteredStudents.length > 0
+                    }
+                    onChange={handleSelectAll}
+                    className="peer sr-only"
+                  />
+                  <div className="flex h-5 w-5 items-center justify-center rounded border border-gray-300 bg-white transition-colors peer-checked:border-primary peer-checked:bg-primary">
+                    <CheckIcon className="hidden h-4 w-4 text-white peer-checked:block" />
+                  </div>
+                </label>
+              </th>
+              {["Student", "Parent 1", "Parent 2", "Age", "Group", "Status"].map((col) => (
+                <th
+                  key={col}
+                  className="cursor-pointer px-6 py-3 text-left text-sm font-bold text-gray-700"
+                  onClick={() => handleSort(col.toLowerCase().replace(" ", ""))}
+                >
+                  {col}{" "}
+                  {sortField === col.toLowerCase().replace(" ", "")
+                    ? sortOrder === "asc"
+                      ? " 🔼"
+                      : " 🔽"
+                    : ""}
+                </th>
+              ))}
+              <th className="px-6 py-3 text-right text-sm font-bold text-gray-700">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {paginatedStudents.map((s) => (
+              <tr key={s.id} className="bg-white shadow-sm">
+                <td className="px-6 py-3">
                   <label className="relative inline-flex cursor-pointer items-center">
                     <input
                       type="checkbox"
-                      checked={
-                        selectedStudents.length === filteredStudents.length && filteredStudents.length > 0
-                      }
-                      onChange={handleSelectAll}
+                      checked={selectedStudents.includes(s.id)}
+                      onChange={() => handleCheckboxChange(s.id)}
                       className="peer sr-only"
                     />
                     <div className="flex h-5 w-5 items-center justify-center rounded border border-gray-300 bg-white transition-colors peer-checked:border-primary peer-checked:bg-primary">
                       <CheckIcon className="hidden h-4 w-4 text-white peer-checked:block" />
                     </div>
                   </label>
-                </th>
-                {["Student", "Parent 1", "Parent 2", "Age", "Group", "Status"].map((col) => (
-                  <th
-                    key={col}
-                    className="cursor-pointer px-6 py-3 text-left text-sm font-bold text-gray-700"
-                    onClick={() => handleSort(col.toLowerCase().replace(" ", ""))}
-                  >
-                    {col}{" "}
-                    {sortField === col.toLowerCase().replace(" ", "")
-                      ? sortOrder === "asc"
-                        ? " 🔼"
-                        : " 🔽"
-                      : ""}
-                  </th>
-                ))}
-                <th className="px-6 py-3 text-right text-sm font-bold text-gray-700">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {paginatedStudents.map((s) => (
-                <tr key={s.id} className="odd:bg-gray-100 even:bg-white">
-                  <td className="px-6 py-3">
-                    <label className="relative inline-flex cursor-pointer items-center">
-                      <input
-                        type="checkbox"
-                        checked={selectedStudents.includes(s.id)}
-                        onChange={() => handleCheckboxChange(s.id)}
-                        className="peer sr-only"
-                      />
-                      <div className="flex h-5 w-5 items-center justify-center rounded border border-gray-300 bg-white transition-colors peer-checked:border-primary peer-checked:bg-primary">
-                        <CheckIcon className="hidden h-4 w-4 text-white peer-checked:block" />
-                      </div>
-                    </label>
-                  </td>
-                  <td
-                    className="flex cursor-pointer items-center gap-3 px-6 py-3 text-gray-700 hover:text-primary"
-                    onClick={() => navigate(`/admin/students/student-profile/${s.id}`)}
-                  >
-                    <img
-                      src={s.student_image}
-                      alt={`${s.firstName} ${s.lastName}`}
-                      className="h-10 w-10 rounded-full border border-gray-300 object-cover"
-                    />
-                    <div className="flex flex-col truncate">
-                      <span className="truncate font-medium">
-                        {s.firstName} {s.lastName}
-                      </span>
-                      <span className="mt-1 flex items-center gap-1 text-xs text-gray-500">
-                        <IdentificationIcon className="h-4 w-4" />
-                        ID: {s.id}
-                      </span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-3 font-normal text-gray-600">{s.parent1}</td>
-                  <td className="px-6 py-3 font-normal text-gray-600">{s.parent2 || "—"}</td>
-                  <td className="px-6 py-3 font-normal text-gray-600">{s.age}</td>
-                  <td className="px-6 py-3 font-normal text-gray-600">{s.groupName}</td>
-                  <td className="px-6 py-3 font-normal text-gray-600">
-                    <span
-                      className={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${s.status === "Active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}
-                    >
-                      {s.status}
-                    </span>
-                  </td>
-                  <td className="flex justify-end gap-2 px-6 py-3">
-                    <Link
-                      to={`/admin/students/student-profile/${s.id}`}
-                      className="rounded bg-blue-100 p-[5px] text-blue-500 ring-blue-700 transition duration-300 hover:ring-1"
-                    >
-                      <EyeIcon className="h-5 w-5 stroke-[2]" />
-                    </Link>
-                    <Link
-                      to={`/admin/students/edit-student/${s.id}`}
-                      className="rounded bg-green-100 p-[5px] text-green-500 ring-green-700 transition duration-300 hover:ring-1"
-                    >
-                      <PencilSquareIcon className="h-5 w-5 stroke-[2]" />
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-              {paginatedStudents.length === 0 && (
-                <tr>
-                  <td colSpan={9} className="px-6 py-3 text-center text-gray-500">
-                    No students found.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-
-          {/* Pagination */}
-          <div className="mt-4 flex flex-col items-center justify-between gap-3 p-6 sm:flex-row">
-            <div className="text-sm text-gray-700">
-              Showing {paginatedStudents.length === 0 ? 0 : startIndex + 1} to {endIndex} of{" "}
-              {filteredStudents.length} entries
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2 text-sm">
-                Rows per page:
-                <select
-                  value={rowsPerPage}
-                  onChange={(e) => {
-                    setRowsPerPage(Number(e.target.value));
-                    setCurrentPage(1);
-                  }}
-                  className="rounded border px-2 py-1"
+                </td>
+                <td
+                  className="flex cursor-pointer items-center gap-3 px-6 py-3 text-gray-700 hover:text-primary"
+                  onClick={() => navigate(`/admin/students/student-profile/${s.id}`)}
                 >
-                  {[5, 10, 15].map((num) => (
-                    <option key={num} value={num}>
-                      {num}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <button
-                disabled={currentPage === 1}
-                onClick={() => setCurrentPage((p) => p - 1)}
-                className="rounded border px-3 py-1 hover:bg-gray-100 disabled:opacity-50"
+                  <img
+                    src={s.student_image}
+                    alt={`${s.firstName} ${s.lastName}`}
+                    className="h-10 w-10 rounded-full border border-gray-300 object-cover"
+                  />
+                  <div className="flex flex-col truncate">
+                    <span className="truncate font-medium">
+                      {s.firstName} {s.lastName}
+                    </span>
+                    <span className="mt-1 flex items-center gap-1 text-xs text-gray-500">
+                      <IdentificationIcon className="h-4 w-4" />
+                      ID: {s.id}
+                    </span>
+                  </div>
+                </td>
+                <td className="px-6 py-3 font-normal text-gray-600">{s.parent1}</td>
+                <td className="px-6 py-3 font-normal text-gray-600">{s.parent2 || "—"}</td>
+                <td className="px-6 py-3 font-normal text-gray-600">{s.age}</td>
+                <td className="px-6 py-3 font-normal text-gray-600">{s.groupName}</td>
+                <td className="px-6 py-3 font-normal text-gray-600">
+                  <span
+                    className={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${s.status === "Active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}
+                  >
+                    {s.status}
+                  </span>
+                </td>
+                <td className="flex justify-end gap-2 px-6 py-3">
+                  <Link
+                    to={`/admin/students/student-profile/${s.id}`}
+                    className="rounded bg-blue-100 p-[5px] text-blue-500 ring-blue-700 transition duration-300 hover:ring-1"
+                  >
+                    <EyeIcon className="h-5 w-5 stroke-2" />
+                  </Link>
+                  <Link
+                    to={`/admin/students/edit-student/${s.id}`}
+                    className="rounded bg-green-100 p-[5px] text-green-500 ring-green-700 transition duration-300 hover:ring-1"
+                  >
+                    <PencilSquareIcon className="h-5 w-5 stroke-2" />
+                  </Link>
+                </td>
+              </tr>
+            ))}
+            {paginatedStudents.length === 0 && (
+              <tr>
+                <td colSpan={9} className="px-6 py-3 text-center text-gray-500">
+                  No students found.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+
+        {/* Pagination */}
+        <div className="mt-4 flex flex-col items-center justify-between gap-3 p-6 sm:flex-row">
+          <div className="text-sm text-gray-700">
+            Showing {paginatedStudents.length === 0 ? 0 : startIndex + 1} to {endIndex} of{" "}
+            {filteredStudents.length} entries
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 text-sm">
+              Rows per page:
+              <select
+                value={rowsPerPage}
+                onChange={(e) => {
+                  setRowsPerPage(Number(e.target.value));
+                  setCurrentPage(1);
+                }}
+                className="rounded border px-2 py-1"
               >
-                Prev
-              </button>
-              <span className="text-sm">
-                Page {currentPage} of {totalPages || 1}
-              </span>
-              <button
-                disabled={currentPage === totalPages || totalPages === 0}
-                onClick={() => setCurrentPage((p) => p + 1)}
-                className="rounded border px-3 py-1 hover:bg-gray-100 disabled:opacity-50"
-              >
-                Next
-              </button>
+                {[5, 10, 15].map((num) => (
+                  <option key={num} value={num}>
+                    {num}
+                  </option>
+                ))}
+              </select>
             </div>
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((p) => p - 1)}
+              className="rounded border px-3 py-1 hover:bg-gray-100 disabled:opacity-50"
+            >
+              Prev
+            </button>
+            <span className="text-sm">
+              Page {currentPage} of {totalPages || 1}
+            </span>
+            <button
+              disabled={currentPage === totalPages || totalPages === 0}
+              onClick={() => setCurrentPage((p) => p + 1)}
+              className="rounded border px-3 py-1 hover:bg-gray-100 disabled:opacity-50"
+            >
+              Next
+            </button>
           </div>
         </div>
       </div>

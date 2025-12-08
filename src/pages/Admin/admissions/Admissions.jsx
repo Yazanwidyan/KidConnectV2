@@ -241,13 +241,13 @@ const Admissions = () => {
             onClick={() => setShowLinkModal(true)}
             className="flex items-center gap-2 rounded border border-primary bg-primary px-5 py-2 font-semibold text-white"
           >
-            <ClipboardDocumentIcon className="h-5 w-5 stroke-[2]" /> Get Link
+            <ClipboardDocumentIcon className="h-5 w-5 stroke-2" /> Get Link
           </button>
           <Link
             to="/admin/students/add-student"
             className="flex items-center gap-2 rounded border border-primary bg-primary px-5 py-2 font-semibold text-white"
           >
-            <UserPlusIcon className="h-5 w-5 stroke-[2]" /> Register Student
+            <UserPlusIcon className="h-5 w-5 stroke-2" /> Register Student
           </Link>
         </div>
       </div>
@@ -289,7 +289,7 @@ const Admissions = () => {
           onClick={exportToExcel}
           className="flex items-center gap-2 rounded border border-primary bg-primary px-5 py-2 font-semibold text-white"
         >
-          <ArrowDownTrayIcon className="h-5 w-5 stroke-[2]" /> Export as Excel
+          <ArrowDownTrayIcon className="h-5 w-5 stroke-2" /> Export as Excel
         </button>
       </div>
 
@@ -377,7 +377,7 @@ const Admissions = () => {
                           // to={`/admin/students/student-profile/${s.id}`}
                           className="rounded bg-blue-100 p-[5px] text-blue-500 ring-blue-700 transition duration-300 hover:ring-1"
                         >
-                          <EyeIcon className="h-5 w-5 stroke-[2]" />
+                          <EyeIcon className="h-5 w-5 stroke-2" />
                         </Link>
 
                         {/* Edit */}
@@ -385,7 +385,7 @@ const Admissions = () => {
                           to={`/admin/students/edit/${student.id}`}
                           className="rounded bg-yellow-100 p-[5px] text-yellow-500 ring-yellow-700 transition duration-300 hover:ring-1"
                         >
-                          <PencilSquareIcon className="h-5 w-5 stroke-[2]" />
+                          <PencilSquareIcon className="h-5 w-5 stroke-2" />
                         </Link>
 
                         {/* Conditional Actions */}

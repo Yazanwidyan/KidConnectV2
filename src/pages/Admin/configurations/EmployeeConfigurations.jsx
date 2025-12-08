@@ -70,7 +70,7 @@ const EmployeeConfigurations = () => {
             <ol className="inline-flex items-center space-x-2">
               <li className="inline-flex items-center">
                 <div className="flex items-center text-sm font-semibold text-black">
-                  <ClipboardDocumentListIcon className="h-4 w-4 stroke-[2]" /> <h5>Configurations</h5>
+                  <ClipboardDocumentListIcon className="h-4 w-4 stroke-2" /> <h5>Configurations</h5>
                 </div>
               </li>
               <span className="text-xs text-gray-500">/</span>
@@ -142,13 +142,13 @@ const EmployeeConfigurations = () => {
                     }}
                     className="rounded bg-green-100 p-[5px] text-green-500 ring-green-700 transition duration-300 hover:ring-1"
                   >
-                    <PencilSquareIcon className="h-5 w-5 stroke-[2]" />
+                    <PencilSquareIcon className="h-5 w-5 stroke-2" />
                   </button>
                   <button
                     onClick={() => handleDelete(doc.id)}
                     className="rounded bg-red-100 p-[5px] text-red-500 ring-red-700 transition duration-300 hover:ring-1"
                   >
-                    <TrashIcon className="h-5 w-5 stroke-[2]" />
+                    <TrashIcon className="h-5 w-5 stroke-2" />
                   </button>
                 </td>
               </tr>

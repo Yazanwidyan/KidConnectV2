@@ -119,9 +119,9 @@ const AccordionCard = ({ title, open, toggle, children, hint }) => (
         {hint && <span className="rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-600">{hint}</span>}
       </div>
       {open ? (
-        <ChevronUpIcon className="h-5 w-5 stroke-[2]" />
+        <ChevronUpIcon className="h-5 w-5 stroke-2" />
       ) : (
-        <ChevronDownIcon className="h-5 w-5 stroke-[2]" />
+        <ChevronDownIcon className="h-5 w-5 stroke-2" />
       )}
     </button>
     {open && <div className="px-6 pb-4">{children}</div>}
@@ -153,7 +153,7 @@ const CreateEmployee = () => {
             <ol className="inline-flex items-center space-x-2">
               <li className="inline-flex items-center">
                 <div className="flex items-center text-sm font-semibold text-black">
-                  <UserPlusIcon className="h-4 w-4 stroke-[2]" /> <h5>Employees</h5>
+                  <UserPlusIcon className="h-4 w-4 stroke-2" /> <h5>Employees</h5>
                 </div>
               </li>
               <span className="text-xs text-gray-500">/</span>

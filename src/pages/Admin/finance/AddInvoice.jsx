@@ -80,9 +80,9 @@ const AddInvoice = () => {
           {hint && <span className="rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-600">{hint}</span>}
         </div>
         {open ? (
-          <ChevronUpIcon className="h-5 w-5 stroke-[2]" />
+          <ChevronUpIcon className="h-5 w-5 stroke-2" />
         ) : (
-          <ChevronDownIcon className="h-5 w-5 stroke-[2]" />
+          <ChevronDownIcon className="h-5 w-5 stroke-2" />
         )}
       </button>
       {open && <div className="px-6 pb-4">{children}</div>}

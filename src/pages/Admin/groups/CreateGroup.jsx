@@ -56,9 +56,9 @@ const AccordionCard = ({ title, open, toggle, children, hint }) => (
         {hint && <span className="rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-600">{hint}</span>}
       </div>
       {open ? (
-        <ChevronUpIcon className="h-5 w-5 stroke-[2]" />
+        <ChevronUpIcon className="h-5 w-5 stroke-2" />
       ) : (
-        <ChevronDownIcon className="h-5 w-5 stroke-[2]" />
+        <ChevronDownIcon className="h-5 w-5 stroke-2" />
       )}
     </button>
     {open && <div className="px-6 pb-4">{children}</div>}
@@ -114,7 +114,7 @@ const CreateGroup = () => {
           <ol className="inline-flex items-center space-x-2">
             <li className="inline-flex items-center">
               <div className="flex items-center text-sm font-semibold text-black">
-                <UserGroupIcon className="h-4 w-4 stroke-[2]" /> <h5>Groups</h5>
+                <UserGroupIcon className="h-4 w-4 stroke-2" /> <h5>Groups</h5>
               </div>
             </li>
             <span className="text-xs text-gray-500">/</span>
@@ -264,7 +264,7 @@ const CreateGroup = () => {
               className="flex items-center gap-2 rounded bg-primary px-4 py-2 font-semibold text-white hover:bg-primary/90"
               onClick={() => setShowStaffModal(true)}
             >
-              <UserPlusIcon className="h-5 w-5 stroke-[2]" /> Assign Staff
+              <UserPlusIcon className="h-5 w-5 stroke-2" /> Assign Staff
             </button>
           </div>
 

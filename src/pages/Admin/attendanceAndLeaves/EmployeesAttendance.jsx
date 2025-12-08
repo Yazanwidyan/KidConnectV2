@@ -98,7 +98,7 @@ const EmployeesAttendance = () => {
             <ol className="inline-flex items-center space-x-2">
               <li className="inline-flex items-center">
                 <div className="flex items-center text-sm font-semibold text-black">
-                  <UserCircleIcon className="h-4 w-4 stroke-[2]" /> <h5>Employees</h5>
+                  <UserCircleIcon className="h-4 w-4 stroke-2" /> <h5>Employees</h5>
                 </div>
               </li>
               <span className="text-xs text-gray-500">/</span>
@@ -114,13 +114,13 @@ const EmployeesAttendance = () => {
             onClick={openAttendanceModal}
             className="flex items-center gap-2 rounded border border-primary bg-primary px-5 py-2 font-semibold text-white"
           >
-            <ClipboardDocumentIcon className="h-5 w-5 stroke-[2]" /> Mark Attendance
+            <ClipboardDocumentIcon className="h-5 w-5 stroke-2" /> Mark Attendance
           </button>
           <Link
             to="/admin/students/add-student"
             className="flex items-center gap-2 rounded border border-primary bg-primary px-5 py-2 font-semibold text-white"
           >
-            <UserPlusIcon className="h-5 w-5 stroke-[2]" /> Submit Leave
+            <UserPlusIcon className="h-5 w-5 stroke-2" /> Submit Leave
           </Link>
         </div>
       </div>
