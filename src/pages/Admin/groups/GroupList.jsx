@@ -1,15 +1,18 @@
 import {
   ChevronDownIcon,
-  EyeIcon,
   MagnifyingGlassIcon,
   PencilSquareIcon,
   PlusIcon,
-  UserGroupIcon,
+  TrashIcon,
 } from "@heroicons/react/24/outline";
 import React, { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+import TransferModal from "./modals/TransferModal";
 
 const GroupList = () => {
+  const navigate = useNavigate();
+
   const [groups, setGroups] = useState([
     {
       id: 1,
@@ -47,72 +50,16 @@ const GroupList = () => {
       members: 20,
       status: "Active",
     },
-    {
-      id: 5,
-      name: "Drama Club",
-      type: "KG-1",
-      staffName: "Sarah Kim",
-      color: "#F97316",
-      members: 15,
-      status: "Inactive",
-    },
-    {
-      id: 6,
-      name: "Music Group",
-      type: "Infants",
-      staffName: "Tom Hanks",
-      color: "#10B981",
-      members: 12,
-      status: "Active",
-    },
-    {
-      id: 7,
-      name: "Chess Club",
-      type: "Toddlers",
-      staffName: "Alice Brown",
-      color: "#EAB308",
-      members: 22,
-      status: "Active",
-    },
-    {
-      id: 8,
-      name: "Dance Club",
-      type: "KG-1",
-      staffName: "David Smith",
-      color: "#3B82F6",
-      members: 18,
-      status: "Inactive",
-    },
-    {
-      id: 9,
-      name: "Robotics",
-      type: "Infants",
-      staffName: "Eve Johnson",
-      color: "#10B981",
-      members: 10,
-      status: "Active",
-    },
-    {
-      id: 10,
-      name: "Photography",
-      type: "Toddlers",
-      staffName: "Frank Lee",
-      color: "#F97316",
-      members: 12,
-      status: "Active",
-    },
   ]);
 
   // ------------------ FILTER INPUT STATE ------------------
   const [filterGroupName, setFilterGroupName] = useState("");
-  const [filterStaffName, setFilterStaffName] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
   const [filterType, setFilterType] = useState("");
 
   // ------------------ APPLIED FILTERS ------------------
   const [appliedFilters, setAppliedFilters] = useState({
     GroupName: "",
-    StaffName: "",
     FilterStatus: "",
     FilterType: "",
   });
@@ -121,16 +68,21 @@ const GroupList = () => {
   const [sortField, setSortField] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
 
-  // ------------------ PAGINATION STATE ------------------
+  // ------------------ PAGINATION ------------------
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  // ------------------ FILTERED AND SORTED GROUPS ------------------
+  // ------------------ DELETE MODAL STATE ------------------
+  const [showModal, setShowModal] = useState(false);
+  const [deleteTargetGroup, setDeleteTargetGroup] = useState(null);
+
+  const uniqueTypes = [...new Set(groups.map((g) => g.type))];
+
+  // ------------------ FILTER + SORT ------------------
   const filteredGroups = useMemo(() => {
     let data = groups.filter(
       (g) =>
         g.name.toLowerCase().includes(appliedFilters.GroupName.toLowerCase()) &&
-        g.staffName.toLowerCase().includes(appliedFilters.StaffName.toLowerCase()) &&
         (appliedFilters.FilterStatus ? g.status === appliedFilters.FilterStatus : true) &&
         (appliedFilters.FilterType ? g.type === appliedFilters.FilterType : true)
     );
@@ -146,54 +98,56 @@ const GroupList = () => {
     return data;
   }, [groups, appliedFilters, sortField, sortOrder]);
 
-  // ------------------ PAGINATION LOGIC ------------------
+  // ------------------ PAGINATION ------------------
   const totalPages = Math.ceil(filteredGroups.length / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
   const endIndex = Math.min(startIndex + rowsPerPage, filteredGroups.length);
   const paginatedGroups = filteredGroups.slice(startIndex, endIndex);
 
-  const handleSort = (field) => {
-    const order = sortField === field && sortOrder === "asc" ? "desc" : "asc";
-    setSortField(field);
-    setSortOrder(order);
-  };
-
   const applyFilters = () => {
     setAppliedFilters({
       GroupName: filterGroupName,
-      StaffName: filterStaffName,
       FilterStatus: filterStatus,
       FilterType: filterType,
     });
     setCurrentPage(1);
   };
 
-  const resetFilters = () => {
-    setFilterGroupName("");
-    setFilterStaffName("");
-    setFilterStatus("");
-    setFilterType("");
-    setAppliedFilters({
-      GroupName: "",
-      StaffName: "",
-      FilterStatus: "",
-      FilterType: "",
-    });
-    setCurrentPage(1);
+  // ------------------ DELETE LOGIC ------------------
+  const handleDeleteClick = (group) => {
+    if (group.members > 0) {
+      setDeleteTargetGroup(group);
+      setShowModal(true);
+    } else {
+      // delete directly if 0 members
+      setGroups(groups.filter((g) => g.id !== group.id));
+    }
   };
-
-  const uniqueTypes = [...new Set(groups.map((g) => g.type))];
 
   return (
     <div className="w-full p-6">
+      {/* HEADER */}
       <div className="mb-3 flex flex-wrap items-end justify-between">
-        <div aria-label="Breadcrumb">
-          <h1 className="text-2xl font-bold text-black">Groups</h1>
-        </div>
+        <h1 className="text-2xl font-bold text-black">Groups</h1>
       </div>
 
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-2">
+      {/* FILTERS */}
+      <div className="mb-6 flex flex-wrap items-end justify-between gap-2">
         <div className="flex flex-1 items-center gap-2">
+          {/* Search */}
+          <div className="relative w-1/3">
+            <label className="mb-1 block text-gray-600">Search</label>
+            <input
+              type="text"
+              placeholder="Search by group name"
+              value={filterGroupName}
+              onChange={(e) => setFilterGroupName(e.target.value)}
+              className="w-full appearance-none rounded-lg border border-gray-300 px-3 py-2 pr-10 outline-none focus:border-primary focus:ring-4 focus:ring-primary/20"
+            />
+            <MagnifyingGlassIcon className="pointer-events-none absolute right-3 top-[39px] h-4 w-4 text-gray-500" />
+          </div>
+
+          {/* Type Filter */}
           <div className="relative w-1/4">
             <label className="mb-1 block text-gray-600">Types</label>
             <select
@@ -208,8 +162,10 @@ const GroupList = () => {
                 </option>
               ))}
             </select>
-            <ChevronDownIcon className="pointer-events-none absolute right-3 top-11 h-4 w-4 -translate-y-1/2 stroke-2 text-gray-500" />
+            <ChevronDownIcon className="pointer-events-none absolute right-3 top-[39px] h-4 w-4 text-gray-500" />
           </div>
+
+          {/* Status Filter */}
           <div className="relative w-1/4">
             <label className="mb-1 block text-gray-600">Status</label>
             <select
@@ -221,40 +177,28 @@ const GroupList = () => {
               <option value="Active">Active</option>
               <option value="Inactive">Inactive</option>
             </select>
-            <ChevronDownIcon className="pointer-events-none absolute right-3 top-11 h-4 w-4 -translate-y-1/2 stroke-2 text-gray-500" />
+            <ChevronDownIcon className="pointer-events-none absolute right-3 top-[39px] h-4 w-4 text-gray-500" />
           </div>
         </div>
+
         <Link
           to="/admin/groups/create-group"
-          className="flex items-center gap-2 rounded border border-primary bg-primary px-5 py-2 font-semibold text-white"
+          className="flex items-center gap-2 rounded bg-primary px-5 py-2 font-semibold text-white"
         >
-          <PlusIcon className="h-5 w-5 stroke-2" />
+          <PlusIcon className="h-5 w-5" />
           Create Group
         </Link>
       </div>
-      {/* ------------------ FILTERS ------------------ */}
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-2">
-        <div className="relative w-1/3">
-          <input
-            type="text"
-            name="search"
-            placeholder="Search by group name or staff name"
-            value={filterGroupName}
-            onChange={(e) => setFilterGroupName(e.target.value)}
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 pr-10 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-          />
-          <MagnifyingGlassIcon className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 stroke-2 text-gray-500" />
-        </div>
-      </div>
 
-      {/* ------------------ CARD GRID ------------------ */}
+      {/* GRID */}
       <div>
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {paginatedGroups.map((group) => (
             <div
               key={group.id}
-              className="relative overflow-hidden rounded-xl p-5 text-white shadow-md"
+              className="relative cursor-pointer overflow-hidden rounded-xl p-5 text-white shadow-md"
               style={{ backgroundColor: group.color }}
+              onClick={() => navigate(`/admin/groups/group-details/${group.id}`)}
             >
               {/* Title */}
               <div className="flex justify-between">
@@ -264,27 +208,23 @@ const GroupList = () => {
                   <p className="mt-1 text-sm opacity-80">{group.members} Students</p>
                 </div>
 
-                {/* Big Number Circle */}
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/20 text-lg font-bold">
                   {String(group.id).padStart(2, "0")}
                 </div>
               </div>
 
-              {/* Avatar list (dummy images) */}
+              {/* Avatars */}
               <div className="mt-4 flex items-center">
                 <img
                   src="https://i.pravatar.cc/40?img=1"
-                  alt="avatar"
-                  className="-ml-0 h-8 w-8 rounded-full border-2 border-white"
+                  className="h-8 w-8 rounded-full border-2 border-white"
                 />
                 <img
                   src="https://i.pravatar.cc/40?img=2"
-                  alt="avatar"
                   className="-ml-3 h-8 w-8 rounded-full border-2 border-white"
                 />
                 <img
                   src="https://i.pravatar.cc/40?img=3"
-                  alt="avatar"
                   className="-ml-3 h-8 w-8 rounded-full border-2 border-white"
                 />
 
@@ -294,73 +234,89 @@ const GroupList = () => {
               </div>
 
               {/* Actions */}
-              <div className="absolute bottom-3 right-3 flex gap-2">
-                <Link
-                  to={`/admin/groups/group-details/${group.id}`}
-                  className="rounded-lg bg-white/20 p-2 hover:bg-white/30"
-                >
-                  <EyeIcon className="h-5 w-5 text-white" />
-                </Link>
-
+              <div className="absolute bottom-3 right-3 flex gap-2" onClick={(e) => e.stopPropagation()}>
                 <Link
                   to={`/admin/groups/edit-group/${group.id}`}
                   className="rounded-lg bg-white/20 p-2 hover:bg-white/30"
                 >
                   <PencilSquareIcon className="h-5 w-5 text-white" />
                 </Link>
+
+                <button
+                  onClick={() => handleDeleteClick(group)}
+                  className="rounded-lg bg-white/20 p-2 hover:bg-white/30"
+                >
+                  <TrashIcon className="h-5 w-5 text-white" />
+                </button>
               </div>
             </div>
           ))}
-
-          {paginatedGroups.length === 0 && (
-            <p className="col-span-full text-center text-gray-500">No groups found.</p>
-          )}
-        </div>
-
-        {/* ------------------ PAGINATION ------------------ */}
-        <div className="mt-4 flex flex-col items-center justify-between gap-2 p-6 sm:flex-row">
-          <div>
-            Showing {paginatedGroups.length === 0 ? 0 : startIndex + 1} to {endIndex} of{" "}
-            {filteredGroups.length} entries
-          </div>
-          <div className="flex items-center gap-2">
-            <div>
-              Rows per page:{" "}
-              <select
-                value={rowsPerPage}
-                onChange={(e) => {
-                  setRowsPerPage(Number(e.target.value));
-                  setCurrentPage(1);
-                }}
-                className="rounded border px-2 py-1"
-              >
-                {[3, 5, 10].map((num) => (
-                  <option key={num} value={num}>
-                    {num}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <button
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage((prev) => prev - 1)}
-              className="rounded border px-3 py-1 hover:bg-gray-100 disabled:opacity-50"
-            >
-              Prev
-            </button>
-            <span>
-              Page {currentPage} of {totalPages || 1}
-            </span>
-            <button
-              disabled={currentPage === totalPages || totalPages === 0}
-              onClick={() => setCurrentPage((prev) => prev + 1)}
-              className="rounded border px-3 py-1 hover:bg-gray-100 disabled:opacity-50"
-            >
-              Next
-            </button>
-          </div>
         </div>
       </div>
+
+      {/* ------------------ PAGINATION ------------------ */}
+      <div className="flex flex-col items-center justify-between gap-2 px-0 py-6 sm:flex-row">
+        <div>
+          Showing {paginatedGroups.length === 0 ? 0 : startIndex + 1} to {endIndex} of {filteredGroups.length}{" "}
+          entries
+        </div>
+
+        <div className="flex items-center gap-2">
+          <div>
+            Rows per page:{" "}
+            <select
+              value={rowsPerPage}
+              onChange={(e) => {
+                setRowsPerPage(Number(e.target.value));
+                setCurrentPage(1);
+              }}
+              className="rounded border px-2 py-1"
+            >
+              {[3, 5, 10].map((num) => (
+                <option key={num} value={num}>
+                  {num}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <button
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((prev) => prev - 1)}
+            className="rounded border px-3 py-1 hover:bg-gray-100 disabled:opacity-50"
+          >
+            Prev
+          </button>
+
+          <span>
+            Page {currentPage} of {totalPages || 1}
+          </span>
+
+          <button
+            disabled={currentPage === totalPages || totalPages === 0}
+            onClick={() => setCurrentPage((prev) => prev + 1)}
+            className="rounded border px-3 py-1 hover:bg-gray-100 disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+
+      {/* DELETE / TRANSFER MODAL */}
+      <TransferModal
+        isOpen={showModal}
+        groups={groups}
+        currentGroupId={deleteTargetGroup?.id}
+        onCancel={() => setShowModal(false)}
+        onConfirm={(transferData) => {
+          console.log("Transferred:", transferData);
+
+          // 1. Remove the group
+          setGroups(groups.filter((g) => g.id !== deleteTargetGroup.id));
+
+          setShowModal(false);
+        }}
+      />
     </div>
   );
 };

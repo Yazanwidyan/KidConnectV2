@@ -6,9 +6,8 @@ import { ADMIN_MENU } from "../../utils/menus/AdminMenu";
 
 const AdminSidebar = ({ collapsed }) => {
   const [openMenu, setOpenMenu] = useState(null);
-  const [menuOpen, setMenuOpen] = useState(false);
   const [openSubMenu, setOpenSubMenu] = useState(null);
-  const [hovered, setHovered] = useState(false); // <-- New state
+  const [hovered, setHovered] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -44,7 +43,7 @@ const AdminSidebar = ({ collapsed }) => {
     >
       {/* Top bar */}
       <div className="flex flex-shrink-0 items-center justify-between border-b border-b-secondary/20 px-4 py-[4px]">
-        <span className={`py-5 text-4xl font-light text-white ${isCollapsed ? "hidden" : "block"}`}>
+        <span className={`py-4 text-4xl font-light text-white ${isCollapsed ? "hidden" : "block"}`}>
           <span className="font-extrabold">Kid</span>
           Connect
           {/* <img src="/assets/1.png" alt="User Avatar" className="w-40 object-cover" /> */}

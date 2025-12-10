@@ -3,6 +3,7 @@ import {
   ChevronDownIcon,
   EyeIcon,
   IdentificationIcon,
+  MagnifyingGlassIcon,
   PencilSquareIcon,
   UserPlusIcon,
 } from "@heroicons/react/24/outline";
@@ -132,31 +133,6 @@ const StudentsList = () => {
     setFilters((prev) => ({ ...prev, [name]: value }));
   };
 
-  const applyFilters = () => setAppliedFilters({ ...filters });
-  const resetFilters = () => {
-    setFilters({
-      search: "",
-      status: "",
-      parentName: "",
-      parentPhone: "",
-      groupName: "",
-      groupType: "",
-      ageFrom: "",
-      ageTo: "",
-    });
-    setAppliedFilters({
-      search: "",
-      status: "",
-      parentName: "",
-      parentPhone: "",
-      groupName: "",
-      groupType: "",
-      ageFrom: "",
-      ageTo: "",
-    });
-    setCurrentPage(1);
-  };
-
   const filteredStudents = useMemo(() => {
     let data = students.filter((s) => {
       const searchMatch =
@@ -250,8 +226,21 @@ const StudentsList = () => {
         </div>
       </div>
       {/* Filters */}
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-2">
+      <div className="mb-6 flex flex-wrap items-end justify-between gap-2">
         <div className="flex flex-1 items-center gap-2">
+          <div className="relative w-1/3">
+            <label className="mb-1 block text-gray-600">Search</label>
+
+            <input
+              type="text"
+              name="search"
+              placeholder="Student Name or ID or phone number"
+              value={filters.search}
+              onChange={handleFilterChange}
+              className="w-full appearance-none rounded-lg border border-gray-300 px-3 py-2 pr-10 outline-none focus:border-primary focus:ring-4 focus:ring-primary/20"
+            />
+            <MagnifyingGlassIcon className="pointer-events-none absolute right-3 top-[39px] h-4 w-4 text-gray-500" />
+          </div>
           <div className="relative w-1/4">
             <label htmlFor="groupName" className="mb-1 block text-gray-600">
               Groups
@@ -299,48 +288,8 @@ const StudentsList = () => {
           Add Student
         </Link>
       </div>
-      {/* Status Cards */}
-      <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-        <div className="flex flex-col items-start justify-center rounded-xl border-l-4 border-green-400 bg-white p-4 shadow-lg">
-          <h3 className="text-xl font-bold text-gray-800">105</h3>
-          <p className="text-sm text-gray-600">Active</p>
-        </div>
 
-        <div className="flex flex-col items-start justify-center rounded-xl border-l-4 border-red-400 bg-white p-4 shadow-lg">
-          <h3 className="text-xl font-bold text-gray-800">8</h3>
-          <p className="text-sm text-gray-600">Inactive</p>
-        </div>
-
-        <div className="flex flex-col items-start justify-center rounded-xl border-l-4 border-purple-400 bg-white p-4 shadow-lg">
-          <h3 className="text-xl font-bold text-gray-800">3</h3>
-          <p className="text-sm text-gray-600">On Hold</p>
-        </div>
-
-        <div className="flex flex-col items-start justify-center rounded-xl border-l-4 border-orange-400 bg-white p-4 shadow-lg">
-          <h3 className="text-xl font-bold text-gray-800">13</h3>
-          <p className="text-sm text-gray-600">Withdrawn</p>
-        </div>
-
-        <div className="flex flex-col items-start justify-center rounded-xl border-l-4 border-blue-400 bg-white p-4 shadow-lg">
-          <h3 className="text-xl font-bold text-gray-800">17</h3>
-          <p className="text-sm text-gray-600">Signed Up</p>
-        </div>
-
-        <div className="flex flex-col items-start justify-center rounded-xl border-l-4 border-cyan-400 bg-white p-4 shadow-lg">
-          <h3 className="text-xl font-bold text-gray-800">17</h3>
-          <p className="text-sm text-gray-600">Transferred</p>
-        </div>
-      </div>
-
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-2">
-        <input
-          type="text"
-          name="search"
-          placeholder="Student Name or ID or phone number"
-          value={filters.search}
-          onChange={handleFilterChange}
-          className="w-1/3 rounded-lg border border-gray-300 px-3 py-2 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-        />
+      <div className="mb-6 flex flex-wrap items-center justify-end gap-2">
         <button
           onClick={handleExport}
           className="hover:bg-primary-dark whitespace-nowrap rounded bg-primary px-5 py-2 font-semibold text-white transition"

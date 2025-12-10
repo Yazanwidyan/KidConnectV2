@@ -66,10 +66,10 @@ const AdminRoutes = () => {
           <Route path="students/edit-student/:id" element={<EditStudent />} />
 
           {/* ---------- ATTENDANCE ---------- */}
-          <Route path="students-attendance" element={<StudentsAttendance />} />
-          <Route path="employees-attendance" element={<EmployeesAttendance />} />
-          <Route path="students-leaves" element={<StudentsLeaves />} />
-          <Route path="employees-leaves" element={<EmployeesLeaves />} />
+          <Route path="attendance-students" element={<StudentsAttendance />} />
+          <Route path="attendance-employees" element={<EmployeesAttendance />} />
+          <Route path="leaves-students" element={<StudentsLeaves />} />
+          <Route path="leaves-employees" element={<EmployeesLeaves />} />
 
           {/* ---------- ADMISSIONS ---------- */}
           <Route path="admissions" element={<Admissions />} />

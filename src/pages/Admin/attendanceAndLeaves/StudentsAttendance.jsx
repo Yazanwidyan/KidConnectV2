@@ -1,192 +1,248 @@
-import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
-import React, { useRef, useState } from "react";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  ChevronDownIcon,
+  MagnifyingGlassIcon,
+} from "@heroicons/react/24/outline";
+import React, { useState } from "react";
+
+import BulkCheckInModal from "./modals/StudentsBulkCheckInModal";
+import BulkCheckOutModal from "./modals/StudentsBulkCheckOutModal";
+import BulkMarkAbsentModal from "./modals/StudentsBulkMarkAbsentModal";
+
+const groupNames = ["KG-1", "KG-2", "KG-3"];
 
 const StudentsAttendance = () => {
-  const scrollRef = useRef(null);
+  const [filters, setFilters] = useState({
+    date: "2024-11-15",
+    groupName: "",
+  });
 
-  const [groups, setGroups] = useState([
+  const [students, setStudents] = useState([
     {
       id: 1,
-      name: "Standard 01",
-      color: "#E668C1",
-      students: [
-        { id: 1, name: "Ava", class: "01", status: "Present" },
-        { id: 2, name: "Liam", class: "01", status: "Absent" },
-      ],
+      name: "Ava",
+      group: "KG-1",
+      checkIn: "12:17 PM",
+      checkOut: "--",
+      status: "Present",
+      markedAbsent: "--",
     },
     {
       id: 2,
-      name: "Standard 02",
-      color: "#0C3C97",
-      students: [
-        { id: 1, name: "Noah", class: "02", status: "Late" },
-        { id: 2, name: "Emma", class: "02", status: "Present" },
-      ],
-    },
-    {
-      id: 3,
-      name: "Standard 03",
-      color: "#E7A44D",
-      students: [
-        { id: 1, name: "Olivia", class: "03", status: "Present" },
-        { id: 2, name: "Ethan", class: "03", status: "Present" },
-      ],
-    },
-    {
-      id: 4,
-      name: "Standard 04",
-      color: "#E34B43",
-      students: [
-        { id: 1, name: "Mia", class: "04", status: "Absent" },
-        { id: 2, name: "Lucas", class: "04", status: "Late" },
-      ],
-    },
-    {
-      id: 5,
-      name: "Standard 04",
-      color: "#fcba03",
-      students: [
-        { id: 1, name: "Mia", class: "04", status: "Absent" },
-        { id: 2, name: "Lucas", class: "04", status: "Late" },
-      ],
+      name: "Liam",
+      group: "KG-1",
+      checkIn: "--",
+      checkOut: "--",
+      status: "Absent",
+      markedAbsent: "9:05 AM",
     },
   ]);
 
-  const [selectedGroup, setSelectedGroup] = useState(null);
+  const [checkInOpen, setCheckInOpen] = useState(false);
+  const [checkOutOpen, setCheckOutOpen] = useState(false);
+  const [absentOpen, setAbsentOpen] = useState(false);
+  // ---------- PLACEHOLDER MODAL HANDLERS ----------
+  const openBulkCheckInModal = () => setCheckInOpen(true);
+  const openBulkCheckOutModal = () => setCheckOutOpen(true);
+  const openBulkMarkAbsentModal = () => setAbsentOpen(true);
 
-  const handleStatusChange = (groupId, studentId, newStatus) => {
-    setGroups((prev) =>
-      prev.map((group) =>
-        group.id === groupId
-          ? {
-              ...group,
-              students: group.students.map((student) =>
-                student.id === studentId ? { ...student, status: newStatus } : student
-              ),
-            }
-          : group
-      )
+  const handleCheckIn = (id) => {
+    setStudents((prev) =>
+      prev.map((s) => (s.id === id ? { ...s, checkIn: "Now", status: "Present", markedAbsent: "--" } : s))
     );
   };
 
+  const handleCheckOut = (id) => {
+    setStudents((prev) => prev.map((s) => (s.id === id ? { ...s, checkOut: "Now", status: "Left" } : s)));
+  };
+
   return (
-    <div className="w-full p-6">
-      <h1 className="mb-5 text-2xl font-bold">Students Attendance</h1>
+    <>
+      <div className="w-full p-6">
+        <h1 className="mb-5 text-2xl font-bold">Students Attendance</h1>
 
-      {/* GROUP SELECTOR */}
-      <div className="relative">
-        {/* SCROLLABLE CONTENT */}
-        <div
-          ref={scrollRef}
-          className="hide-scrollbar mr-16 flex items-center gap-6 overflow-x-auto scroll-smooth p-6"
-        >
-          {groups.map((g) => (
-            <div
-              key={g.id}
-              onClick={() => setSelectedGroup(g.id)}
-              className="relative cursor-pointer transition-transform hover:scale-[1.02]"
+        {/* ---------------- TOP FILTERS ---------------- */}
+        <div className="mb-6 flex items-center gap-4">
+          {/* DATE */}
+          <div className="relative w-1/4">
+            <label className="mb-1 block text-gray-600">Date</label>
+            <input
+              type="date"
+              value={filters.date}
+              onChange={(e) => setFilters({ ...filters, date: e.target.value })}
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
+            />
+          </div>
+
+          {/* GROUP */}
+          <div className="relative w-1/4">
+            <label className="mb-1 block text-gray-600">Groups</label>
+            <select
+              id="groupName"
+              name="groupName"
+              value={filters.groupName}
+              onChange={(e) => setFilters({ ...filters, groupName: e.target.value })}
+              className="w-full appearance-none rounded-lg border border-gray-300 px-3 py-2 pr-10 outline-none focus:border-primary focus:ring-4 focus:ring-primary/20"
             >
-              <div
-                className="flex w-52 items-center justify-between rounded-xl px-5 py-4 text-white shadow-md"
-                style={{
-                  backgroundColor: g.color,
-                  boxShadow:
-                    selectedGroup === g.id ? `0 0 20px 6px ${g.color}AA` : `0 0 10px 2px ${g.color}66`,
-                }}
-              >
-                <div>
-                  <h2 className="text-lg font-semibold">{g.name}</h2>
-                  <p className="text-xs opacity-90">{g.students.length} Students</p>
-                </div>
-
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20">
-                  <span className="text-sm font-bold text-white">■</span>
-                </div>
-              </div>
-
-              {selectedGroup === g.id && (
-                <div
-                  className="absolute -bottom-2 left-6 h-4 w-4 rotate-45"
-                  style={{ backgroundColor: g.color }}
-                ></div>
-              )}
-            </div>
-          ))}
+              <option value="">All Groups</option>
+              {groupNames.map((g) => (
+                <option key={g} value={g}>
+                  {g}
+                </option>
+              ))}
+            </select>
+            <ChevronDownIcon className="pointer-events-none absolute right-3 top-[48px] h-4 w-4 -translate-y-1/2 stroke-2 text-gray-500" />
+          </div>
         </div>
 
-        {/* ARROWS */}
-        <div className="absolute right-2 top-1/2 flex -translate-y-1/2 flex-col gap-3">
+        {/* ---------------- STATS CARDS ---------------- */}
+        <div className="mb-6 grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-5">
+          <div className="rounded-xl border-l-4 border-green-500 bg-white p-5 shadow">
+            <p className="text-3xl font-bold">94</p>
+            <p className="text-gray-600">All Students</p>
+          </div>
+
+          <div className="rounded-xl border-l-4 border-pink-500 bg-white p-5 shadow">
+            <p className="text-3xl font-bold">92</p>
+            <p className="text-gray-600">Pending</p>
+          </div>
+
+          <div className="rounded-xl border-l-4 border-purple-500 bg-white p-5 shadow">
+            <p className="text-3xl font-bold">1</p>
+            <p className="text-gray-600">Check In</p>
+          </div>
+
+          <div className="rounded-xl border-l-4 border-yellow-500 bg-white p-5 shadow">
+            <p className="text-3xl font-bold">1</p>
+            <p className="text-gray-600">Check Out</p>
+          </div>
+
+          <div className="rounded-xl border-l-4 border-orange-500 bg-white p-5 shadow">
+            <p className="text-3xl font-bold">0</p>
+            <p className="text-gray-600">Absent</p>
+          </div>
+        </div>
+
+        {/* ---------------- ACTION BUTTONS ---------------- */}
+        <div className="mb-6 grid grid-cols-3 gap-4 md:grid-cols-5">
           <button
-            onClick={() => scrollRef.current?.scrollBy({ left: 200, behavior: "smooth" })}
-            className="rounded-full bg-white p-2 text-primary shadow transition hover:bg-white/90"
+            onClick={openBulkCheckInModal}
+            className="rounded-lg bg-green-50 px-4 py-3 text-center text-green-700 shadow hover:bg-green-100"
           >
-            <ArrowRightIcon className="h-5 w-5 stroke-2" />
+            Check In
           </button>
 
           <button
-            onClick={() => scrollRef.current?.scrollBy({ left: -200, behavior: "smooth" })}
-            className="rounded-full bg-white p-2 text-primary shadow transition hover:bg-white/90"
+            onClick={openBulkCheckOutModal}
+            className="rounded-lg bg-purple-50 px-4 py-3 text-center text-purple-700 shadow hover:bg-purple-100"
           >
-            <ArrowLeftIcon className="h-5 w-5 stroke-2" />
+            Check Out
+          </button>
+
+          <button
+            onClick={openBulkMarkAbsentModal}
+            className="rounded-lg bg-red-50 px-4 py-3 text-center text-red-700 shadow hover:bg-red-100"
+          >
+            Mark Absent
           </button>
         </div>
-      </div>
 
-      {/* STUDENTS TABLE */}
-      {selectedGroup && (
-        <div className="mt-6 rounded-xl bg-white p-4 shadow">
-          <h3 className="mb-4 text-xl font-bold">
-            Students in {groups.find((g) => g.id === selectedGroup).name}
-          </h3>
+        {/* ---------------- SEARCH ---------------- */}
+        <div className="relative mb-2 w-1/3">
+          <input
+            type="text"
+            placeholder="Search by student Name"
+            className="w-full rounded-lg border border-gray-300 px-3 py-2 pr-10 outline-none focus:border-primary focus:ring-4 focus:ring-primary/20"
+          />
+          <MagnifyingGlassIcon className="pointer-events-none absolute right-3 top-3 h-4 w-4 text-gray-500" />
+        </div>
 
-          <table className="w-full rounded border">
-            <thead className="bg-gray-100">
+        {/* ---------------- STUDENTS TABLE ---------------- */}
+        <div className="overflow-hidden rounded-lg bg-white shadow">
+          <table className="w-full text-sm">
+            <thead className="border-b bg-gray-50">
               <tr>
-                <th className="p-2 text-left">Name</th>
-                <th className="p-2 text-left">Class</th>
-                <th className="p-2 text-left">Status</th>
-                <th className="p-2 text-left">Change</th>
+                <th className="p-3 text-left">Name</th>
+                <th className="p-3 text-left">Group</th>
+                <th className="p-3 text-left">Check In</th>
+                <th className="p-3 text-left">Check Out</th>
+                <th className="p-3 text-left">Marked Absent</th>
+                <th className="p-3 text-left">Status</th>
+                <th className="p-3 text-left">Actions</th>
               </tr>
             </thead>
 
             <tbody>
-              {groups
-                .find((g) => g.id === selectedGroup)
-                .students.map((student) => (
-                  <tr key={student.id} className="border-t">
-                    <td className="p-2">{student.name}</td>
-                    <td className="p-2">{student.class}</td>
-                    <td className="p-2">
-                      <span
-                        className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                          student.status === "Present"
-                            ? "bg-green-100 text-green-700"
-                            : student.status === "Absent"
-                              ? "bg-red-100 text-red-700"
-                              : "bg-yellow-100 text-yellow-700"
-                        }`}
+              {students.map((s) => (
+                <tr key={s.id} className="border-b hover:bg-gray-50">
+                  <td className="p-3">{s.name}</td>
+                  <td className="p-3">{s.group}</td>
+                  <td className="p-3">{s.checkIn}</td>
+                  <td className="p-3">{s.checkOut}</td>
+                  <td className="p-3">{s.markedAbsent}</td>
+
+                  <td className="p-3">
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                        s.status === "Present"
+                          ? "bg-green-100 text-green-700"
+                          : s.status === "Absent"
+                            ? "bg-red-100 text-red-700"
+                            : "bg-yellow-100 text-yellow-700"
+                      }`}
+                    >
+                      {s.status}
+                    </span>
+                  </td>
+
+                  <td className="p-3">
+                    {s.status === "Present" ? (
+                      <button
+                        onClick={() => handleCheckOut(s.id)}
+                        className="text-purple-600 hover:underline"
                       >
-                        {student.status}
-                      </span>
-                    </td>
-                    <td className="p-2">
-                      <select
-                        value={student.status}
-                        onChange={(e) => handleStatusChange(selectedGroup, student.id, e.target.value)}
-                        className="rounded border px-2 py-1"
-                      >
-                        <option>Present</option>
-                        <option>Absent</option>
-                        <option>Late</option>
-                      </select>
-                    </td>
-                  </tr>
-                ))}
+                        Check Out
+                      </button>
+                    ) : (
+                      <button onClick={() => handleCheckIn(s.id)} className="text-green-600 hover:underline">
+                        Check In
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
-      )}
-    </div>
+      </div>
+      <BulkCheckInModal
+        isOpen={checkInOpen}
+        onClose={() => setCheckInOpen(false)}
+        onSubmit={() => {
+          console.log("Bulk Check In done");
+          setCheckInOpen(false);
+        }}
+      />
+
+      <BulkCheckOutModal
+        isOpen={checkOutOpen}
+        onClose={() => setCheckOutOpen(false)}
+        onSubmit={() => {
+          console.log("Bulk Check Out done");
+          setCheckOutOpen(false);
+        }}
+      />
+
+      <BulkMarkAbsentModal
+        isOpen={absentOpen}
+        onClose={() => setAbsentOpen(false)}
+        onSubmit={() => {
+          console.log("Bulk Mark Absent done");
+          setAbsentOpen(false);
+        }}
+      />
+    </>
   );
 };
 

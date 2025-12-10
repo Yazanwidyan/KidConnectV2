@@ -1,29 +1,15 @@
 // pages/admin/groups/CreateGroup.jsx
 
-import { ChevronDownIcon, ChevronUpIcon, UserGroupIcon, UserPlusIcon } from "@heroicons/react/24/outline";
+import { ArrowLeftIcon, ChevronDownIcon, ChevronUpIcon, UserPlusIcon } from "@heroicons/react/24/outline";
 import { useFormik } from "formik";
 import React, { useState } from "react";
-import { FaChevronDown, FaChevronUp, FaImage, FaTrash } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import * as Yup from "yup";
 
 import AssignStaffModal from "./modals/AssignStaffModal";
 
-/* -------------------------
-  Mock staff
-------------------------- */
-const mockStaff = [
-  { id: 1, name: "Mr. Ahmed" },
-  { id: 2, name: "Ms. Lina" },
-  { id: 3, name: "Mr. Omar" },
-  { id: 4, name: "Ms. Sara" },
-];
-
 const GROUP_TYPES = ["Infants", "Toddlers", "Early Preschool", "Pre-K", "KG-1", "KG-2", "Other"];
-const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-/* -------------------------
-  Validation
-------------------------- */
 const GroupSchema = Yup.object().shape({
   groupName: Yup.string().required("Group name is required"),
   groupType: Yup.string().required("Group type is required"),
@@ -31,19 +17,8 @@ const GroupSchema = Yup.object().shape({
   maxStudents: Yup.number().min(1).nullable(),
   minAge: Yup.number().min(0).nullable(),
   maxAge: Yup.number().min(Yup.ref("minAge"), "Max age must be >= min age").nullable(),
-  startTime: Yup.string().when("days", {
-    is: (days) => Array.isArray(days) && days.length > 0,
-    then: Yup.string().required("Start time required if days selected"),
-  }),
-  endTime: Yup.string().when("days", {
-    is: (days) => Array.isArray(days) && days.length > 0,
-    then: Yup.string().required("End time required if days selected"),
-  }),
 });
 
-/* -------------------------
-  AccordionCard Component
-------------------------- */
 const AccordionCard = ({ title, open, toggle, children, hint }) => (
   <div className="mb-4 rounded-lg bg-white shadow-lg">
     <button
@@ -65,11 +40,7 @@ const AccordionCard = ({ title, open, toggle, children, hint }) => (
   </div>
 );
 
-/* -------------------------
-  Main Component
-------------------------- */
 const CreateGroup = () => {
-  const [previewImage, setPreviewImage] = useState(null);
   const [showStaffModal, setShowStaffModal] = useState(false);
 
   const [sectionsOpen, setSectionsOpen] = useState({
@@ -91,38 +62,28 @@ const CreateGroup = () => {
       maxAge: "",
       leader: "",
       assistants: [],
-      image: null,
     },
     validationSchema: GroupSchema,
     onSubmit: (values) => {
-      const payload = {
-        ...values,
-      };
-
-      console.log("Create Group payload:", payload);
+      console.log("Create Group payload:", values);
       alert("Group created (see console)");
     },
   });
 
-  const { values, handleChange, handleSubmit, setFieldValue, errors, touched } = formik;
+  const { values, handleChange, handleSubmit, errors, touched } = formik;
 
   return (
     <div className="w-full p-6">
-      <div className="mb-6" aria-label="Breadcrumb">
-        <h1 className="text-2xl font-bold text-black">Create New Group</h1>
-        <nav className="flex" aria-label="Breadcrumb">
-          <ol className="inline-flex items-center space-x-2">
-            <li className="inline-flex items-center">
-              <div className="flex items-center text-sm font-semibold text-black">
-                <UserGroupIcon className="h-4 w-4 stroke-2" /> <h5>Groups</h5>
-              </div>
-            </li>
-            <span className="text-xs text-gray-500">/</span>
-            <li aria-current="page">
-              <span className="text-sm font-semibold text-primary">Create New Group</span>
-            </li>
-          </ol>
-        </nav>
+      <div className="mb-6 flex items-center gap-2">
+        <div aria-label="Breadcrumb">
+          <h1 className="text-2xl font-bold text-black">Create New Group</h1>
+          <Link
+            to="/admin/groups"
+            className="flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
+          >
+            <ArrowLeftIcon className="h-5 w-5 stroke-2" /> Back to Groups
+          </Link>
+        </div>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -134,77 +95,42 @@ const CreateGroup = () => {
           hint="Required"
         >
           <div className="grid gap-4 md:grid-cols-2">
-            <div className="space-y-2">
-              <div>
-                <label className="mb-1 block">Group Name</label>
-                <input
-                  name="groupName"
-                  value={values.groupName}
-                  onChange={handleChange}
-                  className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-                />
-                {touched.groupName && errors.groupName && (
-                  <div className="text-sm text-red-500">{errors.groupName}</div>
-                )}
-              </div>
-
-              <div>
-                <label className="mb-1 block text-base">Group Type</label>
-                <select
-                  name="groupType"
-                  value={values.groupType}
-                  onChange={handleChange}
-                  className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-                >
-                  {GROUP_TYPES.map((t) => (
-                    <option key={t}>{t}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="mb-1 block">Group Color</label>
-                <input
-                  type="color"
-                  name="groupColor"
-                  value={values.groupColor}
-                  onChange={handleChange}
-                  className="h-14 w-full rounded-lg border border-gray-300 px-3 py-2 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
-                />
-              </div>
+            <div>
+              <label className="mb-1 block">Group Name</label>
+              <input
+                name="groupName"
+                value={values.groupName}
+                onChange={handleChange}
+                className="w-full rounded-lg border border-gray-300 px-3 py-3"
+              />
+              {touched.groupName && errors.groupName && (
+                <div className="text-sm text-red-500">{errors.groupName}</div>
+              )}
             </div>
 
             <div>
-              <label className="mb-1 block font-medium text-gray-700">Group Image</label>
-
-              {/* Upload Box */}
-              <label
-                className={`flex cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 px-4 ${previewImage ? "py-8" : "py-16"} text-center transition hover:border-primary hover:bg-primary/5`}
+              <label className="mb-1 block">Group Type</label>
+              <select
+                name="groupType"
+                value={values.groupType}
+                onChange={handleChange}
+                className="w-full rounded-lg border border-gray-300 px-3 py-3"
               >
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    const f = e.currentTarget.files[0];
-                    setFieldValue("image", f);
-                    if (f) setPreviewImage(URL.createObjectURL(f));
-                  }}
-                  className="hidden"
-                />
+                {GROUP_TYPES.map((t) => (
+                  <option key={t}>{t}</option>
+                ))}
+              </select>
+            </div>
 
-                {!previewImage ? (
-                  <div className="flex flex-col items-center text-gray-500">
-                    <FaImage className="mb-2 text-4xl opacity-60" />
-                    <p className="text-sm">Click to upload image</p>
-                    <p className="text-xs opacity-70">(JPG, PNG, SVG…)</p>
-                  </div>
-                ) : (
-                  <img
-                    src={previewImage}
-                    className="h-40 w-40 rounded-lg object-cover shadow-md transition duration-300"
-                  />
-                )}
-              </label>
+            <div>
+              <label className="mb-1 block">Group Color</label>
+              <input
+                type="color"
+                name="groupColor"
+                value={values.groupColor}
+                onChange={handleChange}
+                className="h-14 w-full rounded-lg border"
+              />
             </div>
           </div>
         </AccordionCard>
@@ -224,7 +150,7 @@ const CreateGroup = () => {
                 type="number"
                 value={values.maxStudents}
                 onChange={handleChange}
-                className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
+                className="w-full rounded-lg border border-gray-300 px-3 py-3"
               />
             </div>
 
@@ -235,7 +161,7 @@ const CreateGroup = () => {
                 type="number"
                 value={values.minAge}
                 onChange={handleChange}
-                className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
+                className="w-full rounded-lg border border-gray-300 px-3 py-3"
               />
             </div>
 
@@ -246,7 +172,7 @@ const CreateGroup = () => {
                 type="number"
                 value={values.maxAge}
                 onChange={handleChange}
-                className="w-full rounded-lg border border-gray-300 px-3 py-3 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20"
+                className="w-full rounded-lg border border-gray-300 px-3 py-3"
               />
             </div>
           </div>
@@ -261,10 +187,10 @@ const CreateGroup = () => {
         >
           <div className="mb-4 flex items-center justify-between p-6">
             <button
-              className="flex items-center gap-2 rounded bg-primary px-4 py-2 font-semibold text-white hover:bg-primary/90"
+              className="flex items-center gap-2 rounded bg-primary px-4 py-2 font-semibold text-white"
               onClick={() => setShowStaffModal(true)}
             >
-              <UserPlusIcon className="h-5 w-5 stroke-2" /> Assign Staff
+              <UserPlusIcon className="h-5 w-5" /> Assign Staff
             </button>
           </div>
 
@@ -279,38 +205,19 @@ const CreateGroup = () => {
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-dashed divide-gray-400/60">
-                {/* {group.staff.map((s, idx) => (
-                    <tr key={s.id} className="transition odd:bg-gray-100 even:bg-white hover:bg-gray-50">
-                      <td className="px-6 py-3">{idx + 1}</td>
-                      <td className="px-6 py-3">{s.name}</td>
-                      <td className="px-6 py-3">{s.role}</td>
-                      <td className="px-6 py-3">
-                        <button className="rounded bg-red-100 p-2 text-red-600 ring-red-700 transition hover:ring-1">
-                          <FaTrash />
-                        </button>
-                      </td>
-                    </tr>
-                  ))} */}
-              </tbody>
+              <tbody className="divide-y divide-dashed divide-gray-400/60"></tbody>
             </table>
           </div>
         </AccordionCard>
 
-        {/* Submit */}
         <div className="flex justify-end gap-3">
           <button type="submit" className="rounded border border-primary bg-primary px-5 py-2 text-white">
             Create Group
           </button>
         </div>
       </form>
-      {/* Staff Modal */}
-      {showStaffModal && (
-        <AssignStaffModal
-          onClose={() => setShowStaffModal(false)}
-          // onAssign={(selected) => handleAssignStaff(selected)}
-        />
-      )}
+
+      {showStaffModal && <AssignStaffModal onClose={() => setShowStaffModal(false)} />}
     </div>
   );
 };

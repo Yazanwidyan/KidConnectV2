@@ -1,8 +1,13 @@
-// FULL UPDATED STUDENT PROFILE WITH CARD LAYOUT
-
-import { UserGroupIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowLeftIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  PencilIcon,
+  PencilSquareIcon,
+  UserGroupIcon,
+} from "@heroicons/react/24/outline";
 import React, { useState } from "react";
-import { FaArrowLeft, FaEdit, FaUserAltSlash, FaUserSlash } from "react-icons/fa";
+import { FaUserAltSlash, FaUserSlash } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 
 // --- Sample student data ---
@@ -75,6 +80,15 @@ const StudentProfile = () => {
   const studentIndex = students.findIndex((s) => s.id === parseInt(id));
   const student = students[studentIndex];
 
+  const [sectionsOpen, setSectionsOpen] = useState({
+    personal: true,
+    attachments: false,
+    parents: false,
+    emergency: false,
+    pickup: false,
+  });
+  const toggleSection = (key) => setSectionsOpen((prev) => ({ ...prev, [key]: !prev[key] }));
+
   if (!student) return <div className="p-6">Student not found</div>;
 
   const handleUnlinkParent = (index) => {
@@ -100,18 +114,17 @@ const StudentProfile = () => {
   };
 
   return (
-    <div className="w-full space-y-6 p-6">
+    <div className="w-full space-y-4 p-6">
       <div className="mb-6 flex flex-wrap items-end justify-between">
         <div aria-label="Breadcrumb">
           <h1 className="text-2xl font-bold text-black">
-            {" "}
             {student.firstName} {student.secondName} {student.thirdName} {student.lastName}
           </h1>
           <Link
             to="/admin/students"
             className="flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
           >
-            <FaArrowLeft /> Back to Students
+            <ArrowLeftIcon className="h-5 w-5 stroke-2" /> Back to Students
           </Link>
         </div>
         <div className="flex flex-wrap gap-4">
@@ -119,9 +132,8 @@ const StudentProfile = () => {
             to={`/admin/students/edit-student/${student.id}`}
             className="flex items-center gap-2 rounded border border-primary bg-primary px-5 py-2 font-semibold text-white"
           >
-            <FaEdit /> Edit
+            <PencilSquareIcon className="h-5 w-5 stroke-2" /> Edit
           </Link>
-
           <button
             onClick={handleDeactivateStudent}
             className="flex items-center gap-2 rounded border border-primary bg-primary px-5 py-2 font-semibold text-white"
@@ -155,91 +167,119 @@ const StudentProfile = () => {
         </div>
       </div>
 
-      {/* Cards */}
-      <Card title="Personal Information">
-        <Info label="First Day at School" value={student.firstDayAtSchool} />
-        <Info label="Government ID" value={student.governmentId} />
-        <Info label="Nationality" value={student.nationality} />
-        <Info label="Place of Birth" value={student.placeOfBirth} />
-        <Info label="Gender" value={student.gender} />
-        <Info label="Date of Birth" value={student.dob} />
-        <Info label="Blood Group" value={student.bloodGroup} />
-        <Info label="Religion" value={student.religion} />
-        <Info label="Address" value={student.address} />
-        <Info label="Allergies" value={student.allergies} />
-        <Info label="Medications" value={student.medications} />
-        <Info label="Nursery Notes" value={student.nurseryNotes} />
-        <Info label="Parent Notes" value={student.parentNotes} />
-        <Info label="Group Name" value={student.groupName} />
-      </Card>
+      <AccordionCard
+        title="Personal Information"
+        open={sectionsOpen.personal}
+        toggle={() => toggleSection("personal")}
+      >
+        <Card>
+          <Info label="First Day at School" value={student.firstDayAtSchool} />
+          <Info label="Government ID" value={student.governmentId} />
+          <Info label="Nationality" value={student.nationality} />
+          <Info label="Place of Birth" value={student.placeOfBirth} />
+          <Info label="Gender" value={student.gender} />
+          <Info label="Date of Birth" value={student.dob} />
+          <Info label="Blood Group" value={student.bloodGroup} />
+          <Info label="Religion" value={student.religion} />
+          <Info label="Address" value={student.address} />
+          <Info label="Allergies" value={student.allergies} />
+          <Info label="Medications" value={student.medications} />
+          <Info label="Nursery Notes" value={student.nurseryNotes} />
+          <Info label="Parent Notes" value={student.parentNotes} />
+          <Info label="Group Name" value={student.groupName} />
+        </Card>
+      </AccordionCard>
 
-      <Card title="Attachments">
-        <ul className="list-disc pl-6 text-blue-600">
-          {student.attachments?.map((doc, i) => (
-            <li key={i}>
-              <a href={doc.file} target="_blank" className="hover:underline">
-                {doc.name}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </Card>
+      <AccordionCard
+        title="Attachments"
+        open={sectionsOpen.attachments}
+        toggle={() => toggleSection("attachments")}
+      >
+        <Card>
+          <ul className="list-disc pl-6 text-blue-600">
+            {student.attachments?.map((doc, i) => (
+              <li key={i}>
+                <a href={doc.file} target="_blank" className="hover:underline" rel="noreferrer">
+                  {doc.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </Card>
+      </AccordionCard>
 
-      {student.parents?.map((p, idx) => (
-        <Card key={idx} title={`Parent / Guardian ${idx + 1}`}>
-          <Info label="Name" value={p.parentName} />
-          <Info label="Relation" value={p.parentRelation} />
-          <Info label="Phone" value={p.parentPhone} />
-          <Info label="Email" value={p.parentEmail} />
+      <AccordionCard
+        title="Parents Information"
+        open={sectionsOpen.parents}
+        toggle={() => toggleSection("parents")}
+      >
+        {student.parents?.map((p, idx) => (
+          <Card key={idx} title={`Parent / Guardian ${idx + 1}`}>
+            <Info label="Name" value={p.parentName} />
+            <Info label="Relation" value={p.parentRelation} />
+            <Info label="Phone" value={p.parentPhone} />
+            <Info label="Email" value={p.parentEmail} />
 
-          {p.linkedCode ? (
-            <Info label="Linked Code" value={p.linkedCode} />
-          ) : (
-            <Info label="Invitation Code" value={p.invitationCode} />
-          )}
+            {p.linkedCode ? (
+              <Info label="Linked Code" value={p.linkedCode} />
+            ) : (
+              <Info label="Invitation Code" value={p.invitationCode} />
+            )}
 
-          {p.linkedCode && (
+            {p.linkedCode && (
+              <button
+                onClick={() => handleUnlinkParent(idx)}
+                className="mt-3 flex items-center gap-2 rounded-xl bg-yellow-600 px-4 py-2 text-white hover:bg-yellow-700"
+              >
+                <FaUserSlash /> Unlink Parent
+              </button>
+            )}
+
             <button
-              onClick={() => handleUnlinkParent(idx)}
-              className="mt-3 flex items-center gap-2 rounded-xl bg-yellow-600 px-4 py-2 text-white hover:bg-yellow-700"
+              onClick={() => handleDeactivateParent(idx)}
+              className="mt-3 flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2 text-white hover:bg-red-700 disabled:bg-gray-400"
+              disabled={!p.active}
             >
-              <FaUserSlash /> Unlink Parent
+              <FaUserSlash /> {p.active ? "Deactivate" : "Inactive"}
             </button>
-          )}
+          </Card>
+        ))}
+      </AccordionCard>
 
-          <button
-            onClick={() => handleDeactivateParent(idx)}
-            className="mt-3 flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2 text-white hover:bg-red-700 disabled:bg-gray-400"
-            disabled={!p.active}
-          >
-            <FaUserSlash /> {p.active ? "Deactivate" : "Inactive"}
-          </button>
-        </Card>
-      ))}
+      <AccordionCard
+        title="emergency Contact"
+        open={sectionsOpen.emergency}
+        toggle={() => toggleSection("emergency")}
+      >
+        {student.emergencyContacts?.map((ec, idx) => (
+          <Card key={idx} title={`Emergency Contact ${idx + 1}`}>
+            <Info label="Name" value={ec.name} />
+            <Info label="Phone" value={ec.phone} />
+            <Info label="Relation" value={ec.relation} />
+          </Card>
+        ))}
+      </AccordionCard>
 
-      {student.emergencyContacts?.map((ec, idx) => (
-        <Card key={idx} title={`Emergency Contact ${idx + 1}`}>
-          <Info label="Name" value={ec.name} />
-          <Info label="Phone" value={ec.phone} />
-          <Info label="Relation" value={ec.relation} />
-        </Card>
-      ))}
-
-      {student.authorizedPickups?.map((ap, idx) => (
-        <Card key={idx} title={`Authorized Pickup ${idx + 1}`}>
-          <Info label="Name" value={ap.name} />
-          <Info label="Phone" value={ap.phone} />
-          <Info label="ID" value={ap.id} />
-          <Info label="Relation" value={ap.relation} />
-        </Card>
-      ))}
+      <AccordionCard
+        title="Authorized Pickups"
+        open={sectionsOpen.pickup}
+        toggle={() => toggleSection("pickup")}
+      >
+        {student.authorizedPickups?.map((ap, idx) => (
+          <Card key={idx} title={`Authorized Pickup ${idx + 1}`}>
+            <Info label="Name" value={ap.name} />
+            <Info label="Phone" value={ap.phone} />
+            <Info label="ID" value={ap.id} />
+            <Info label="Relation" value={ap.relation} />
+          </Card>
+        ))}
+      </AccordionCard>
     </div>
   );
 };
 
-const Card = ({ title, children }) => (
-  <div className="space-y-4 rounded-lg bg-white p-6 shadow">
-    <h3 className="text-xl font-semibold text-gray-700">{title}</h3>
+const Card = ({ children }) => (
+  <div className="space-y-4 p-6">
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">{children}</div>
   </div>
 );
@@ -248,6 +288,28 @@ const Info = ({ label, value }) => (
   <div>
     <p className="text-sm font-medium text-gray-500">{label}</p>
     <p className="font-semibold text-gray-800">{value || "-"}</p>
+  </div>
+);
+
+// ------------------- Accordion Card Component -------------------
+const AccordionCard = ({ title, open, toggle, children, hint }) => (
+  <div className="mb-4 rounded-lg bg-white shadow-lg">
+    <button
+      type="button"
+      onClick={toggle}
+      className="flex w-full items-center justify-between px-6 py-4 text-left"
+    >
+      <div className="flex items-center gap-2">
+        <h3 className="text-lg font-semibold">{title}</h3>
+        {hint && <span className="rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-600">{hint}</span>}
+      </div>
+      {open ? (
+        <ChevronUpIcon className="h-5 w-5 stroke-2" />
+      ) : (
+        <ChevronDownIcon className="h-5 w-5 stroke-2" />
+      )}
+    </button>
+    {open && <div className="px-6 pb-4">{children}</div>}
   </div>
 );
 

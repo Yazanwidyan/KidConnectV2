@@ -58,7 +58,7 @@ const AdminDashboard = () => {
   return (
     <div className="p-6">
       {/* Stat Cards */}
-      <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-5">
+      <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-5">
         {/* Total Students */}
         <div className="relative flex flex-col overflow-hidden rounded-lg bg-[#0B868B] p-6 shadow-lg">
           <FaUsers className="pointer-events-none absolute -right-10 top-4 text-9xl text-white opacity-10" />

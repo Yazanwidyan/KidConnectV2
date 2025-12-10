@@ -42,10 +42,10 @@ export const ADMIN_MENU = [
     title: "Attendance & Leaves",
     icon: CalendarDaysIcon,
     subMenu: [
-      { title: "Student Attendance", path: "/admin/students-attendance" },
-      { title: "Employee Attendance", path: "/admin/employees-attendance" },
-      { title: "Student Leaves", path: "/admin/students-leaves" },
-      { title: "Employee leaves", path: "/admin/employees-leaves" },
+      { title: "Student Attendance", path: "/admin/attendance-students" },
+      { title: "Employee Attendance", path: "/admin/attendance-employees" },
+      { title: "Student Leaves", path: "/admin/leaves-students" },
+      { title: "Employee leaves", path: "/admin/leaves-employees" },
     ],
   },
   {

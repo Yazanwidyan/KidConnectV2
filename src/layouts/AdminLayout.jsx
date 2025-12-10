@@ -1,12 +1,4 @@
-import {
-  Bars3CenterLeftIcon,
-  BellIcon,
-  ChevronDownIcon,
-  MoonIcon,
-  Squares2X2Icon,
-} from "@heroicons/react/24/outline";
-import { Cog8ToothIcon } from "@heroicons/react/24/outline";
-import { ListBulletIcon } from "@heroicons/react/24/solid";
+import { BellIcon, ChevronDownIcon, MoonIcon, Squares2X2Icon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet } from "react-router-dom";
@@ -68,7 +60,7 @@ const AdminLayout = ({ children }) => {
                   >
                     {/* Avatar */}
                     <img
-                      src="/assets/wa.png"
+                      src="https://randomuser.me/api/portraits/men/36.jpg"
                       alt="User Avatar"
                       className="h-10 w-10 rounded-xl border object-cover"
                     />

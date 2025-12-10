@@ -1,11 +1,15 @@
+import { ChevronDownIcon, ChevronUpIcon, UserGroupIcon, UserPlusIcon } from "@heroicons/react/24/outline";
 import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
+
+import ProfilePicModal from "../../../components/ProfilePicModal";
 
 const genders = ["Male", "Female", "Other"];
 const bloodGroups = ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"];
 const religions = ["Islam", "Christianity", "Other"];
 
+// Validation Schema (same as AddStudent)
 const StudentSchema = Yup.object().shape({
   studentPhoto: Yup.mixed().required("Student Photo is required"),
   firstDayAtSchool: Yup.date().required("First day at school is required"),
@@ -26,7 +30,6 @@ const StudentSchema = Yup.object().shape({
   nurseryNotes: Yup.string(),
   parentNotes: Yup.string(),
   groupName: Yup.string().required("Group Name is required"),
-
   parents: Yup.array().of(
     Yup.object().shape({
       parentName: Yup.string().required("Parent Name is required"),
@@ -52,157 +55,247 @@ const StudentSchema = Yup.object().shape({
   ),
 });
 
-const EditStudent = ({ studentData }) => {
-  const [preview, setPreview] = useState(studentData?.studentPhoto || null);
-  const [attachmentsPreview, setAttachmentsPreview] = useState(
-    studentData?.attachments?.map((f) => URL.createObjectURL(f)) || []
-  );
+const inputClass =
+  "w-full rounded-lg border border-gray-300 px-3 py-2 outline-none transition duration-300 ease-in-out focus:border-primary focus:ring-4 focus:ring-primary/20";
 
-  // Convert attachments from File objects or URLs
-  const initialAttachments = studentData?.attachments || [];
+const EditStudent = ({ existingStudent, onSubmitEdit }) => {
+  // existingStudent is the student data object to edit
+  const [preview, setPreview] = useState(null);
+  const [attachmentsPreview, setAttachmentsPreview] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [sectionsOpen, setSectionsOpen] = useState({
+    personal: true,
+    additional: false,
+    attachments: false,
+    dynamic: false,
+  });
 
-  // Prepare initial form values
-  const initialValues = {
-    studentPhoto: studentData?.studentPhoto || null,
-    firstDayAtSchool: studentData?.firstDayAtSchool || "",
-    firstName: studentData?.firstName || "",
-    secondName: studentData?.secondName || "",
-    thirdName: studentData?.thirdName || "",
-    lastName: studentData?.lastName || "",
-    governmentId: studentData?.governmentId || "",
-    nationality: studentData?.nationality || "",
-    placeOfBirth: studentData?.placeOfBirth || "",
-    gender: studentData?.gender || genders[0],
-    dob: studentData?.dob || "",
-    bloodGroup: studentData?.bloodGroup || bloodGroups[0],
-    religion: studentData?.religion || religions[0],
-    address: studentData?.address || "",
-    allergies: studentData?.allergies || "",
-    medications: studentData?.medications || "",
-    nurseryNotes: studentData?.nurseryNotes || "",
-    parentNotes: studentData?.parentNotes || "",
-    groupName: studentData?.groupName || "",
-    attachments: initialAttachments,
-    parents:
-      studentData?.parents?.length > 0
-        ? studentData.parents
-        : [{ parentName: "", parentPhone: "", parentEmail: "", parentRelation: "" }],
-    emergencyContacts:
-      studentData?.emergencyContacts?.length > 0
-        ? studentData.emergencyContacts
-        : [{ name: "", phone: "", relation: "" }],
-    authorizedPickups:
-      studentData?.authorizedPickups?.length > 0
-        ? studentData.authorizedPickups
-        : [{ name: "", phone: "", id: "", relation: "" }],
-  };
+  // Initialize previews when existingStudent loads
+  useEffect(() => {
+    if (existingStudent) {
+      if (existingStudent.studentPhoto) {
+        setPreview(existingStudent.studentPhoto); // URL or base64
+      }
+      if (existingStudent.attachments && existingStudent.attachments.length > 0) {
+        setAttachmentsPreview(existingStudent.attachments);
+      }
+    }
+  }, [existingStudent]);
+
+  const toggleSection = (key) => setSectionsOpen((prev) => ({ ...prev, [key]: !prev[key] }));
+
+  // Set initial form values from existingStudent or defaults
+  const initialValues = existingStudent
+    ? {
+        studentPhoto: existingStudent.studentPhoto || null,
+        firstDayAtSchool: existingStudent.firstDayAtSchool || "",
+        firstName: existingStudent.firstName || "",
+        secondName: existingStudent.secondName || "",
+        thirdName: existingStudent.thirdName || "",
+        lastName: existingStudent.lastName || "",
+        governmentId: existingStudent.governmentId || "",
+        nationality: existingStudent.nationality || "",
+        placeOfBirth: existingStudent.placeOfBirth || "",
+        gender: existingStudent.gender || genders[0],
+        dob: existingStudent.dob || "",
+        bloodGroup: existingStudent.bloodGroup || bloodGroups[0],
+        religion: existingStudent.religion || religions[0],
+        address: existingStudent.address || "",
+        allergies: existingStudent.allergies || "",
+        medications: existingStudent.medications || "",
+        nurseryNotes: existingStudent.nurseryNotes || "",
+        parentNotes: existingStudent.parentNotes || "",
+        groupName: existingStudent.groupName || "",
+        attachments: existingStudent.attachments || [],
+        parents: existingStudent.parents?.length
+          ? existingStudent.parents
+          : [{ parentName: "", parentPhone: "", parentEmail: "", parentRelation: "" }],
+        emergencyContacts: existingStudent.emergencyContacts?.length
+          ? existingStudent.emergencyContacts
+          : [{ name: "", phone: "", relation: "" }],
+        authorizedPickups: existingStudent.authorizedPickups?.length
+          ? existingStudent.authorizedPickups
+          : [{ name: "", phone: "", id: "", relation: "" }],
+      }
+    : {
+        studentPhoto: null,
+        firstDayAtSchool: "",
+        firstName: "",
+        secondName: "",
+        thirdName: "",
+        lastName: "",
+        governmentId: "",
+        nationality: "",
+        placeOfBirth: "",
+        gender: genders[0],
+        dob: "",
+        bloodGroup: bloodGroups[0],
+        religion: religions[0],
+        address: "",
+        allergies: "",
+        medications: "",
+        nurseryNotes: "",
+        parentNotes: "",
+        groupName: "",
+        attachments: [],
+        parents: [{ parentName: "", parentPhone: "", parentEmail: "", parentRelation: "" }],
+        emergencyContacts: [{ name: "", phone: "", relation: "" }],
+        authorizedPickups: [{ name: "", phone: "", id: "", relation: "" }],
+      };
 
   return (
-    <div className="w-full p-6">
-      <h2 className="mb-6 text-3xl font-bold text-gray-800">Edit Student</h2>
+    <div className="w-full space-y-6 p-6">
+      {/* Header / Breadcrumb */}
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-black">Edit Student</h1>
+        <nav className="flex" aria-label="Breadcrumb">
+          <ol className="inline-flex items-center space-x-2">
+            <li className="inline-flex items-center">
+              <div className="flex items-center text-sm font-semibold text-black">
+                <UserGroupIcon className="h-4 w-4 stroke-2" /> <h5>Students</h5>
+              </div>
+            </li>
+            <span className="text-xs text-gray-500">/</span>
+            <li aria-current="page">
+              <span className="text-sm font-semibold text-primary">Edit Student</span>
+            </li>
+          </ol>
+        </nav>
+      </div>
 
       <Formik
         initialValues={initialValues}
         validationSchema={StudentSchema}
+        enableReinitialize
         onSubmit={(values) => {
-          console.log("Updated Values:", values);
-          alert("Student Updated Successfully!");
+          // Handle edit submission - call parent onSubmitEdit or do API call here
+          console.log("Edited Student:", values);
+          if (onSubmitEdit) {
+            onSubmitEdit(values);
+          } else {
+            alert("Student Updated Successfully!");
+          }
         }}
       >
         {({ values, setFieldValue }) => (
-          <Form className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            {/* Student Photo */}
-            <div className="md:col-span-2">
-              <label className="mb-2 font-medium text-gray-700">Student Photo</label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files[0];
-                  setFieldValue("studentPhoto", file);
-                  if (file) setPreview(URL.createObjectURL(file));
-                }}
-                className="w-full rounded-lg border px-4 py-2"
-              />
-              {preview && (
-                <img src={preview} alt="preview" className="mt-3 h-32 w-32 rounded-lg object-cover" />
-              )}
-              <ErrorMessage name="studentPhoto" component="div" className="text-sm text-red-500" />
-            </div>
+          <Form>
+            {/* Personal Information */}
+            <AccordionCard
+              title="Personal Information"
+              open={sectionsOpen.personal}
+              toggle={() => toggleSection("personal")}
+              hint="Required"
+            >
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+                <div className="flex flex-col items-center md:col-span-1">
+                  <label className="mb-2 font-medium text-gray-700">Student Photo</label>
+                  <button
+                    type="button"
+                    onClick={() => setModalOpen(true)}
+                    className="relative flex h-32 w-32 items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-gray-300 bg-gray-100 text-gray-400 hover:border-gray-400 hover:bg-gray-200"
+                  >
+                    {preview ? (
+                      <img src={preview} alt="preview" className="h-full w-full object-cover" />
+                    ) : (
+                      <span className="text-center text-sm">Upload / Crop</span>
+                    )}
+                  </button>
+                  <ProfilePicModal
+                    isOpen={modalOpen}
+                    onClose={() => setModalOpen(false)}
+                    setFieldValue={setFieldValue}
+                    setPreview2={setPreview}
+                    name="studentPhoto"
+                  />
+                  <ErrorMessage name="studentPhoto" component="div" className="mt-2 text-sm text-red-500" />
+                </div>
 
-            {/* Student Info */}
-            {[
-              { name: "firstName", label: "First Name" },
-              { name: "secondName", label: "Second Name" },
-              { name: "thirdName", label: "Third Name" },
-              { name: "lastName", label: "Last Name" },
-              { name: "governmentId", label: "Government ID" },
-              { name: "nationality", label: "Nationality" },
-              { name: "placeOfBirth", label: "Place of Birth" },
-              { name: "address", label: "Address" },
-              { name: "allergies", label: "Allergies" },
-              { name: "medications", label: "Medications" },
-              { name: "nurseryNotes", label: "Nursery Notes" },
-              { name: "parentNotes", label: "Parent Notes" },
-              { name: "groupName", label: "Group Name" },
-            ].map((field) => (
-              <div key={field.name} className="flex flex-col">
-                <label className="mb-2 font-medium text-gray-700">{field.label}</label>
-                <Field name={field.name} className="rounded-lg border px-4 py-2" />
-                <ErrorMessage name={field.name} component="div" className="text-sm text-red-500" />
+                <div className="grid grid-cols-1 gap-4 md:col-span-2 md:grid-cols-2">
+                  {["firstName", "secondName", "thirdName", "lastName"].map((field) => (
+                    <div key={field} className="flex flex-col">
+                      <label className="mb-2 font-medium text-gray-700">
+                        {field.replace(/([A-Z])/g, " $1")}
+                      </label>
+                      <Field name={field} className={inputClass} />
+                      <ErrorMessage name={field} component="div" className="text-sm text-red-500" />
+                    </div>
+                  ))}
+                </div>
+                <div className="grid grid-cols-1 gap-4 md:col-span-3 md:grid-cols-3">
+                  {["governmentId", "nationality", "placeOfBirth", "address"].map((field) => (
+                    <div key={field} className="flex flex-col">
+                      <label className="mb-2 font-medium text-gray-700">
+                        {field.replace(/([A-Z])/g, " $1")}
+                      </label>
+                      <Field name={field} className={inputClass} />
+                      <ErrorMessage name={field} component="div" className="text-sm text-red-500" />
+                    </div>
+                  ))}
+                  <div className="flex flex-col">
+                    <label className="mb-2 font-medium text-gray-700">First Day at School</label>
+                    <Field type="date" name="firstDayAtSchool" className={inputClass} />
+                    <ErrorMessage name="firstDayAtSchool" component="div" className="text-sm text-red-500" />
+                  </div>
+                  <div className="flex flex-col">
+                    <label className="mb-2 font-medium text-gray-700">Date of Birth</label>
+                    <Field type="date" name="dob" className={inputClass} />
+                    <ErrorMessage name="dob" component="div" className="text-sm text-red-500" />
+                  </div>
+
+                  <div className="flex flex-col">
+                    <label className="mb-2 font-medium text-gray-700">Gender</label>
+                    <Field as="select" name="gender" className={inputClass}>
+                      {genders.map((g) => (
+                        <option key={g}>{g}</option>
+                      ))}
+                    </Field>
+                    <ErrorMessage name="gender" component="div" className="text-sm text-red-500" />
+                  </div>
+                  <div className="flex flex-col">
+                    <label className="mb-2 font-medium text-gray-700">Blood Group</label>
+                    <Field as="select" name="bloodGroup" className={inputClass}>
+                      {bloodGroups.map((b) => (
+                        <option key={b}>{b}</option>
+                      ))}
+                    </Field>
+                    <ErrorMessage name="bloodGroup" component="div" className="text-sm text-red-500" />
+                  </div>
+                  <div className="flex flex-col">
+                    <label className="mb-2 font-medium text-gray-700">Religion</label>
+                    <Field as="select" name="religion" className={inputClass}>
+                      {religions.map((r) => (
+                        <option key={r}>{r}</option>
+                      ))}
+                    </Field>
+                    <ErrorMessage name="religion" component="div" className="text-sm text-red-500" />
+                  </div>
+                </div>
               </div>
-            ))}
+            </AccordionCard>
 
-            {/* First Day at School */}
-            <div className="flex flex-col">
-              <label className="mb-2 font-medium text-gray-700">First Day at School</label>
-              <Field type="date" name="firstDayAtSchool" className="rounded-lg border px-4 py-2" />
-              <ErrorMessage name="firstDayAtSchool" component="div" className="text-sm text-red-500" />
-            </div>
-
-            {/* Date of Birth */}
-            <div className="flex flex-col">
-              <label className="mb-2 font-medium text-gray-700">Date of Birth</label>
-              <Field type="date" name="dob" className="rounded-lg border px-4 py-2" />
-              <ErrorMessage name="dob" component="div" className="text-sm text-red-500" />
-            </div>
-
-            {/* Gender */}
-            <div className="flex flex-col">
-              <label className="mb-2 font-medium text-gray-700">Gender</label>
-              <Field as="select" name="gender" className="rounded-lg border px-4 py-2">
-                {genders.map((g) => (
-                  <option key={g}>{g}</option>
-                ))}
-              </Field>
-              <ErrorMessage name="gender" component="div" className="text-sm text-red-500" />
-            </div>
-
-            {/* Blood Group */}
-            <div className="flex flex-col">
-              <label className="mb-2 font-medium text-gray-700">Blood Group</label>
-              <Field as="select" name="bloodGroup" className="rounded-lg border px-4 py-2">
-                {bloodGroups.map((b) => (
-                  <option key={b}>{b}</option>
-                ))}
-              </Field>
-              <ErrorMessage name="bloodGroup" component="div" className="text-sm text-red-500" />
-            </div>
-
-            {/* Religion */}
-            <div className="flex flex-col">
-              <label className="mb-2 font-medium text-gray-700">Religion</label>
-              <Field as="select" name="religion" className="rounded-lg border px-4 py-2">
-                {religions.map((r) => (
-                  <option key={r}>{r}</option>
-                ))}
-              </Field>
-              <ErrorMessage name="religion" component="div" className="text-sm text-red-500" />
-            </div>
+            {/* Additional Information */}
+            <AccordionCard
+              title="Additional Information"
+              open={sectionsOpen.additional}
+              toggle={() => toggleSection("additional")}
+              hint="Required"
+            >
+              {["allergies", "medications", "nurseryNotes", "parentNotes", "groupName"].map((field) => (
+                <div key={field} className="flex flex-col">
+                  <label className="mb-2 font-medium text-gray-700">{field.replace(/([A-Z])/g, " $1")}</label>
+                  <Field name={field} className={inputClass} />
+                  <ErrorMessage name={field} component="div" className="text-sm text-red-500" />
+                </div>
+              ))}
+            </AccordionCard>
 
             {/* Attachments */}
-            <div className="md:col-span-2">
-              <label className="mb-2 font-medium text-gray-700">Attachments</label>
+            <AccordionCard
+              title="Attachments"
+              open={sectionsOpen.attachments}
+              toggle={() => toggleSection("attachments")}
+              hint="Required"
+            >
               <input
                 type="file"
                 multiple
@@ -211,7 +304,7 @@ const EditStudent = ({ studentData }) => {
                   setFieldValue("attachments", files);
                   setAttachmentsPreview(files.map((f) => URL.createObjectURL(f)));
                 }}
-                className="w-full rounded-lg border px-4 py-2"
+                className={inputClass}
               />
               {attachmentsPreview.length > 0 && (
                 <div className="mt-2 flex flex-wrap gap-2">
@@ -222,30 +315,37 @@ const EditStudent = ({ studentData }) => {
                   ))}
                 </div>
               )}
-            </div>
+            </AccordionCard>
 
             {/* Dynamic Sections */}
-            <DynamicSection
-              name="parents"
-              title="Parents"
-              fields={["parentName", "parentPhone", "parentEmail", "parentRelation"]}
-            />
-            <DynamicSection
-              name="emergencyContacts"
-              title="Emergency Contacts"
-              fields={["name", "phone", "relation"]}
-            />
-            <DynamicSection
-              name="authorizedPickups"
-              title="Authorized Pickups"
-              fields={["name", "phone", "id", "relation"]}
-            />
+            <AccordionCard
+              title="Dynamic Sections"
+              open={sectionsOpen.dynamic}
+              toggle={() => toggleSection("dynamic")}
+              hint="Required"
+            >
+              <DynamicSection
+                name="parents"
+                title="Parents"
+                fields={["parentName", "parentPhone", "parentEmail", "parentRelation"]}
+              />
+              <DynamicSection
+                name="emergencyContacts"
+                title="Emergency Contacts"
+                fields={["name", "phone", "relation"]}
+              />
+              <DynamicSection
+                name="authorizedPickups"
+                title="Authorized Pickups"
+                fields={["name", "phone", "id", "relation"]}
+              />
+            </AccordionCard>
 
             {/* Submit Button */}
-            <div className="md:col-span-2">
+            <div className="md:col-span-3">
               <button
                 type="submit"
-                className="w-full rounded-lg bg-blue-600 py-3 font-semibold text-white hover:bg-blue-700"
+                className="w-full rounded-lg bg-primary py-3 font-semibold text-white hover:bg-primary/80"
               >
                 Update Student
               </button>
@@ -257,13 +357,35 @@ const EditStudent = ({ studentData }) => {
   );
 };
 
+// Reuse AccordionCard and DynamicSection from your code:
+const AccordionCard = ({ title, open, toggle, children, hint }) => (
+  <div className="mb-4 rounded-lg bg-white shadow-lg">
+    <button
+      type="button"
+      onClick={toggle}
+      className="flex w-full items-center justify-between px-6 py-4 text-left"
+    >
+      <div className="flex items-center gap-2">
+        <h3 className="text-lg font-semibold">{title}</h3>
+        {hint && <span className="rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-600">{hint}</span>}
+      </div>
+      {open ? (
+        <ChevronUpIcon className="h-5 w-5 stroke-2" />
+      ) : (
+        <ChevronDownIcon className="h-5 w-5 stroke-2" />
+      )}
+    </button>
+    {open && <div className="px-6 pb-4">{children}</div>}
+  </div>
+);
+
 const DynamicSection = ({ name, title, fields }) => (
   <FieldArray name={name}>
     {({ push, remove, form }) => (
-      <div className="md:col-span-2">
-        <h3 className="text-xl font-semibold text-gray-700">{title}</h3>
+      <div className="md:col-span-3">
+        <h3 className="mb-2 text-xl font-semibold text-gray-700">{title}</h3>
         {form.values[name].map((_, index) => (
-          <div key={index} className="relative mb-4 rounded-lg border bg-gray-50 p-4">
+          <div key={index} className="relative mb-4 rounded-lg border bg-gray-50 p-4 shadow-sm">
             {index > 0 && (
               <button
                 type="button"
@@ -273,24 +395,27 @@ const DynamicSection = ({ name, title, fields }) => (
                 Remove
               </button>
             )}
-            {fields.map((field) => (
-              <div key={field} className="mb-2 flex flex-col">
-                <label className="font-medium text-gray-700">{field}</label>
-                <Field name={`${name}[${index}].${field}`} className="rounded-lg border px-4 py-2" />
-                <ErrorMessage
-                  name={`${name}[${index}].${field}`}
-                  component="div"
-                  className="text-sm text-red-500"
-                />
-              </div>
-            ))}
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              {fields.map((field) => (
+                <div key={field} className="flex flex-col">
+                  <label className="font-medium text-gray-700">{field}</label>
+                  <Field name={`${name}[${index}].${field}`} className={inputClass} />
+                  <ErrorMessage
+                    name={`${name}[${index}].${field}`}
+                    component="div"
+                    className="text-sm text-red-500"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         ))}
         <button
           type="button"
           onClick={() => push(fields.reduce((acc, f) => ({ ...acc, [f]: "" }), {}))}
-          className="rounded bg-blue-600 px-4 py-2 text-white"
+          className="flex items-center gap-2 rounded border border-primary bg-primary px-5 py-2 font-semibold text-white"
         >
+          <UserPlusIcon className="h-5 w-5 stroke-2" />
           Add {title.slice(0, -1)}
         </button>
       </div>
